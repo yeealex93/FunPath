@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">FunPath</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Nothing here yet. Press the back button to go back.</string>
     <string name="action_settings">Settings</string>
+    <string name="temp_test_activity">Go!</string>
+
+    <!-- Screen Titles -->
+    <string name="app_name">FunPath</string>
+    <string name="login_name">FunPath - Login</string>
+    <string name="register_name">FunPath - Register</string>
+    <string name="configure_name">FunPath - Configure Run</string>
+    <string name="preview_name">FunPath - Preview Run</string>
+    <string name="savedruns_name">FunPath - Saved Runs</string>
+    <string name="finish_name">FunPath - Rate Run</string>
+    <string name="tracker_name">FunPath - Running</string>
 
 </resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="activity_array">
+        <item>cmsc434.funpath.login.HomeActivity</item>
+        <item>cmsc434.funpath.login.LoginActivity</item>
+        <item>cmsc434.funpath.login.RegisterActivity</item>
+        <item>cmsc434.funpath.prerun.ConfigureRunActivity</item>
+        <item>cmsc434.funpath.prerun.PreviewRunActivity</item>
+        <item>cmsc434.funpath.prerun.SavedRunsActivity</item>
+        <item>cmsc434.funpath.run.FinishRunActivity</item>
+        <item>cmsc434.funpath.run.RunTrackerActivity</item>
+    </string-array>
+</resources>

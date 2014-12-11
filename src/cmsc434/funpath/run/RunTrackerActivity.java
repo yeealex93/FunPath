@@ -1,16 +1,17 @@
-package cmsc434.funpath;
+package cmsc434.funpath.run;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import cmsc434.funpath.R;
 
-public class MainActivity extends Activity {
+public class RunTrackerActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_runtracker);
 	}
 
 	@Override

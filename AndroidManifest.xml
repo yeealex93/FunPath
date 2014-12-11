@@ -14,13 +14,41 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".login.HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".login.LoginActivity"
+            android:label="@string/login_name" >
+        </activity>
+        <activity
+            android:name=".login.RegisterActivity"
+            android:label="@string/register_name" >
+        </activity>
+        <activity
+            android:name=".prerun.ConfigureRunActivity"
+            android:label="@string/configure_name" >
+        </activity>
+        <activity
+            android:name=".prerun.PreviewRunActivity"
+            android:label="@string/preview_name" >
+        </activity>
+        <activity
+            android:name=".prerun.SavedRunsActivity"
+            android:label="@string/savedruns_name" >
+        </activity>
+        <activity
+            android:name=".run.FinishRunActivity"
+            android:label="@string/finish_name" >
+        </activity>
+        <activity
+            android:name=".run.RunTrackerActivity"
+            android:label="@string/tracker_name" >
         </activity>
     </application>
 
