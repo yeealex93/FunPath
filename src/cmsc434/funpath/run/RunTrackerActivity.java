@@ -24,6 +24,8 @@ public class RunTrackerActivity extends Activity {
 	private GoogleMap map;
 	private FusedLocationService fusedLocationService; // gets location updates
 
+	private RunPath currentPath;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,15 +45,19 @@ public class RunTrackerActivity extends Activity {
 		fusedLocationService.setOnLocationChangedListener(new OnLocationChangedListener() {
 			@Override
 			public void onLocationChanged(Location location) {
-				Log.i("LocationChanged", location.toString());
+//				Log.i("LocationChanged", location.toString());
 				zoomToLocation(location);
 			}
 		});
 
-		drawPath(new RunPath(new LatLng[]{new LatLng(-33.866, 151.195),new LatLng(-18.142, 178.431),new LatLng(21.291, -157.821),new LatLng(37.423, -122.091)}));
+		setPath(new RunPath(new LatLng[]{new LatLng(-33.866, 151.195),new LatLng(-18.142, 178.431),new LatLng(21.291, -157.821),new LatLng(37.423, -122.091)}));
 	}
 
-	public void drawPath(RunPath run) {
+	public void setPath(RunPath run) {
+		// clear old path
+		map.clear();
+		// draw new path
+		this.currentPath = run;
 		LatLng[] path = run.getPath();
 		map.addPolyline(new PolylineOptions().geodesic(true).add(path));
 	}
