@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 import cmsc434.funpath.R;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -34,7 +33,6 @@ public class RunTrackerActivity extends Activity implements OnMapReadyCallback {
 				.findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);
 
-		Toast.makeText(RunTrackerActivity.this, "onCreate", Toast.LENGTH_SHORT).show();
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
 
@@ -63,13 +61,6 @@ public class RunTrackerActivity extends Activity implements OnMapReadyCallback {
 		//		map.moveCamera(CameraUpdateFactory.newLatLngZoom(
 		//				new LatLng(-18.142, 178.431), 2));
 		//
-		//		// Polylines are useful for marking paths and routes on the map.
-		//		map.addPolyline(new PolylineOptions().geodesic(true)
-		//				.add(new LatLng(-33.866, 151.195))  // Sydney
-		//				.add(new LatLng(-18.142, 178.431))  // Fiji
-		//				.add(new LatLng(21.291, -157.821))  // Hawaii
-		//				.add(new LatLng(37.423, -122.091))  // Mountain View
-		//				);
 	}
 
 	private boolean isGooglePlayServicesAvailable() {
