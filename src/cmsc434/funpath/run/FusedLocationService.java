@@ -17,8 +17,6 @@ import com.google.android.gms.maps.LocationSource.OnLocationChangedListener;
 public class FusedLocationService implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 	private static final long INTERVAL = 1000 * 30;
 	private static final long FASTEST_INTERVAL = 1000 * 5;
-	private static final long ONE_MIN = 1000 * 60;
-	private static final long REFRESH_TIME = ONE_MIN * 5;
 
 	private LocationRequest locationRequest;
 	private GoogleApiClient googleApiClient;
@@ -47,9 +45,7 @@ public class FusedLocationService implements LocationListener, GoogleApiClient.C
 	public void onConnected(Bundle connectionHint) {
 		Log.i("FusedLocationService", "Connected to Google Play Services");
 		Location currentLocation = fusedLocationProviderApi.getLastLocation(googleApiClient);
-		if (currentLocation != null && currentLocation.getTime() > REFRESH_TIME) {
-			location = currentLocation;
-		}
+		location = currentLocation;
 		fusedLocationProviderApi.requestLocationUpdates(googleApiClient, locationRequest, this);
 	}
 
