@@ -3,7 +3,6 @@ package cmsc434.funpath.run;
 import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import cmsc434.funpath.R;
@@ -43,10 +42,14 @@ public class RunTrackerActivity extends Activity {
 		//        }
 		fusedLocationService = new FusedLocationService(this);
 		fusedLocationService.setOnLocationChangedListener(new OnLocationChangedListener() {
+			private boolean firstCall = true;
 			@Override
 			public void onLocationChanged(Location location) {
 //				Log.i("LocationChanged", location.toString());
-				zoomToLocation(location);
+				if (firstCall) {
+					firstCall = false;
+					zoomToLocation(location);
+				}
 			}
 		});
 
