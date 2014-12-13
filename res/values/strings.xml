@@ -6,7 +6,7 @@
     <string name="go_string">Go!</string>
 
     <!-- Screen Titles -->
-    <string name="app_name">FunPath</string>
+    <string name="home_name">FunPath</string>
     <string name="login_name">FunPath - Login</string>
     <string name="register_name">FunPath - Register</string>
     <string name="configure_name">FunPath - Configure Run</string>
@@ -17,14 +17,18 @@
 
     
     <!-- HomeActivity Strings -->
-    
-    <!-- LoginActivity Strings -->
-    
-    <!-- RegisterActivity Strings -->
     <string name="generate_custom_run">Generate Custom Run</string>
     <string name="view_past_runs">View Past Runs</string>
     <string name="welcome_to_funpath">Welcome to FunPath!</string>
     <string name="hi">Hi, </string>
+    
+    <!-- LoginActivity Strings -->
+    
+    <!-- RegisterActivity Strings -->
+	<string name="register_username">Username</string>
+	<string name="register_password">Password</string>
+	<string name="register_password_confirm">Confirm Password</string>
+	<string name="register_button"></string>
     
     <!-- ConfgiureRunActivity Strings -->
     

@@ -8,7 +8,6 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 import cmsc434.funpath.R;
 
 // This class is used as a temporary starting activity used to navigate to any other activity
