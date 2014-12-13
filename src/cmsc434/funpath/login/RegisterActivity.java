@@ -18,7 +18,7 @@ import cmsc434.funpath.R;
 
 public class RegisterActivity extends Activity {
 
-	public static String USERNAME = "";
+	public static String USERNAME;
 	
 	//TODO Are these error messages correct for design principles?
 	private	final static String PASSWORDS_DONT_MATCH = "Passwords don't match!";
