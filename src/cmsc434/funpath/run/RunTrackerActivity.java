@@ -15,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource.OnLocationChangedListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 // display map of run & user position using a MapView
 public class RunTrackerActivity extends Activity {
@@ -46,6 +47,13 @@ public class RunTrackerActivity extends Activity {
 				zoomToLocation(location);
 			}
 		});
+
+		drawPath(new RunPath(new LatLng[]{new LatLng(-33.866, 151.195),new LatLng(-18.142, 178.431),new LatLng(21.291, -157.821),new LatLng(37.423, -122.091)}));
+	}
+
+	public void drawPath(RunPath run) {
+		LatLng[] path = run.getPath();
+		map.addPolyline(new PolylineOptions().geodesic(true).add(path));
 	}
 
 	private void zoomToLocation(Location location) {
