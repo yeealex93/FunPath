@@ -9,8 +9,71 @@
     tools:context="cmsc434.funpath.login.HomeActivity" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/TODO_nothing_here" />
+        android:text="@string/login_name" />
+
+    <EditText
+        android:id="@+id/login_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="113dp"
+        android:hint="@string/username_hint"
+        android:ems="10" >
+        <requestFocus />
+	</EditText>
+
+    <EditText
+        android:id="@+id/login_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/login_username"
+        android:layout_below="@+id/login_username"
+        android:layout_marginTop="70dp"
+        android:hint="@string/password_hint"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/password_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/login_password"
+        android:layout_alignLeft="@+id/login_password"
+        android:layout_marginBottom="34dp"
+        android:text="@string/password"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/username_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/login_username"
+        android:layout_alignLeft="@+id/login_username"
+        android:layout_marginBottom="38dp"
+        android:text="@string/username"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/new_user_register_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/login_username"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="20dp"
+        android:text="@string/new_user_button" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="225dp"
+        android:layout_height="75dp"
+        android:layout_below="@+id/login_password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="@string/login_button" />
 
 </RelativeLayout>

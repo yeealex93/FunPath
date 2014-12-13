@@ -10,7 +10,7 @@
 
 
  <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/username_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/home_name" />
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/generate_custom_run_button"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/username_prompt"
         android:layout_marginTop="77dp"
         android:text="@string/hi"
         android:textAppearance="?android:attr/textAppearanceLarge" />
