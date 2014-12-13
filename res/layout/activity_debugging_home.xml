@@ -8,9 +8,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cmsc434.funpath.login.HomeActivity" >
 
-    <TextView
+    <Spinner
+        android:id="@+id/selectActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/TODO_nothing_here" />
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/viewActivityButton" />
+    
+    <Button
+        android:id="@+id/viewActivityButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="@string/go_string" />
 
 </RelativeLayout>

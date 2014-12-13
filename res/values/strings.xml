@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello_world">Nothing here yet. Press the back button to go back.</string>
+    <string name="TODO_nothing_here">Nothing here yet. Press the back button to go back.</string>
     <string name="action_settings">Settings</string>
-    <string name="temp_test_activity">Go!</string>
+    <string name="go_string">Go!</string>
 
     <!-- Screen Titles -->
     <string name="app_name">FunPath</string>
@@ -15,4 +15,27 @@
     <string name="finish_name">FunPath - Rate Run</string>
     <string name="tracker_name">FunPath - Running</string>
 
+    
+    <!-- HomeActivity Strings -->
+    
+    <!-- LoginActivity Strings -->
+    
+    <!-- RegisterActivity Strings -->
+    <string name="generate_custom_run">Generate Custom Run</string>
+    <string name="view_past_runs">View Past Runs</string>
+    <string name="welcome_to_funpath">Welcome to FunPath!</string>
+    <string name="hi">Hi, </string>
+    
+    <!-- ConfgiureRunActivity Strings -->
+    
+    <!-- PreviewRunActivity Strings -->
+    
+    <!-- SavedRunsActivity Strings -->
+    
+    <!-- FinishRunActivity Strings -->
+    
+    <!-- RunTrackerActivity Strings -->
+    
+
+    
 </resources>

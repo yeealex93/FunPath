@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".login.HomeActivity"
+            android:name=".login.DebuggingHomeActivity" 
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        
+        <!-- This tag is unnecessary once debugging home is removed!!!! -->
+        <activity
+            android:name=".login.HomeActivity"
+            android:label="@string/login_name" >
+        </activity>
+        
+        
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/login_name" >

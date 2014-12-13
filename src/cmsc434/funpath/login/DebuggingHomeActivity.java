@@ -11,46 +11,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import cmsc434.funpath.R;
 
-// TODO AFTER other classes are done, make this activity the FunPath homescreen
-// currently used to test other activities
-public class HomeActivity extends Activity {
+// This class is used as a temporary starting activity used to navigate to any other activity
+// TODO Modify AndroidManifest to remove this as the starting point!!!
+public class DebuggingHomeActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_home);
+		setContentView(R.layout.activity_debugging_home);
 
-		//TODO probably will have to save the username in a content provider
-//		Intent callingIntent = getIntent();
-//		callingIntent.getStringExtra(name);
-		
-//		TextView hiUsernameView = (TextView) findViewById(R.id.hi_username);
-		//TODO add the username to this field to read "Hi, "+username ^
-		
-		Button generateRunButton = (Button) findViewById(R.id.generate_custom_run_button);
-		generateRunButton.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
-		
-		Button viewRunsButton = (Button) findViewById(R.id.view_past_runs_button);
-		viewRunsButton.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
-		
-		
-		
 		addDebugUiControl();
 	}
 
@@ -68,7 +37,7 @@ public class HomeActivity extends Activity {
 				if (selectedItem != null) {
 					try {
 						String className = selectedItem.toString();
-						Intent intent = new Intent(HomeActivity.this, Class.forName(className));
+						Intent intent = new Intent(DebuggingHomeActivity.this, Class.forName(className));
 						startActivity(intent);
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
