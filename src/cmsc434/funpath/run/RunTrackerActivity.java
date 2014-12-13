@@ -14,11 +14,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource.OnLocationChangedListener;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
 // display map of run & user position using a MapView
-public class RunTrackerActivity extends Activity implements OnMapReadyCallback {
+public class RunTrackerActivity extends Activity {
 	private static final float INITIAL_ZOOM = 20f;
 
 	private GoogleMap map;
@@ -31,7 +30,7 @@ public class RunTrackerActivity extends Activity implements OnMapReadyCallback {
 
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
 				.findFragmentById(R.id.map);
-		mapFragment.getMapAsync(this);
+//		mapFragment.getMapAsync(this);
 
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
@@ -54,13 +53,6 @@ public class RunTrackerActivity extends Activity implements OnMapReadyCallback {
 			LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
 			map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, INITIAL_ZOOM));
 		}
-	}
-
-	@Override
-	public void onMapReady(GoogleMap map) {
-		//		map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-		//				new LatLng(-18.142, 178.431), 2));
-		//
 	}
 
 	private boolean isGooglePlayServicesAvailable() {
