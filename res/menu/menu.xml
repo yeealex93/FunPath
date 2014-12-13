@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Not letting them logout unless they're at the home page
+    <item
+        android:id="@+id/options_logout"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/options_logout"/>
+    
+    -->
+	<item
+        android:id="@+id/options_return_home"
+        android:orderInCategory="90"
+        android:showAsAction="never"
+        android:title="@string/options_home"/>
+    
+
+</menu>
