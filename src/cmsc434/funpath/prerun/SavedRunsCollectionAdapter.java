@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -28,6 +31,7 @@ import android.widget.TextView;
 import cmsc434.funpath.R;
 import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
+import cmsc434.funpath.run.RunPath;
 
 
 public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
@@ -110,9 +114,11 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_photo, container, false);
 			
-			displayRunData(rootView);
+			
 			LatLng[] run = displayData(rootView, file.getPath());
+			
 			//TODO load map from run!!!
+			//displayRunData(rootView, run);
 
 			Button deleteButton = (Button) rootView.findViewById(R.id.saved_delete_button);
 			deleteButton.setOnClickListener(new OnClickListener() {
@@ -124,13 +130,23 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			return rootView;
 		}
 
-		private void displayRunData(View rootView) {
-			//TODO display map
-			ImageView imageView = ((ImageView) rootView.findViewById(R.id.saved_map));
-			imageView.setImageBitmap(BitmapFactory.decodeFile(file.getPath()));
-
-			
-		}
+//		private void displayRunMap(View rootView) {
+//			//TODO display map
+//			//ImageView imageView = ((ImageView) rootView.findViewById(R.id.saved_map));
+//			//imageView.setImageBitmap(BitmapFactory.decodeFile(file.getPath()));
+//
+//			MapFragment mapFragment = rootView.findViewById(R.id.saved_map);
+//			GoogleMap map = mapFragment.getMap();
+//
+//			GoogleMap map.clear();
+//
+//			LatLng[] path = run.getPath();
+//			PolylineOptions pathLine = new PolylineOptions().geodesic(true).add(path);
+//			if (path.length > 0) {
+//				pathLine.add(path[0]);
+//			}
+//			map.addPolyline(pathLine);
+//		}
 		
 		private LatLng[] displayData(View rootView, String photoPath) {
 			//read in distance, elapsed time, elevation change 
