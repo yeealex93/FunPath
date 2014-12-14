@@ -6,6 +6,7 @@ import cmsc434.funpath.R;
 import cmsc434.funpath.run.RunPath;
 import cmsc434.funpath.run.RunTrackerActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -21,21 +22,32 @@ public class PreviewRunActivity extends Activity {
 		setContentView(R.layout.activity_previewrun);
 		RunPath[] paths = RunTrackerActivity.possiblePaths;
 		
-		double wantedDist = Integer.parseInt(getIntent().getStringExtra("Distance"));
+		// Get extras
+		double wantedDist = Double.parseDouble(getIntent().getStringExtra("Distance"));
 		boolean inKm = getIntent().getBooleanExtra("Units",false);
 		
+		// Put everything in meters
 		double wantedDistInMeters = convertToMeters(wantedDist, inKm);
 		
+		// Find the path that has a length closest to what the user wants
 		int indexBestPath = findBestPath(paths, wantedDistInMeters);
+		RunPath bestPath = paths[indexBestPath];
 		
+		// Get map fragment
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
-				.findFragmentById(R.id.map);
+				.findFragmentById(R.id.preview_map);
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
 		
-		setPath(paths[indexBestPath]);
+		// Find average point of trail to zoom in on
+		LatLng avgPt = averagePathPoints(bestPath);
+		zoomToLocation(avgPt.latitude, avgPt.longitude);
+		
+		// Draw the path
+		setPath(bestPath);
 	}
 	
+	// Find the path with length closest to what the user wants to run.
 	private int findBestPath(RunPath[] paths, double wantedDist) {
 		double closestDiff = Integer.MAX_VALUE;
 		int bestPos = 0;
@@ -51,6 +63,7 @@ public class PreviewRunActivity extends Activity {
 		return bestPos;
 	}
 	
+	// Convert miles and kilometers to miles.
 	private static double convertToMeters(double dist, boolean inKm) {
 		if(inKm) {
 			return dist * 1000;
@@ -59,6 +72,7 @@ public class PreviewRunActivity extends Activity {
 		}
 	}
 	
+	// Draw the path on the map.
 	public void setPath(RunPath run) {
 		// clear old path
 		map.clear();
@@ -69,6 +83,27 @@ public class PreviewRunActivity extends Activity {
 			pathLine.add(path[0]);
 		}
 		map.addPolyline(pathLine);
-		// show path distance
+	}
+	
+	// Calculate average latitude and longitude of a path.
+	private LatLng averagePathPoints(RunPath run) {
+		double totalLat = 0;
+		double totalLon = 0;
+		
+		LatLng[] path = run.getPath();
+		for(int i = 0; i < path.length; i++) {
+			totalLat += path[i].latitude;
+			totalLon += path[i].longitude;
+		}
+		
+		return new LatLng(totalLat/path.length, totalLon/path.length);
+	}
+	
+	// Zoom to a given point on the map.
+	private void zoomToLocation(double lat, double lon) {
+		if (map != null) {
+			LatLng coordinates = new LatLng(lat, lon);
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 17f));
+		}
 	}
 }

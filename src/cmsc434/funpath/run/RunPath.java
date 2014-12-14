@@ -17,7 +17,7 @@ public class RunPath {
 		return path;
 	}
 
-	public float getPathDistanceInMeters(int nextIndex, LatLng curLoc) { // distance to end of path, given next target & current location
+	public float getRemainingDistanceInMeters(int nextIndex, LatLng curLoc) { // distance to end of path, given next target & current location
 		float totalDistance = 0;
 		LatLng lastPoint = curLoc;
 		for (int i = nextIndex; i < path.length; i++) {
@@ -45,7 +45,7 @@ public class RunPath {
 		}
 		return 0;
 	}
-	private float getDistanceBetweenCoords(LatLng coords1, LatLng coords2) { // in meters
+	public static float getDistanceBetweenCoords(LatLng coords1, LatLng coords2) { // in meters
 		float[] results = new float[1];
 		Location.distanceBetween(coords1.latitude, coords1.longitude, coords2.latitude, coords2.longitude, results);
 		float distanceInMeters = results[0];

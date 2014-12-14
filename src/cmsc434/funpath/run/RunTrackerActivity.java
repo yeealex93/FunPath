@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 // TODO track time, allow pause/unpause
 public class RunTrackerActivity extends Activity {
 	private static final float INITIAL_ZOOM = 20f;
+	private static final float DISTANCE_THRESHOLD_CHECKPOINT_REACHED = 20;
 
 	// intent extras
 	public static final String RUNPATH_ARRAY = "RUNPATH_ARRAY";
@@ -40,6 +41,7 @@ public class RunTrackerActivity extends Activity {
 	private static final RunPath aroundCsicAndWindTunnel = new RunPath(new LatLng[]{new LatLng(38.98985, -76.9358), new LatLng(38.98985, -76.93586), new LatLng(38.98998, -76.93583), new LatLng(38.99014, -76.93587), new LatLng(38.99014, -76.93587), new LatLng(38.99017, -76.93587), new LatLng(38.99021, -76.93598), new LatLng(38.99018, -76.93601), new LatLng(38.99017, -76.93602), new LatLng(38.99017, -76.93613), new LatLng(38.99017, -76.93613), new LatLng(38.99018, -76.9365), new LatLng(38.9902, -76.93665), new LatLng(38.9902, -76.93665), new LatLng(38.99018, -76.93696), new LatLng(38.99017, -76.93726), new LatLng(38.99017, -76.93726), new LatLng(38.98991, -76.93725), new LatLng(38.98961, -76.93711), new LatLng(38.98961, -76.93711), new LatLng(38.98947, -76.93704), new LatLng(38.98952, -76.93686), new LatLng(38.98952, -76.93686), new LatLng(38.98961, -76.93641), new LatLng(38.98961, -76.93635), new LatLng(38.9896, -76.9363), new LatLng(38.98959, -76.93628), new LatLng(38.98964, -76.93609), new LatLng(38.98971, -76.93597), new LatLng(38.98983, -76.93587)});
 	private static final RunPath acrossBridgeAndBack = new RunPath(new LatLng[]{new LatLng(38.98968 ,-76.93602), new LatLng(38.98982 ,-76.93587), new LatLng(38.98995 ,-76.93584), new LatLng(38.99013 ,-76.93587), new LatLng(38.99014 ,-76.93587), new LatLng(38.99014 ,-76.93587), new LatLng(38.99017 ,-76.93587), new LatLng(38.99014 ,-76.93579), new LatLng(38.99016 ,-76.93576), new LatLng(38.99019 ,-76.9357), new LatLng(38.99019 ,-76.93537), new LatLng(38.99038 ,-76.93489), new LatLng(38.99038 ,-76.93489), new LatLng(38.99019 ,-76.93539), new LatLng(38.99018 ,-76.93572), new LatLng(38.99015 ,-76.93578), new LatLng(38.99017 ,-76.93587), new LatLng(38.99014 ,-76.93587), new LatLng(38.99014 ,-76.93587), new LatLng(38.98998 ,-76.93583), new LatLng(38.98985 ,-76.93586), new LatLng(38.98976 ,-76.93592), new LatLng(38.98971 ,-76.93597), new LatLng(38.98968 ,-76.93602)});
 	private static final RunPath cutThroughPathtoPaintBranch = new RunPath(new LatLng[]{new LatLng(38.98967 ,-76.93604), new LatLng(38.98962 ,-76.93616), new LatLng(38.98961 ,-76.93631), new LatLng(38.98961 ,-76.93637), new LatLng(38.98961 ,-76.93644), new LatLng(38.9896 ,-76.93649), new LatLng(38.98937 ,-76.93664), new LatLng(38.98937 ,-76.93664), new LatLng(38.98915 ,-76.93678), new LatLng(38.98909 ,-76.93678), new LatLng(38.9889 ,-76.9367), new LatLng(38.9889 ,-76.9367), new LatLng(38.98909 ,-76.93678), new LatLng(38.98915 ,-76.93678), new LatLng(38.98937 ,-76.93664), new LatLng(38.98937 ,-76.93664), new LatLng(38.98961 ,-76.93649), new LatLng(38.98961 ,-76.93641), new LatLng(38.98961 ,-76.93635), new LatLng(38.98959 ,-76.93628), new LatLng(38.98964 ,-76.93609), new LatLng(38.98967 ,-76.93604)});
+	private static final RunPath nearSouthCampus = new RunPath(new LatLng[]{new LatLng(38.982477163899595, -76.94291733205318), new LatLng(38.98247950950659, -76.94345377385616), new LatLng(38.982721627856165, -76.94347623735666)});
 	public static final RunPath[] possiblePaths = new RunPath[]{aroundCsic, aroundCsicAndWindTunnel, acrossBridgeAndBack, cutThroughPathtoPaintBranch};
 
 	private TextView distanceDisplay;
@@ -87,15 +89,61 @@ public class RunTrackerActivity extends Activity {
 					firstCall = false;
 					zoomToLocation(location);
 				}
-				// TODO update distance
+				updatePositionAndDistance(location);
 			}
 		});
 
-		setPath(aroundCsic);
+//		setPath(aroundCsic); // TODO set path from intent
+		setPath(nearSouthCampus);
 
 		// debug, for path generation
 		showCoordinatesOnTap();
 		clearPathOnLongPress();
+	}
+
+	protected void updatePositionAndDistance(Location location) {
+		LatLng curPos = getLatLng(location);
+		int nextPathIndex = pathIndex + 1;
+		// update path index
+		LatLng nextPos = null;
+		if (nextPathIndex >= currentPath.getPath().length) {
+			if (currentPath.getPath().length > 0) {
+				nextPos = currentPath.getPath()[0];
+			}
+		} else {
+			nextPos = currentPath.getPath()[nextPathIndex];
+		}
+		if (nextPos != null && reachedPoint(nextPos, curPos)) {
+			pathIndex++;
+		}
+		// update distance
+		updateDistance(location);
+	}
+
+	private void updateDistance(Location location) {
+		// TODO call at beginning?
+		float totalDistance = currentPath.getPathDistanceInMeters();
+		float remainingDistance = totalDistance;
+		int nextPathIndex = pathIndex + 1;
+		LatLng curPos = getLatLng(location);
+		remainingDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, curPos);
+		// sanity check
+		LatLng exactPos;
+		if (nextPathIndex < currentPath.getPath().length) {
+			exactPos = currentPath.getPath()[nextPathIndex];
+		} else {
+			exactPos = currentPath.getPath()[0];
+		}
+		float worstDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, exactPos);
+		remainingDistance = Math.max(worstDistance, remainingDistance);
+
+		float distanceTravelled = Math.max(totalDistance - remainingDistance, 0);
+		distanceDisplay.setText("Distance (m): " + distanceTravelled + " / " + totalDistance);
+	}
+
+	private boolean reachedPoint(LatLng pos1, LatLng pos2) {
+		double distanceDifference = RunPath.getDistanceBetweenCoords(pos1, pos2);
+		return distanceDifference <= DISTANCE_THRESHOLD_CHECKPOINT_REACHED;
 	}
 
 	public void setPath(RunPath run) {
@@ -110,9 +158,8 @@ public class RunTrackerActivity extends Activity {
 		}
 		map.addPolyline(pathLine);
 		// show path distance
-		pathIndex = 0;
-		distanceDisplay.setText("Distance (m): " + run.getPathDistanceInMeters());
-//		Toast.makeText(this, "Distance (m): " + run.getPathDistanceInMeters(), Toast.LENGTH_SHORT).show();
+		pathIndex = -1;
+//		distanceDisplay.setText("Distance (m): " + run.getPathDistanceInMeters());
 	}
 
 	protected void clearPathOnLongPress() { // debug - paths cannot be cleared by actual users
@@ -156,9 +203,14 @@ public class RunTrackerActivity extends Activity {
 
 	private void zoomToLocation(Location location) {
 		if (map != null) {
-			LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
+			LatLng coordinates = getLatLng(location);
 			map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, INITIAL_ZOOM));
 		}
+	}
+
+	private LatLng getLatLng(Location location) {
+		LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
+		return coordinates;
 	}
 
 	private boolean isGooglePlayServicesAvailable() {
