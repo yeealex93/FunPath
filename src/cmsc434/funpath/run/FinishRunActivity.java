@@ -40,7 +40,8 @@ public class FinishRunActivity extends Activity {
 		
 		Intent runTrackerIntent = getIntent();
 		long hilliness = runTrackerIntent.getIntExtra(ConfigureRunActivity.HILLINESS, 0);
-		
+
+		run = getRunPathFromIntent(runTrackerIntent); // must load first for distance display to work
 		setDistanceDisplayFromIntent(runTrackerIntent);
 		setTimeDisplayFromIntent(runTrackerIntent);
 		
@@ -50,7 +51,6 @@ public class FinishRunActivity extends Activity {
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
 		
-		run = getRunPathFromIntent(runTrackerIntent);
 		setPath(run);
 		zoomToLocation();
 	}
