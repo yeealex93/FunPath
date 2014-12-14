@@ -40,7 +40,7 @@ public class FinishRunActivity extends Activity {
 		
 		Intent runTrackerIntent = getIntent();
 		long distanceTraveled = runTrackerIntent.getLongExtra(RunTrackerActivity.DISTANCE_TRAVELLED, 0);
-		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN_MILLISECONDS, 0);
+		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, 0);
 		long hilliness = runTrackerIntent.getIntExtra(ConfigureRunActivity.HILLINESS, 0);
 		Parcelable[] runpathArrIn= runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
 		
@@ -50,7 +50,7 @@ public class FinishRunActivity extends Activity {
 		}
 		
 		long distLong = runTrackerIntent.getLongExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
-		long timeLong = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN_MILLISECONDS, -1);
+		long timeLong = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
 		
 		TextView distance = (TextView) findViewById(R.id.review_distance);
 		TextView time = (TextView) findViewById(R.id.review_time);

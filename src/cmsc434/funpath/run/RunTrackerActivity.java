@@ -36,7 +36,7 @@ public class RunTrackerActivity extends Activity {
 	// intent extras
 	public static final String RUNPATH_ARRAY = "RUNPATH_ARRAY";
 	public static final String DISTANCE_TRAVELLED = "DISTANCE_TRAVELLED";
-	public static final String TIME_TAKEN_MILLISECONDS = "TIME_TAKEN_MILLISECONDS";
+	public static final String TIME_TAKEN = "TIME_TAKEN_MILLISECONDS";
 	public static final String RUN_COMPLETED = "RUN_COMPLETED";
 
 	private static final RunPath aroundCsic = new RunPath(new LatLng[]{new LatLng(38.990175,-76.9365), new LatLng(38.98965,-76.93645), new LatLng(38.98967624772949, -76.93633887916803), new LatLng(38.98966399969287, -76.93621147423983), new LatLng(38.98968693218526, -76.9360800459981), new LatLng(38.98988133687924, -76.93588323891163), new LatLng(38.98997775723984, -76.93586379289627), new LatLng(38.99008355888978, -76.93588189780712), new LatLng(38.99019613584117, -76.9359677284956), new LatLng(38.99017346410841, -76.93600829690695), new LatLng(38.99016199794195, -76.93609949201345)});
@@ -53,7 +53,7 @@ public class RunTrackerActivity extends Activity {
 	private RunPath currentPath;
 	private int pathIndex;
 	private double distanceTravelled;
-	private long timeElapsedMilliseconds;
+	private long timeElapsedSeconds;
 	private boolean paused = false;
 
 	@Override
@@ -88,7 +88,7 @@ public class RunTrackerActivity extends Activity {
 				Intent finishRun = new Intent(RunTrackerActivity.this, FinishRunActivity.class);
 				finishRun.putExtra(RUNPATH_ARRAY, currentPath.getPath());
 				finishRun.putExtra(DISTANCE_TRAVELLED, distanceTravelled);
-				finishRun.putExtra(TIME_TAKEN_MILLISECONDS, timeElapsedMilliseconds);
+				finishRun.putExtra(TIME_TAKEN, timeElapsedSeconds);
 				finishRun.putExtra(RUN_COMPLETED, runCompleted);
 				finishRun.putExtra(ConfigureRunActivity.HILLINESS, elevation);
 				startActivity(finishRun);
@@ -190,7 +190,7 @@ public class RunTrackerActivity extends Activity {
 		// show path distance
 		pathIndex = -1;
 		distanceTravelled = 0;
-		timeElapsedMilliseconds = 0;
+		timeElapsedSeconds = 0;
 	}
 
 	protected void clearPathOnLongPress() { // debug - paths cannot be cleared by actual users
@@ -279,9 +279,9 @@ public class RunTrackerActivity extends Activity {
 						curTime = "Run not started";
 					} else {
 						if (!paused) {
-							timeElapsedMilliseconds += 1000;
+							timeElapsedSeconds++;
 						}
-						curTime = formatTimeMillisAsString(timeElapsedMilliseconds);
+						curTime = formatTimeSecondsAsString(timeElapsedSeconds);
 					}
 					timeDisplay.setText(curTime);
 				} catch (Exception e) {}
@@ -289,13 +289,12 @@ public class RunTrackerActivity extends Activity {
 		});
 	}
 
-	private String formatTimeMillisAsString(long timeMillis) {
-		final double millisecondsPerSecond = 1.0/1000;
+	private String formatTimeSecondsAsString(long timeSeconds) {
 		final double secondsPerMinute = 1.0/60;
 		final double minutesPerHour = 1.0/60;
-		int hours = (int) (timeMillis * millisecondsPerSecond * secondsPerMinute * minutesPerHour);
-		int minutes = (int) (timeMillis * millisecondsPerSecond * secondsPerMinute) % 60;
-		int seconds = (int) (timeMillis * millisecondsPerSecond) % 60;
+		int hours = (int) (timeSeconds * secondsPerMinute * minutesPerHour);
+		int minutes = (int) (timeSeconds * secondsPerMinute) % 60;
+		int seconds = (int) (timeSeconds % 60);
 		String hourStr = hours + "";
 		String minuteStr = minutes + "";
 		String secondStr = seconds + "";
