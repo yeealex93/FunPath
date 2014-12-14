@@ -173,13 +173,17 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 
 			    // load distance (discarded)
 				line = reader.nextLine();
+				Log.i("Reading run", line);
 
 				// load time
 			    line = reader.nextLine();
+				Log.i("Reading run", line);
 			    this.timeElapsed = Long.parseLong(line);
 
 			    // load elevation
-			    int ele = Integer.parseInt(reader.nextLine()); //elevation
+				line = reader.nextLine();
+				Log.i("Reading run", line);
+			    int ele = Integer.parseInt(line); //elevation
 			    if (ele == 0) {
 			    	this.elevationText = "LOW";
 			    } else if (ele == 1) {
@@ -199,6 +203,18 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			}
 		}
 
+		private LatLng[] getLatLngArray(Scanner reader) {
+			ArrayList<LatLng> rundata = new ArrayList<LatLng>();
+			String line;
+			while (reader.hasNextLine()) {
+				line = reader.nextLine();
+				Log.i("Reading run", line);
+				String[] latlong = line.split("\t");
+			    rundata.add(new LatLng(Double.parseDouble(latlong[0]), Double.parseDouble(latlong[1])));
+			}
+			return (LatLng[]) rundata.toArray();
+		}
+
 		private void displayData(View rootView) {
 			TextView distView = (TextView) rootView.findViewById(R.id.saved_distance);
 			distView.setText(TextDisplayTools.getDistanceText(run.getPathDistanceInMeters()));
@@ -209,19 +225,5 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			TextView elevationView = (TextView) rootView.findViewById(R.id.saved_elevation);
 			elevationView.setText(elevationText);
 		}
-
-		private LatLng[] getLatLngArray(Scanner reader) {
-			ArrayList<LatLng> rundata = new ArrayList<LatLng>();
-			String line;
-			while ((line = reader.nextLine()) != null) {
-				String[] latlong = line.split("\t");
-			    rundata.add(new LatLng(Double.parseDouble(latlong[0]), Double.parseDouble(latlong[1])));
-			}
-			return (LatLng[]) rundata.toArray();
-		}
-
-		
-		
 	}
-
 }
