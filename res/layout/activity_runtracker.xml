@@ -14,15 +14,35 @@
 	    android:name="com.google.android.gms.maps.MapFragment"
 	    android:layout_width="match_parent"
 	    android:layout_height="350dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true"
 	    tools:context=".run.RunTrackerActivity" />
 
+	<TextView
+	    android:id="@+id/distanceDisplay"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/map"
+	    android:layout_below="@+id/map"
+	    android:layout_marginTop="13dp"
+	    android:text="" />
+
 	<Button
-	    android:id="@+id/button1"
+	    android:id="@+id/finishRunButton"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentBottom="true"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginBottom="15dp"
-	    android:text="TODO" />
+	    android:layout_alignRight="@+id/map"
+	    android:text="@string/finish_run_button" />
+
+	<Button
+	    android:id="@+id/pauseRunButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBaseline="@+id/finishRunButton"
+	    android:layout_alignBottom="@+id/finishRunButton"
+	    android:layout_alignLeft="@+id/distanceDisplay"
+	    android:text="@string/pause_run_button" />
 	
 </RelativeLayout>

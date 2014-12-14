@@ -50,7 +50,7 @@
     <!-- FinishRunActivity Strings -->
     
     <!-- RunTrackerActivity Strings -->
-    
-
+	<string name="pause_run_button">Pause Run</string>
+	<string name="finish_run_button">Finish Run</string>
     
 </resources>
