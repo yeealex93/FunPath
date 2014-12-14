@@ -19,6 +19,8 @@ import android.widget.TextView;
 import cmsc434.funpath.R;
 import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
+import cmsc434.funpath.map.utils.TextDisplayTools;
+import cmsc434.funpath.prerun.ConfigureRunActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,9 +39,10 @@ public class FinishRunActivity extends Activity {
 		setContentView(R.layout.activity_finishrun);
 		
 		Intent runTrackerIntent = getIntent();
-		double distanceTraveled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, 0);
+		long hilliness = runTrackerIntent.getIntExtra(ConfigureRunActivity.HILLINESS, 0);
 		
-		setDistanceAndTimeDisplays(runTrackerIntent);
+		setDistanceDisplayFromIntent(runTrackerIntent);
+		setTimeDisplayFromIntent(runTrackerIntent);
 		
 		// Get map fragment
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
@@ -61,15 +64,17 @@ public class FinishRunActivity extends Activity {
 		return new RunPath(run);
 	}
 
-	private void setDistanceAndTimeDisplays(Intent runTrackerIntent) {
-		double distDouble = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
-		long timeLong = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
-		
-		TextView distance = (TextView) findViewById(R.id.review_distance);
+	private void setTimeDisplayFromIntent(Intent runTrackerIntent) {
+		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
 		TextView time = (TextView) findViewById(R.id.review_time);
-		
-		distance.setText(distDouble+"");
-		time.setText(timeLong+"");
+		time.setText(TextDisplayTools.getTimeText(timeTaken));
+	}
+
+	private void setDistanceDisplayFromIntent(Intent runTrackerIntent) {
+		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
+		float totalDistance = run.getPathDistanceInMeters();
+		TextView distance = (TextView) findViewById(R.id.review_distance);
+		distance.setText(TextDisplayTools.getDistanceText(distanceTravelled, totalDistance));
 	}
 
 	@Override

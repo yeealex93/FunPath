@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import cmsc434.funpath.R;
+import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -152,7 +153,7 @@ public class RunTrackerActivity extends Activity {
 		if (distanceTravelled < newDistanceTravelled) {
 			distanceTravelled = newDistanceTravelled;
 		}
-		distanceDisplay.setText("Distance (m): " + distanceTravelled + " / " + totalDistance);
+		distanceDisplay.setText(TextDisplayTools.getDistanceText(distanceTravelled, totalDistance));
 	}
 
 	private float getRemainingDistance(Location curLocation) {
@@ -281,33 +282,12 @@ public class RunTrackerActivity extends Activity {
 						if (!paused) {
 							timeElapsedSeconds++;
 						}
-						curTime = formatTimeSecondsAsString(timeElapsedSeconds);
+						curTime = TextDisplayTools.getTimeText(timeElapsedSeconds);
 					}
 					timeDisplay.setText(curTime);
 				} catch (Exception e) {}
 			}
 		});
-	}
-
-	private String formatTimeSecondsAsString(long timeSeconds) {
-		final double secondsPerMinute = 1.0/60;
-		final double minutesPerHour = 1.0/60;
-		int hours = (int) (timeSeconds * secondsPerMinute * minutesPerHour);
-		int minutes = (int) (timeSeconds * secondsPerMinute) % 60;
-		int seconds = (int) (timeSeconds % 60);
-		String hourStr = hours + "";
-		String minuteStr = minutes + "";
-		String secondStr = seconds + "";
-		if (seconds < 10) {
-			secondStr = "0" + seconds;
-		}
-		if (minutes < 10) {
-			minuteStr = "0" + minutes;
-		}
-		if (hours == 0) {
-			return minuteStr + ":" + secondStr;
-		}
-		return hourStr + ":" + minuteStr + ":" + secondStr;
 	}
 
 	private class UpdateTimeEverySecond implements Runnable{
