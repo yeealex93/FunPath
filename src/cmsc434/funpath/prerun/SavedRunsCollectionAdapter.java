@@ -46,14 +46,13 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	}
 
 	private File[] getFilesArray() {
-		RegisterActivity.USERNAME = "test"; // TODO remove debug
 		Log.i("UserName", RegisterActivity.USERNAME);
 		File dir = new File(LoginActivity.APP_FILEPATH);
 		File[] files = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String filename) {
 				//only get files that have this user's USERNAME in the name and are .txt files
 				String username = getUsernameFromFileName(filename);
-				Log.i("FileList", filename + " = " + username);
+				Log.i("FileList", filename + " owned by " + username);
 				return RegisterActivity.USERNAME.equals(username) && filename.endsWith(".txt");
 				
 			}
