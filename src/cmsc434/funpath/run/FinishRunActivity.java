@@ -167,7 +167,7 @@ public class FinishRunActivity extends Activity {
 	 * 
 	 */
 	public void writeToFile(LatLng[] run, double dist, long time, long hilliness){
-		File mediaStorageDir = new File(LoginActivity.LOGIN_FILEPATH);
+		File mediaStorageDir = new File(LoginActivity.APP_FILEPATH);
 
 		// Create the storage directory if it does not exist (it should for the login.txt file...
 		if (!mediaStorageDir.exists()) {
@@ -176,9 +176,8 @@ public class FinishRunActivity extends Activity {
 			}
 		}
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-		File file = new File(SavedRunsCollectionAdapter.APP_FILEPATH + File.separator + RegisterActivity.USERNAME+"_"+ timeStamp + ".jpg");
+		File file = new File(LoginActivity.APP_FILEPATH + File.separator + RegisterActivity.USERNAME+"_"+ timeStamp + ".jpg");
 		// look for last index of "_" --> get username before it
-		
 		
 		try {
 			//TODO: test which of these is correct:

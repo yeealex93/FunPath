@@ -32,7 +32,7 @@ import cmsc434.funpath.login.RegisterActivity;
 
 public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	//TODO set the filepath
-	public static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "funpath";
+//	public static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "funpath";
 	private List<File> files = new ArrayList<File>(5);
 
 	public SavedRunsCollectionAdapter(FragmentManager fm) {
@@ -41,7 +41,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	}
 
 	private List<File> getAllFiles() {
-		File dir = new File(LoginActivity.LOGIN_FILEPATH);
+		File dir = new File(LoginActivity.APP_FILEPATH);
 		File[] files = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String filename) {
 				

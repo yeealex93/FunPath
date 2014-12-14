@@ -20,7 +20,7 @@ import cmsc434.funpath.R;
 
 public class LoginActivity extends Activity {
 
-	public static final String LOGIN_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "files";
+	public static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "funpath";
 	public static final String LOGIN_FILENAME = "login.txt"; //Change if textfile name changes!
 	
 	
@@ -81,7 +81,7 @@ public class LoginActivity extends Activity {
 
 	// Read in login data from login.txt and populate loginMap with username/password pairs
 	private void loadLoginData() {
-		File directory = new File(LOGIN_FILEPATH);
+		File directory = new File(APP_FILEPATH);
 
 		// Create the storage directory if it does not exist
 		if (!directory.exists()) {
@@ -92,7 +92,7 @@ public class LoginActivity extends Activity {
 		}
 		
 		//create or access existing login.txt file
-		File file = new File(LOGIN_FILEPATH, LOGIN_FILENAME);
+		File file = new File(APP_FILEPATH, LOGIN_FILENAME);
 		Log.i("LOADING", "filepath: "+file.getAbsolutePath()); //TODO comment out
 		
 		try {
