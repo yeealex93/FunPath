@@ -23,6 +23,7 @@ public class LoginActivity extends Activity {
 	public static final String LOGIN_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "files";
 	public static final String LOGIN_FILENAME = "login.txt"; //Change if textfile name changes!
 	
+	
 	private static final String FAILED_LOGIN = "Invalid username/password combination.";
 	
 	public static final HashMap<String, String> loginMap = new HashMap<String, String>();

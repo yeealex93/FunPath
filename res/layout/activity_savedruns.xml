@@ -46,4 +46,13 @@
         android:layout_marginRight="14dp"
         android:background="@drawable/trash_can_small" />
 
+    <TextView
+        android:id="@+id/saved_elevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/saved_time"
+        android:layout_below="@+id/saved_time"
+        android:text="@string/saved_elevation"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
 </RelativeLayout>

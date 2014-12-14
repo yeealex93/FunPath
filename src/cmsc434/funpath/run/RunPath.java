@@ -1,6 +1,18 @@
 package cmsc434.funpath.run;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import android.content.Context;
 import android.location.Location;
+import android.util.Log;
+
+import cmsc434.funpath.login.LoginActivity;
+import cmsc434.funpath.login.RegisterActivity;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -8,7 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 // stores a path as a list of (lat, lng) coords, paths loop with the starting point being the ending point
 public class RunPath {
 	private final LatLng[] path;
-
+	
 	public RunPath(LatLng[] path) {
 		this.path = path;
 	}
@@ -52,5 +64,6 @@ public class RunPath {
 		return distanceInMeters;
 	}
 	
+
 	
 }

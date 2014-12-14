@@ -62,7 +62,7 @@
     <!-- SavedRunsActivity Strings -->
     <string name="saved_distance">Distance:</string>
 	<string name="saved_time">Time:</string>
-        
+    <string name="saved_elevation">Elevation:</string>   
     
     <!-- FinishRunActivity Strings -->
 	<string name="review_new_run_button">Generate New Run</string>

@@ -1,13 +1,24 @@
 package cmsc434.funpath.run;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import cmsc434.funpath.R;
+import cmsc434.funpath.login.LoginActivity;
+import cmsc434.funpath.login.RegisterActivity;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,12 +39,9 @@ public class FinishRunActivity extends Activity {
 		
 		
 		Intent runTrackerIntent = getIntent();
-		runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
-		runTrackerIntent.getLongExtra(RunTrackerActivity.DISTANCE_TRAVELLED, 0);
-		runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN_MILLISECONDS, 0);
-		runTrackerIntent.getIntExtra(ConfigureRunActivity.HILLINESS, 0);
-		
-		//TODO save the distance, time, elevation change
+		long distanceTraveled = runTrackerIntent.getLongExtra(RunTrackerActivity.DISTANCE_TRAVELLED, 0);
+		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN_MILLISECONDS, 0);
+		long hilliness = runTrackerIntent.getIntExtra(ConfigureRunActivity.HILLINESS, 0);
 		Parcelable[] runpathArrIn= runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
 		
 		run = new LatLng[runpathArrIn.length];
@@ -113,4 +121,53 @@ public class FinishRunActivity extends Activity {
 			map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 17f));
 		}
 	}
+	
+	
+	//Code for saving a runPath object to a file
+	/*
+	 * In the format:
+	 * distance
+	 * time
+	 * elevation
+	 * lat (tab \t) long
+	 * lat (tab \t) long
+	 * 		.
+	 * 		.
+	 * 		.
+	 * 
+	 */
+	public void writeToFile(LatLng[] run, long dist, long time, long hilliness){
+		File mediaStorageDir = new File(LoginActivity.LOGIN_FILEPATH);
+
+		// Create the storage directory if it does not exist (it should for the login.txt file...
+		if (!mediaStorageDir.exists()) {
+			if (!mediaStorageDir.mkdirs()) {
+				return; //PROBLEM!!
+			}
+		}
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+		File file = new File(mediaStorageDir.getPath() + File.separator + RegisterActivity.USERNAME+"_"+ timeStamp + ".jpg");
+		// look for last index of "_" --> get username before it
+		
+		
+		try {
+			//TODO: test which of these is correct:
+			FileOutputStream outputStream = openFileOutput(file.getAbsolutePath(), Context.MODE_PRIVATE); //TODO check this works/is the right mode
+			
+			final String toWrite = dist +"\n" + time + "\n" + hilliness;
+			outputStream.write(toWrite.getBytes());
+			
+			for (int i = 0; i < run.length; ++i){
+				LatLng obj = run[i];
+				outputStream.write(("\n" + obj.latitude + "\t"+ obj.longitude).getBytes());
+			}
+			
+			//outputStream.flush(); //may not be necessary
+			outputStream.close();
+		} catch (IOException e) {
+			//TODO handle error...
+			Log.i("FunPath", "Error updating "+file.getPath()+" with new registered user.");
+		}
+	}
+	
 }

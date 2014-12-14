@@ -1,10 +1,15 @@
 package cmsc434.funpath.prerun;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -21,11 +26,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cmsc434.funpath.R;
+import cmsc434.funpath.login.LoginActivity;
+import cmsc434.funpath.login.RegisterActivity;
 
 
 public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	//TODO set the filepath
-	public static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "funpath";
+	//public static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "funpath";
 	private List<File> files = new ArrayList<File>(5);
 
 	public SavedRunsCollectionAdapter(FragmentManager fm) {
@@ -34,11 +41,14 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	}
 
 	private List<File> getAllFiles() {
-		File dir = new File(APP_FILEPATH);
+		File dir = new File(LoginActivity.LOGIN_FILEPATH);
 		File[] files = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String filename) {
-				return filename.endsWith(".png") || filename.endsWith(".jpg")
-						|| filename.endsWith(".gif") || filename.endsWith(".jpeg");
+				
+				//only get files that have this user's USERNAME in the name and are .txt files
+				String username = filename.substring(0, filename.lastIndexOf("_"));
+				return RegisterActivity.USERNAME.equals(username) && filename.endsWith(".txt");
+				
 			}
 		});
 		if (files == null) {
@@ -101,7 +111,8 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			View rootView = inflater.inflate(R.layout.fragment_photo, container, false);
 			
 			displayRunData(rootView);
-			
+			LatLng[] run = displayData(rootView, file.getPath());
+			//TODO load map from run!!!
 
 			Button deleteButton = (Button) rootView.findViewById(R.id.saved_delete_button);
 			deleteButton.setOnClickListener(new OnClickListener() {
@@ -121,20 +132,50 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			
 		}
 		
-		private void displayTemperature(View rootView, String photoPath) {
-			//TODO 
+		private LatLng[] displayData(View rootView, String photoPath) {
 			//read in distance, elapsed time, elevation change 
+			TextView distView = (TextView) rootView.findViewById(R.id.saved_distance);
+			TextView timeView = (TextView) rootView.findViewById(R.id.saved_time);
+			TextView elevationView = (TextView) rootView.findViewById(R.id.saved_elevation);
 			
+			Log.i("LOADING RUN", "filepath: "+file.getPath()); //TODO comment out
 			
-//			String fileName = new File(photoPath).getName();
-//			Temperature[] temperatures = TemperatureUtil.loadTemperaturesFromFileName(fileName);
-//			Log.i("Temp", fileName);
-//			if (temperatures != null) {
-//				Temperature photoTemp = temperatures[0];
-//				Temperature homeTemp = temperatures[1];
-//				TextView temperatureText = (TextView) rootView.findViewById(R.id.temperature_value);
-//				temperatureText.setText("PhotoTemp: " + photoTemp + ", HomeTemp:" + homeTemp);
-//			}
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				String [] latlong;
+			    
+				//Reading in distance, time, and elevation outside of loop
+				String line = br.readLine();  //distance
+			    distView.setText(distView.getText()+" " + line + "m"); //TODO check units
+			    
+			    line = br.readLine();  //time
+			    timeView.setText(timeView.getText() + " " + line + "s"); //TODO convert units/format for readability?
+			    
+			    int ele = Integer.parseInt(br.readLine()); //elevation
+			    if (ele == 0) {
+			    	line = "LOW";
+			    } else if (ele == 1) {
+			    	line = "MEDIUM";
+			    } else { //ele == 2
+			    	line = "HIGH";
+			    }
+			    elevationView.setText(elevationView.getText() + " " + line);
+			    
+			    ArrayList<LatLng> rundata = new ArrayList<LatLng>(20);
+			    //LatLng [] rundata = new LatLng[];
+			    while ((line = br.readLine()) != null) {
+			        latlong = line.split("\t");
+			        rundata.add(new LatLng(Double.parseDouble(latlong[0]), Double.parseDouble(latlong[1])));
+			    }
+			    br.close();
+			    return (LatLng[]) rundata.toArray();
+			    
+			} catch (Exception e) {
+				Log.i("FunPath", "EXCEPTION while reading "+file.getPath());
+				e.printStackTrace();
+				return null; //TODO errors will break things!!!
+			}
+
 		}
 
 		
