@@ -9,7 +9,7 @@
     tools:context="cmsc434.funpath.login.HomeActivity" >
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/preview_elevation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/distance" />
@@ -18,17 +18,17 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignLeft="@+id/preview_distance"
+        android:layout_below="@+id/preview_distance"
         android:layout_marginTop="105dp"
         android:text="@string/elevation" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/preview_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_below="@+id/textView2"
+        android:layout_alignRight="@+id/preview_elevation"
+        android:layout_below="@+id/preview_elevation"
         android:layout_marginTop="75dp"
         android:text="@string/location" />
 
@@ -36,9 +36,9 @@
         android:id="@+id/distanceField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignLeft="@+id/preview_elevation"
         android:layout_alignRight="@+id/textView3"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/preview_elevation"
         android:layout_marginTop="14dp"
         android:ems="10"
         android:inputType="number|numberDecimal" >
@@ -50,9 +50,9 @@
         android:id="@+id/locationField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignLeft="@+id/preview_distance"
         android:layout_alignRight="@+id/textView3"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/preview_distance"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="number" />

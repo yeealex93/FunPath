@@ -54,6 +54,10 @@
 	<string name="next_button">Next</string>
     
     <!-- PreviewRunActivity Strings -->
+    <string name="preview_distance">Distance:</string>
+    <string name="preview_elevation">Elevation Change:</string>
+    <string name="preview_generate_run">Generate New Run</string>
+    <string name="preview_begin_run">Begin Run</string>
     
     <!-- SavedRunsActivity Strings -->
     <string name="saved_distance">Distance:</string>
