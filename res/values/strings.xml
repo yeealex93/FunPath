@@ -65,9 +65,9 @@
     <string name="saved_elevation">Elevation:</string>   
     
     <!-- FinishRunActivity Strings -->
-	<string name="review_new_run_button">Generate New Run</string>
     <string name="review_distance">Distance:</string>
     <string name="review_time">Time:</string>
+	<string name="finish_review_button">Done</string>
     
     <!-- RunTrackerActivity Strings -->
 	<string name="pause_run_button">Pause Run</string>

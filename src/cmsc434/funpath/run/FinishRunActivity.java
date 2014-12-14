@@ -15,8 +15,12 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 import cmsc434.funpath.R;
+import cmsc434.funpath.login.HomeActivity;
 import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
 import cmsc434.funpath.map.utils.TextDisplayTools;
@@ -38,12 +42,23 @@ public class FinishRunActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_finishrun);
 		
+		// Load intent data
 		Intent runTrackerIntent = getIntent();
 		long hilliness = runTrackerIntent.getIntExtra(ConfigureRunActivity.HILLINESS, 0);
 
 		run = getRunPathFromIntent(runTrackerIntent); // must load first for distance display to work
 		setDistanceDisplayFromIntent(runTrackerIntent);
 		setTimeDisplayFromIntent(runTrackerIntent);
+
+		// Button handlnig
+		Button goBackHome = (Button) findViewById(R.id.review_new_run_button);
+		goBackHome.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(FinishRunActivity.this, HomeActivity.class);
+				startActivity(intent);
+			}
+		});
 		
 		// Get map fragment
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
