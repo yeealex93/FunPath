@@ -46,6 +46,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	}
 
 	private File[] getFilesArray() {
+		RegisterActivity.USERNAME = "test"; // TODO remove debug
 		Log.i("UserName", RegisterActivity.USERNAME);
 		File dir = new File(LoginActivity.APP_FILEPATH);
 		File[] files = dir.listFiles(new FilenameFilter() {
@@ -212,7 +213,8 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 				String[] latlong = line.split("\t");
 			    rundata.add(new LatLng(Double.parseDouble(latlong[0]), Double.parseDouble(latlong[1])));
 			}
-			return (LatLng[]) rundata.toArray();
+			LatLng[] array = new LatLng[rundata.size()];
+			return rundata.toArray(array);
 		}
 
 		private void displayData(View rootView) {
