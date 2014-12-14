@@ -10,6 +10,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import cmsc434.funpath.R;
+import cmsc434.funpath.prerun.ConfigureRunActivity;
+import cmsc434.funpath.prerun.SavedRunsActivity;
 
 public class HomeActivity extends Activity {
 
@@ -34,24 +36,21 @@ public class HomeActivity extends Activity {
 		
 		Button generateRunButton = (Button) findViewById(R.id.generate_custom_run_button);
 		generateRunButton.setOnClickListener(new OnClickListener(){
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
+				Intent intent = new Intent(HomeActivity.this, ConfigureRunActivity.class);
+				startActivity(intent);
 			}
 			
 		});
 		
 		Button viewRunsButton = (Button) findViewById(R.id.view_past_runs_button);
 		viewRunsButton.setOnClickListener(new OnClickListener(){
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
+				Intent intent = new Intent(HomeActivity.this, SavedRunsActivity.class);
+				startActivity(intent);
 			}
-			
 		});
 		
 	}
