@@ -14,6 +14,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.LocationSource.OnLocationChangedListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -35,20 +36,17 @@ public class RunTrackerActivity extends Activity {
 
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
 				.findFragmentById(R.id.map);
-//		mapFragment.getMapAsync(this);
+		//		mapFragment.getMapAsync(this);
 
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
 
-		//        if (!isGooglePlayServicesAvailable()) {
-		//            finish();
-		//        }
 		fusedLocationService = new FusedLocationService(this);
 		fusedLocationService.setOnLocationChangedListener(new OnLocationChangedListener() {
 			private boolean firstCall = true;
 			@Override
 			public void onLocationChanged(Location location) {
-//				Log.i("LocationChanged", location.toString());
+				//				Log.i("LocationChanged", location.toString());
 				if (firstCall) {
 					firstCall = false;
 					zoomToLocation(location);
@@ -59,7 +57,9 @@ public class RunTrackerActivity extends Activity {
 		RunPath aroundCsic = new RunPath(new LatLng[]{new LatLng(38.990175,-76.9365), new LatLng(38.98965,-76.93645), new LatLng(38.98967624772949, -76.93633887916803), new LatLng(38.98966399969287, -76.93621147423983), new LatLng(38.98968693218526, -76.9360800459981), new LatLng(38.98988133687924, -76.93588323891163), new LatLng(38.98997775723984, -76.93586379289627), new LatLng(38.99008355888978, -76.93588189780712), new LatLng(38.99019613584117, -76.9359677284956), new LatLng(38.99017346410841, -76.93600829690695), new LatLng(38.99016199794195, -76.93609949201345)});
 		setPath(aroundCsic);
 
-		showCoordinatesOnTap(); // debug, for path generation
+		// debug, for path generation
+		showCoordinatesOnTap();
+		clearPathOnLongPress();
 	}
 
 	public void setPath(RunPath run) {
@@ -68,7 +68,21 @@ public class RunTrackerActivity extends Activity {
 		// draw new path
 		this.currentPath = run;
 		LatLng[] path = run.getPath();
-		map.addPolyline(new PolylineOptions().geodesic(true).add(path).add(path[0]));
+		PolylineOptions pathLine = new PolylineOptions().geodesic(true).add(path);
+		if (path.length > 0) {
+			pathLine.add(path[0]);
+		}
+		map.addPolyline(pathLine);
+	}
+
+	protected void clearPathOnLongPress() { // debug - paths cannot be cleared by actual users
+		map.setOnMapLongClickListener(new OnMapLongClickListener() {
+			@Override
+			public void onMapLongClick(LatLng point) {
+				setPath(new RunPath(new LatLng[0]));
+				Log.d("Path Cleared", "Tap to create new path");
+			}
+		}); 
 	}
 
 	protected void showCoordinatesOnTap() { // debug - paths cannot be modified by actual users
@@ -95,7 +109,7 @@ public class RunTrackerActivity extends Activity {
 					pathStr.append("new LatLng(" + newPoint.latitude + ", " + newPoint.longitude + ")");
 				}
 				pathStr.append("});");
-				Log.d("Whole Path: ", pathStr.toString());
+				Log.d("New Path: ", pathStr.toString());
 			}
 		});
 	}
