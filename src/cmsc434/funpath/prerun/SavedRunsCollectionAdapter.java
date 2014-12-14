@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
@@ -29,16 +28,15 @@ import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.run.RunPath;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
-	private FragmentActivity owner; // used to access support fragment manager to access map fragment
 	private List<File> files = new ArrayList<File>();
 
-	public SavedRunsCollectionAdapter(FragmentActivity owner, FragmentManager fm) {
+	public SavedRunsCollectionAdapter(FragmentManager fm) {
 		super(fm);
-		this.owner = owner;
 		this.files = getAllFiles();
 	}
 
@@ -112,7 +110,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 		return (position + 1) + "";
 	}
 
-	public class SavedRunFragment extends Fragment {
+	public class SavedRunFragment extends Fragment implements OnMapReadyCallback {
 		private SavedRunsCollectionAdapter adapter; // used to delete
 		private File file;
 
@@ -150,24 +148,6 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			return rootView;
 		}
 
-		private void displayRunMap(View rootView) {
-			// create map fragment programmatically
-		    FragmentManager fm = getChildFragmentManager();
-		    SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
-		    if (mapFragment == null) {
-		    	mapFragment = SupportMapFragment.newInstance();
-		        fm.beginTransaction().replace(R.id.map, mapFragment).commit();
-		    }
-
-//			SupportMapFragment mapFragment = (SupportMapFragment) owner.getSupportFragmentManager().findFragmentById(R.id.saved_map);
-
-			GoogleMap map = mapFragment.getMap();
-			if (map != null) { // TODO when non-null do this
-				MapTools.drawPath(map, run);
-				MapTools.zoomToLocation(map, run);
-			}
-		}
-		
 		private void readData(String path) {
 			
 			Log.i("Reading run", "filepath: "+file.getPath());
@@ -230,6 +210,24 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 
 			TextView elevationView = (TextView) rootView.findViewById(R.id.saved_elevation);
 			elevationView.setText(elevationText);
+		}
+
+		private void displayRunMap(View rootView) {
+			// create map fragment programmatically
+		    FragmentManager fm = getChildFragmentManager();
+		    SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
+		    if (mapFragment == null) {
+		    	mapFragment = SupportMapFragment.newInstance();
+		        fm.beginTransaction().replace(R.id.map, mapFragment).commit();
+		    }
+
+		    mapFragment.getMapAsync(this);
+		}
+
+		@Override
+		public void onMapReady(GoogleMap map) {
+			MapTools.drawPath(map, run);
+			MapTools.zoomToLocation(map, run);
 		}
 	}
 }
