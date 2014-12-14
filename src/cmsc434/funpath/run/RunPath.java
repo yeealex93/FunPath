@@ -1,18 +1,8 @@
 package cmsc434.funpath.run;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
-import android.util.Log;
-
-import cmsc434.funpath.login.LoginActivity;
-import cmsc434.funpath.login.RegisterActivity;
+import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -23,6 +13,15 @@ public class RunPath {
 	
 	public RunPath(LatLng[] path) {
 		this.path = path;
+	}
+
+	public RunPath(Intent coordsArrayIntent) {
+		Parcelable[] runpathArrIn = coordsArrayIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
+		LatLng[] run = new LatLng[runpathArrIn.length];
+		for (int i = 0; i < runpathArrIn.length; i++) {
+			run[i] = (LatLng) runpathArrIn[i];
+		}
+		this.path = run;
 	}
 
 	public LatLng[] getPath() {
@@ -63,7 +62,4 @@ public class RunPath {
 		float distanceInMeters = results[0];
 		return distanceInMeters;
 	}
-	
-
-	
 }

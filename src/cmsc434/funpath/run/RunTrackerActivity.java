@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -62,43 +63,6 @@ public class RunTrackerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_runtracker);
 
-		final int elevation = getIntent().getIntExtra(ConfigureRunActivity.HILLINESS, 0);
-		
-		// Basic gui code
-		distanceDisplay = (TextView) findViewById(R.id.distanceDisplay);
-		timeDisplay = (TextView) findViewById(R.id.timeDisplay);
-
-		final Button pauseRunButton = (Button) findViewById(R.id.pauseRunButton);
-		pauseRunButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				paused = !paused;
-				if (paused) {
-					pauseRunButton.setText("Resume Run");
-				} else {
-					pauseRunButton.setText("Pause Run");
-				}
-			}
-		});
-		
-		Button finishRunButton = (Button) findViewById(R.id.finishRunButton);
-		finishRunButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				boolean runCompleted = false;
-				Intent finishRun = new Intent(RunTrackerActivity.this, FinishRunActivity.class);
-				finishRun.putExtra(RUNPATH_ARRAY, currentPath.getPath());
-				finishRun.putExtra(DISTANCE_TRAVELLED, distanceTravelled);
-				finishRun.putExtra(TIME_TAKEN, timeElapsedSeconds);
-				finishRun.putExtra(RUN_COMPLETED, runCompleted);
-				finishRun.putExtra(ConfigureRunActivity.HILLINESS, elevation);
-				startActivity(finishRun);
-			}
-		});
-
-		// time update
-		new Thread(new UpdateTimeEverySecond()).start();   
-
 		// Map code
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
 				.findFragmentById(R.id.map);
@@ -118,8 +82,52 @@ public class RunTrackerActivity extends Activity {
 			}
 		});
 
-		//		setPath(aroundCsic); // TODO set path from intent
-		setPath(nearSouthCampus);
+		// load from intent
+		final int elevation = getIntent().getIntExtra(ConfigureRunActivity.HILLINESS, 0);
+
+		// load path
+		Parcelable[] runPathArray = getIntent().getParcelableArrayExtra(RUNPATH_ARRAY);
+		if (runPathArray == null) {
+			//		setPath(aroundCsic);
+			setPath(nearSouthCampus);
+		} else {
+			setPath(new RunPath(getIntent()));
+		}
+
+		// Basic gui code
+		distanceDisplay = (TextView) findViewById(R.id.distanceDisplay);
+		timeDisplay = (TextView) findViewById(R.id.timeDisplay);
+
+		final Button pauseRunButton = (Button) findViewById(R.id.pauseRunButton);
+		pauseRunButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				paused = !paused;
+				if (paused) {
+					pauseRunButton.setText("Resume Run");
+				} else {
+					pauseRunButton.setText("Pause Run");
+				}
+			}
+		});
+
+		Button finishRunButton = (Button) findViewById(R.id.finishRunButton);
+		finishRunButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				boolean runCompleted = false;
+				Intent finishRun = new Intent(RunTrackerActivity.this, FinishRunActivity.class);
+				finishRun.putExtra(RUNPATH_ARRAY, currentPath.getPath());
+				finishRun.putExtra(DISTANCE_TRAVELLED, distanceTravelled);
+				finishRun.putExtra(TIME_TAKEN, timeElapsedSeconds);
+				finishRun.putExtra(RUN_COMPLETED, runCompleted);
+				finishRun.putExtra(ConfigureRunActivity.HILLINESS, elevation);
+				startActivity(finishRun);
+			}
+		});
+
+		// time update
+		new Thread(new UpdateTimeEverySecond()).start();   
 
 		// debug, for path generation
 		showCoordinatesOnTap();
@@ -295,11 +303,11 @@ public class RunTrackerActivity extends Activity {
 
 		public void run() {
 			timer = new Timer();
-	        timer.schedule(new TimerTask() {
-	            public void run() {
-	            	updateTime();
-	            }
-	        }, 0, 1000);
+			timer.schedule(new TimerTask() {
+				public void run() {
+					updateTime();
+				}
+			}, 0, 1000);
 		}
 	}
 }

@@ -36,7 +36,7 @@ public class PreviewRunActivity extends Activity {
 		
 		// Find the path that has a length closest to what the user wants
 		int indexBestPath = findBestPath(paths, wantedDistInMeters);
-		RunPath bestPath = paths[indexBestPath];
+		final RunPath bestPath = paths[indexBestPath];
 		
 		// Set up button listener
 		Button startRun = (Button) findViewById(R.id.preview_begin_run);
@@ -52,6 +52,7 @@ public class PreviewRunActivity extends Activity {
 				//startIntent.putExtra(ConfigureRunActivity.DISTANCE, wantedDist);
 				
 				startIntent.putExtra(ConfigureRunActivity.HILLINESS, hilliness);
+				startIntent.putExtra(RunTrackerActivity.RUNPATH_ARRAY, bestPath.getPath());
 				
 				startActivity(startIntent);
 			}

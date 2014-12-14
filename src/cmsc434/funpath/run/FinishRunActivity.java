@@ -46,7 +46,7 @@ public class FinishRunActivity extends Activity {
 		Intent runTrackerIntent = getIntent();
 		long hilliness = runTrackerIntent.getIntExtra(ConfigureRunActivity.HILLINESS, 0);
 
-		run = getRunPathFromIntent(runTrackerIntent); // must load first for distance display to work
+		run = new RunPath(runTrackerIntent); // must load first for distance display to work
 		setDistanceDisplayFromIntent(runTrackerIntent);
 		setTimeDisplayFromIntent(runTrackerIntent);
 
@@ -70,14 +70,14 @@ public class FinishRunActivity extends Activity {
 		zoomToLocation();
 	}
 
-	private RunPath getRunPathFromIntent(Intent runTrackerIntent) {
-		Parcelable[] runpathArrIn = runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
-		LatLng[] run = new LatLng[runpathArrIn.length];
-		for (int i = 0; i < runpathArrIn.length; i++) {
-			run[i] = (LatLng) runpathArrIn[i];
-		}
-		return new RunPath(run);
-	}
+//	private RunPath getRunPathFromIntent(Intent runTrackerIntent) {
+//		Parcelable[] runpathArrIn = runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
+//		LatLng[] run = new LatLng[runpathArrIn.length];
+//		for (int i = 0; i < runpathArrIn.length; i++) {
+//			run[i] = (LatLng) runpathArrIn[i];
+//		}
+//		return new RunPath(run);
+//	}
 
 	private void setDistanceDisplayFromIntent(Intent runTrackerIntent) {
 		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
