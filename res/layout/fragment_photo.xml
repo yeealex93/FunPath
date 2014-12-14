@@ -9,13 +9,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cmsc436.project.thermalcamera.MainActivity" >
 
-    <ImageView
+	<fragment
         android:id="@+id/saved_map"
-        android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/ic_launcher" />
+	    android:name="com.google.android.gms.maps.SupportMapFragment"
+	    android:layout_width="match_parent"
+	    android:layout_height="350dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true" />
     
 	<!--
 	<fragment

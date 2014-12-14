@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
@@ -23,17 +24,23 @@ import android.widget.TextView;
 import cmsc434.funpath.R;
 import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
+import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.run.RunPath;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 
 public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
+	private FragmentActivity owner; // used to access support fragment manager to access map fragment
 	private List<File> files = new ArrayList<File>();
 
-	public SavedRunsCollectionAdapter(FragmentManager fm) {
+	public SavedRunsCollectionAdapter(FragmentActivity owner, FragmentManager fm) {
 		super(fm);
+		this.owner = owner;
 		this.files = getAllFiles();
 	}
 
@@ -46,6 +53,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	}
 
 	private File[] getFilesArray() {
+		RegisterActivity.USERNAME = "test"; // TODO remove debug
 		Log.i("UserName", RegisterActivity.USERNAME);
 		File dir = new File(LoginActivity.APP_FILEPATH);
 		File[] files = dir.listFiles(new FilenameFilter() {
@@ -106,7 +114,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 		return (position + 1) + "";
 	}
 
-	public static class SavedRunFragment extends Fragment {
+	public class SavedRunFragment extends Fragment {
 		private SavedRunsCollectionAdapter adapter; // used to delete
 		private File file;
 
@@ -145,23 +153,12 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			return rootView;
 		}
 
-//		private void displayRunMap(View rootView) {
-//			//TODO display map
-//			//ImageView imageView = ((ImageView) rootView.findViewById(R.id.saved_map));
-//			//imageView.setImageBitmap(BitmapFactory.decodeFile(file.getPath()));
-//
-//			MapFragment mapFragment = rootView.findViewById(R.id.saved_map);
-//			GoogleMap map = mapFragment.getMap();
-//
-//			GoogleMap map.clear();
-//
-//			LatLng[] path = run.getPath();
-//			PolylineOptions pathLine = new PolylineOptions().geodesic(true).add(path);
-//			if (path.length > 0) {
-//				pathLine.add(path[0]);
-//			}
-//			map.addPolyline(pathLine);
-//		}
+		private void displayRunMap(View rootView) {
+			SupportMapFragment mapFragment = (SupportMapFragment) owner.getSupportFragmentManager().findFragmentById(R.id.saved_map);
+			GoogleMap map = mapFragment.getMap();
+
+			MapTools.drawPath(map, run);
+		}
 		
 		private void readData(String path) {
 			

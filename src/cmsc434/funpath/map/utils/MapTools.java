@@ -5,6 +5,7 @@ import cmsc434.funpath.run.RunPath;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapTools {
 	
@@ -13,6 +14,19 @@ public class MapTools {
 	
 	public static void setMap(RunPath in) {
 		run = in;
+	}
+
+	// Draw the path on the map.
+	public static void drawPath(GoogleMap map, RunPath run) {
+		// clear old path
+		map.clear();
+
+		LatLng[] path = run.getPath();
+		PolylineOptions pathLine = new PolylineOptions().geodesic(true).add(path);
+		if (path.length > 0) {
+			pathLine.add(path[0]);
+		}
+		map.addPolyline(pathLine);
 	}
 	
 	// Calculate average latitude and longitude of a path.

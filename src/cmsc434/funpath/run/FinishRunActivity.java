@@ -8,10 +8,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,15 +21,14 @@ import cmsc434.funpath.R;
 import cmsc434.funpath.login.HomeActivity;
 import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
+import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
-import cmsc434.funpath.prerun.SavedRunsCollectionAdapter;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 public class FinishRunActivity extends Activity {
 	
@@ -67,7 +64,7 @@ public class FinishRunActivity extends Activity {
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
 		
-		setPath(run);
+		MapTools.drawPath(map, run);
 		zoomToLocation();
 
 		// save path
@@ -111,19 +108,6 @@ public class FinishRunActivity extends Activity {
 			startActivity(new Intent(getApplicationContext(), cmsc434.funpath.login.HomeActivity.class));
 		}
 		return super.onOptionsItemSelected(item);
-	}
-	
-	// Draw the path on the map.
-	public void setPath(RunPath run) {
-		// clear old path
-		map.clear();
-
-		LatLng[] path = run.getPath();
-		PolylineOptions pathLine = new PolylineOptions().geodesic(true).add(path);
-		if (path.length > 0) {
-			pathLine.add(path[0]);
-		}
-		map.addPolyline(pathLine);
 	}
 	
 	// Calculate average latitude and longitude of a path.

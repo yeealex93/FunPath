@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import cmsc434.funpath.R;
+import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
 
@@ -186,16 +187,8 @@ public class RunTrackerActivity extends Activity {
 	}
 
 	public void setPath(RunPath run) {
-		// clear old path
-		map.clear();
-		// draw new path
+		MapTools.drawPath(map, run);
 		this.currentPath = run;
-		LatLng[] path = run.getPath();
-		PolylineOptions pathLine = new PolylineOptions().geodesic(true).add(path);
-		if (path.length > 0) {
-			pathLine.add(path[0]);
-		}
-		map.addPolyline(pathLine);
 		// show path distance
 		pathIndex = -1;
 		distanceTravelled = 0;
