@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 // TODO track time, allow pause/unpause
 public class RunTrackerActivity extends Activity {
 	private static final float INITIAL_ZOOM = 20f;
+	private static final float DISTANCE_THRESHOLD_CHECKPOINT_REACHED = 20;
 
 	// intent extras
 	public static final String RUNPATH_ARRAY = "RUNPATH_ARRAY";
@@ -87,7 +88,7 @@ public class RunTrackerActivity extends Activity {
 					firstCall = false;
 					zoomToLocation(location);
 				}
-				// TODO update distance
+				updatePositionAndDistance(location);
 			}
 		});
 
@@ -96,6 +97,42 @@ public class RunTrackerActivity extends Activity {
 		// debug, for path generation
 		showCoordinatesOnTap();
 		clearPathOnLongPress();
+	}
+
+	protected void updatePositionAndDistance(Location location) {
+		LatLng curPos = getLatLng(location);
+		int nextPathIndex = pathIndex + 1;
+		// update path index
+		LatLng nextPos = null;
+		if (nextPathIndex >= currentPath.getPath().length) {
+			if (currentPath.getPath().length > 0) {
+				nextPos = currentPath.getPath()[0];
+			}
+		} else {
+			nextPos = currentPath.getPath()[nextPathIndex];
+		}
+		if (nextPos != null && reachedPoint(nextPos, curPos)) {
+			pathIndex++;
+		}
+		// update distance
+		updateDistance(location);
+	}
+
+	private void updateDistance(Location location) {
+		// TODO call at beginning?
+		float totalDistance = currentPath.getPathDistanceInMeters();
+		float remainingDistance = totalDistance;
+		if (pathIndex >= 0) {
+			LatLng curPos = getLatLng(location);
+			remainingDistance = currentPath.getRemainingDistanceInMeters(pathIndex, curPos);
+		}
+		float distanceTravelled = Math.max(totalDistance - remainingDistance, 0);
+		distanceDisplay.setText("Distance (m): " + distanceTravelled + " / " + totalDistance);
+	}
+
+	private boolean reachedPoint(LatLng pos1, LatLng pos2) {
+		double distanceDifference = RunPath.getDistanceBetweenCoords(pos1, pos2);
+		return distanceDifference <= DISTANCE_THRESHOLD_CHECKPOINT_REACHED;
 	}
 
 	public void setPath(RunPath run) {
@@ -110,9 +147,8 @@ public class RunTrackerActivity extends Activity {
 		}
 		map.addPolyline(pathLine);
 		// show path distance
-		pathIndex = 0;
-		distanceDisplay.setText("Distance (m): " + run.getPathDistanceInMeters());
-//		Toast.makeText(this, "Distance (m): " + run.getPathDistanceInMeters(), Toast.LENGTH_SHORT).show();
+		pathIndex = -1;
+//		distanceDisplay.setText("Distance (m): " + run.getPathDistanceInMeters());
 	}
 
 	protected void clearPathOnLongPress() { // debug - paths cannot be cleared by actual users
@@ -156,9 +192,14 @@ public class RunTrackerActivity extends Activity {
 
 	private void zoomToLocation(Location location) {
 		if (map != null) {
-			LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
+			LatLng coordinates = getLatLng(location);
 			map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, INITIAL_ZOOM));
 		}
+	}
+
+	private LatLng getLatLng(Location location) {
+		LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
+		return coordinates;
 	}
 
 	private boolean isGooglePlayServicesAvailable() {
