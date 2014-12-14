@@ -75,12 +75,27 @@ public class RunTrackerActivity extends Activity {
 		map.setOnMapClickListener(new OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng point) {
-				Log.d("MapClick", "new LatLng(" + point.latitude + ", " + point.longitude + ")");
+				//Log.d("MapClick", "new LatLng(" + point.latitude + ", " + point.longitude + ")");
+				// add to current path (debug)
 				LatLng[] path = currentPath.getPath();
 				LatLng[] newPath = new LatLng[path.length + 1];
 				System.arraycopy(path, 0, newPath, 0, path.length);
 				newPath[path.length] = point;
 				setPath(new RunPath(newPath));
+				// display whole path for easy copy-paste
+				StringBuilder pathStr = new StringBuilder();
+				pathStr.append("new RunPath(new LatLng[]{");
+				boolean first = true;
+				for (LatLng newPoint : newPath) {
+					if (!first) {
+						pathStr.append(", ");
+					} else {
+						first = false;
+					}
+					pathStr.append("new LatLng(" + newPoint.latitude + ", " + newPoint.longitude + ")");
+				}
+				pathStr.append("});");
+				Log.d("Whole Path: ", pathStr.toString());
 			}
 		});
 	}
