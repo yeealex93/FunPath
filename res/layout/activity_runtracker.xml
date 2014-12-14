@@ -28,6 +28,15 @@
 	    android:layout_marginTop="13dp"
 	    android:text="" />
 
+	<TextView
+	    android:id="@+id/timeDisplay"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/distanceDisplay"
+	    android:layout_below="@+id/distanceDisplay"
+	    android:layout_marginTop="16dp"
+	    android:text="" />
+	
 	<Button
 	    android:id="@+id/finishRunButton"
 	    android:layout_width="wrap_content"
@@ -44,5 +53,5 @@
 	    android:layout_alignBottom="@+id/finishRunButton"
 	    android:layout_alignLeft="@+id/distanceDisplay"
 	    android:text="@string/pause_run_button" />
-	
+
 </RelativeLayout>

@@ -17,7 +17,7 @@ import com.google.android.gms.maps.LocationSource.OnLocationChangedListener;
 public class FusedLocationService implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 	private static final long INTERVAL = 1000 * 5;
 	private static final long FASTEST_INTERVAL = 1000 * 1;
-	private static final float ACCURACY_THRESHOLD_METERS = 20;
+	private static final float ACCURACY_THRESHOLD_METERS = 30;
 
 	private LocationRequest locationRequest;
 	private GoogleApiClient googleApiClient;
