@@ -16,11 +16,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import cmsc434.funpath.R;
+import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -28,7 +27,6 @@ import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.LocationSource.OnLocationChangedListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 // display map of run & user position using a MapView
 public class RunTrackerActivity extends Activity {
@@ -186,16 +184,8 @@ public class RunTrackerActivity extends Activity {
 	}
 
 	public void setPath(RunPath run) {
-		// clear old path
-		map.clear();
-		// draw new path
+		MapTools.drawPath(map, run);
 		this.currentPath = run;
-		LatLng[] path = run.getPath();
-		PolylineOptions pathLine = new PolylineOptions().geodesic(true).add(path);
-		if (path.length > 0) {
-			pathLine.add(path[0]);
-		}
-		map.addPolyline(pathLine);
 		// show path distance
 		pathIndex = -1;
 		distanceTravelled = 0;
@@ -253,15 +243,15 @@ public class RunTrackerActivity extends Activity {
 		return coordinates;
 	}
 
-	private boolean isGooglePlayServicesAvailable() {
-		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-		if (ConnectionResult.SUCCESS == status) {
-			return true;
-		} else {
-			GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
-			return false;
-		}
-	}
+//	private boolean isGooglePlayServicesAvailable() {
+//		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+//		if (ConnectionResult.SUCCESS == status) {
+//			return true;
+//		} else {
+//			GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
+//			return false;
+//		}
+//	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

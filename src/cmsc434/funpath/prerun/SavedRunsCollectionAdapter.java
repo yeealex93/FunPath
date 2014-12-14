@@ -23,11 +23,14 @@ import android.widget.TextView;
 import cmsc434.funpath.R;
 import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
+import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.run.RunPath;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-
 
 public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	private List<File> files = new ArrayList<File>();
@@ -46,6 +49,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	}
 
 	private File[] getFilesArray() {
+		RegisterActivity.USERNAME = "test"; // TODO remove debug
 		Log.i("UserName", RegisterActivity.USERNAME);
 		File dir = new File(LoginActivity.APP_FILEPATH);
 		File[] files = dir.listFiles(new FilenameFilter() {
@@ -106,7 +110,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 		return (position + 1) + "";
 	}
 
-	public static class SavedRunFragment extends Fragment {
+	public class SavedRunFragment extends Fragment implements OnMapReadyCallback {
 		private SavedRunsCollectionAdapter adapter; // used to delete
 		private File file;
 
@@ -130,8 +134,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			// load data
 			readData(file.getPath());
 			displayData(rootView);
-			//TODO load map from run!!!
-			//displayRunData(rootView, run);
+			displayRunMap(rootView);
 
 			// delete button
 			Button deleteButton = (Button) rootView.findViewById(R.id.saved_delete_button);
@@ -145,24 +148,6 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			return rootView;
 		}
 
-//		private void displayRunMap(View rootView) {
-//			//TODO display map
-//			//ImageView imageView = ((ImageView) rootView.findViewById(R.id.saved_map));
-//			//imageView.setImageBitmap(BitmapFactory.decodeFile(file.getPath()));
-//
-//			MapFragment mapFragment = rootView.findViewById(R.id.saved_map);
-//			GoogleMap map = mapFragment.getMap();
-//
-//			GoogleMap map.clear();
-//
-//			LatLng[] path = run.getPath();
-//			PolylineOptions pathLine = new PolylineOptions().geodesic(true).add(path);
-//			if (path.length > 0) {
-//				pathLine.add(path[0]);
-//			}
-//			map.addPolyline(pathLine);
-//		}
-		
 		private void readData(String path) {
 			
 			Log.i("Reading run", "filepath: "+file.getPath());
@@ -225,6 +210,24 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 
 			TextView elevationView = (TextView) rootView.findViewById(R.id.saved_elevation);
 			elevationView.setText(elevationText);
+		}
+
+		private void displayRunMap(View rootView) {
+			// create map fragment programmatically
+		    FragmentManager fm = getChildFragmentManager();
+		    SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
+		    if (mapFragment == null) {
+		    	mapFragment = SupportMapFragment.newInstance();
+		        fm.beginTransaction().replace(R.id.map, mapFragment).commit();
+		    }
+
+		    mapFragment.getMapAsync(this);
+		}
+
+		@Override
+		public void onMapReady(GoogleMap map) {
+			MapTools.drawPath(map, run);
+			MapTools.zoomToLocation(map, run);
 		}
 	}
 }

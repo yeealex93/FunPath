@@ -12,9 +12,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -71,6 +75,9 @@ public class LoginActivity extends Activity {
 		
 		final EditText usernameView = (EditText) findViewById(R.id.login_username);
 		final EditText passwordView = (EditText) findViewById(R.id.login_password);
+		
+		usernameView.addTextChangedListener(new GenericTextWatcher(usernameView));
+		//passwordView.addTextChangedListener(new GenericTextWatcher(passwordView));
 		
 		Button loginButton = (Button) findViewById(R.id.login_button);
 		loginButton.setOnClickListener(new OnClickListener(){
@@ -175,6 +182,51 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+
+//	@Override
+//	public boolean onKey(View v, int keyCode, KeyEvent event) {
+//		Toast.makeText(this, "Keypressed " +keyCode, Toast.LENGTH_SHORT).show();
+//		
+//		if(v.equals(this.findViewById(R.id.login_username)) && keyCode==KeyEvent.KEYCODE_ENTER) {
+//			Toast.makeText(this, "enter pressed", Toast.LENGTH_SHORT).show();
+//			this.findViewById(R.id.login_password).requestFocus();
+//			return true;
+//		}
+//		return false;
+//	}
 	
+	// http://stackoverflow.com/questions/5702771/how-to-use-single-textwatcher-for-multiple-edittexts/6172024#6172024
+	private class GenericTextWatcher implements TextWatcher {
+
+	    private View view;
+	    private GenericTextWatcher(View view) {
+	        this.view = view;
+	    }
+
+	    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+	    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+	    public void afterTextChanged(Editable editable) {
+	        String text = editable.toString();
+	        EditText t = (EditText) view;
+	        
+	        switch(view.getId()){
+//	            case R.id.login_password:
+//	                if(text.length() > 0 && text.substring(text.length()-1, text.length()).equals("\n")) {
+//	                	t.setText(text.substring(0, text.length()-1));
+//	                	Button login = (Button) findViewById(R.id.login_button);
+//	                	login.performClick();
+//	                }
+//	            	break;
+	            	
+	            case R.id.login_username:
+	                if(text.length() > 0 && text.substring(text.length()-1, text.length()).equals("\n")) {
+	                	t.setText(text.substring(0, text.length()-1));
+	                	findViewById(R.id.login_password).requestFocus();
+	                }
+	                break;
+	        }
+	    }
+	}
 
 }

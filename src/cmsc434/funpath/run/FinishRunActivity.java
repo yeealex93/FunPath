@@ -8,10 +8,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,15 +21,13 @@ import cmsc434.funpath.R;
 import cmsc434.funpath.login.HomeActivity;
 import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
+import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
-import cmsc434.funpath.prerun.SavedRunsCollectionAdapter;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 public class FinishRunActivity extends Activity {
 	
@@ -67,23 +63,14 @@ public class FinishRunActivity extends Activity {
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
 		
-		setPath(run);
-		zoomToLocation();
+		MapTools.drawPath(map, run);
+		MapTools.zoomToLocation(map, run);
 
 		// save path
 		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
 		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
 		writeToFile(run.getPath(), distanceTravelled, timeTaken, hilliness);
 	}
-
-//	private RunPath getRunPathFromIntent(Intent runTrackerIntent) {
-//		Parcelable[] runpathArrIn = runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
-//		LatLng[] run = new LatLng[runpathArrIn.length];
-//		for (int i = 0; i < runpathArrIn.length; i++) {
-//			run[i] = (LatLng) runpathArrIn[i];
-//		}
-//		return new RunPath(run);
-//	}
 
 	private void setDistanceDisplayFromIntent(Intent runTrackerIntent) {
 		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
@@ -112,46 +99,6 @@ public class FinishRunActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	// Draw the path on the map.
-	public void setPath(RunPath run) {
-		// clear old path
-		map.clear();
-
-		LatLng[] path = run.getPath();
-		PolylineOptions pathLine = new PolylineOptions().geodesic(true).add(path);
-		if (path.length > 0) {
-			pathLine.add(path[0]);
-		}
-		map.addPolyline(pathLine);
-	}
-	
-	// Calculate average latitude and longitude of a path.
-	private LatLng averagePathPoints() {
-		double totalLat = 0;
-		double totalLon = 0;
-
-		LatLng[] path = run.getPath();
-		for(int i = 0; i < path.length; i++) {
-			totalLat += path[i].latitude;
-			totalLon += path[i].longitude;
-		}
-		
-		return new LatLng(totalLat/path.length, totalLon/path.length);
-	}
-	
-	// Zoom to a given point on the map.
-	private void zoomToLocation() {
-		LatLng point = averagePathPoints();
-		double lat = point.latitude;
-		double lon = point.longitude;
-		
-		if (map != null) {
-			LatLng coordinates = new LatLng(lat, lon);
-			map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 17f));
-		}
-	}
-	
 	
 	//Code for saving a runPath object to a file
 	/*
