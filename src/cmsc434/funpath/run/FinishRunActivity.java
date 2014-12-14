@@ -64,17 +64,17 @@ public class FinishRunActivity extends Activity {
 		return new RunPath(run);
 	}
 
-	private void setTimeDisplayFromIntent(Intent runTrackerIntent) {
-		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
-		TextView time = (TextView) findViewById(R.id.review_time);
-		time.setText(TextDisplayTools.getTimeText(timeTaken));
-	}
-
 	private void setDistanceDisplayFromIntent(Intent runTrackerIntent) {
 		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
 		float totalDistance = run.getPathDistanceInMeters();
 		TextView distance = (TextView) findViewById(R.id.review_distance);
 		distance.setText(TextDisplayTools.getDistanceText(distanceTravelled, totalDistance));
+	}
+
+	private void setTimeDisplayFromIntent(Intent runTrackerIntent) {
+		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
+		TextView time = (TextView) findViewById(R.id.review_time);
+		time.setText(TextDisplayTools.getTimeText(timeTaken));
 	}
 
 	@Override
