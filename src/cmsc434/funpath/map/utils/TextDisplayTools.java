@@ -4,6 +4,10 @@ import java.util.Locale;
 
 // Used for time display and distance display
 public class TextDisplayTools {
+	public static String getDistanceText(double totalDistance) {
+		String totalDistString = String.format(Locale.US, "%.1f", totalDistance);
+		return "Distance (m): " + totalDistString;
+	}
 	public static String getDistanceText(double distanceTravelled, double totalDistance) {
 		String distTravelledString = String.format(Locale.US, "%.1f", distanceTravelled);
 		String totalDistString = String.format(Locale.US, "%.1f", totalDistance);

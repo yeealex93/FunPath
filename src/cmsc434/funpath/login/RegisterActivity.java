@@ -82,6 +82,7 @@ public class RegisterActivity extends Activity {
 					
 					USERNAME = username;
 					LoginActivity.loginMap.put(username, passwordView.getText().toString());
+					updateLoginData(username, passwordView.getText().toString());
 					
 					RegisterActivity.this.getPreferences(MODE_PRIVATE);
 					
@@ -96,14 +97,29 @@ public class RegisterActivity extends Activity {
 	// Write newUsername/newPassword pair to login.txt
 	public void updateLoginData(String newUsername, String newPassword) {
 		//File file = new File(getApplicationContext().getFilesDir(), LoginActivity.LOGIN_FILENAME);
-		File file = new File(LoginActivity.LOGIN_FILEPATH, LoginActivity.LOGIN_FILENAME);
+		File dir = new File(LoginActivity.APP_FILEPATH);
+
+		// Create the storage directory if it does not exist (it should for the login.txt file...
+		if (!dir.exists()) {
+			if (!dir.mkdirs()) {
+				return; //PROBLEM!!
+			}
+		}
+		File file = new File(dir.getPath(), LoginActivity.LOGIN_FILENAME);
 		
 		try {
 			//TODO: test which of these is correct:
-			FileOutputStream outputStream = openFileOutput(file.getAbsolutePath(), Context.MODE_APPEND);
+			FileOutputStream outputStream;
+			if (file.exists()){
+				outputStream = new FileOutputStream(file, true);
+				Log.i("REGISTER FILE", "login.txt exists, open for appending.");
+			} else {
+				outputStream = new FileOutputStream(file);
+				Log.i("REGISTER FILE", "login.txt does NOT exist, creating it.");
+			}
 			//FileOutputStream outputStream = openFileOutput(LoginActivity.LOGIN_FILENAME, Context.MODE_APPEND);
 			
-			final String toWrite = "\n" + newUsername + "\t" + newPassword;
+			final String toWrite = newUsername + "\t" + newPassword + "\n";
 			outputStream.write(toWrite.getBytes());
 			
 			//outputStream.flush(); //may not be necessary

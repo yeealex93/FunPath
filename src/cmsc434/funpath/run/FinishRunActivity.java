@@ -8,10 +8,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,15 +21,13 @@ import cmsc434.funpath.R;
 import cmsc434.funpath.login.HomeActivity;
 import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
+import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
-import cmsc434.funpath.prerun.SavedRunsCollectionAdapter;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 public class FinishRunActivity extends Activity {
 	
@@ -67,18 +63,14 @@ public class FinishRunActivity extends Activity {
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
 		
-		setPath(run);
-		zoomToLocation();
-	}
+		MapTools.drawPath(map, run);
+		MapTools.zoomToLocation(map, run);
 
-//	private RunPath getRunPathFromIntent(Intent runTrackerIntent) {
-//		Parcelable[] runpathArrIn = runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
-//		LatLng[] run = new LatLng[runpathArrIn.length];
-//		for (int i = 0; i < runpathArrIn.length; i++) {
-//			run[i] = (LatLng) runpathArrIn[i];
-//		}
-//		return new RunPath(run);
-//	}
+		// save path
+		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
+		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
+		writeToFile(run.getPath(), distanceTravelled, timeTaken, hilliness);
+	}
 
 	private void setDistanceDisplayFromIntent(Intent runTrackerIntent) {
 		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
@@ -108,46 +100,6 @@ public class FinishRunActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	// Draw the path on the map.
-	public void setPath(RunPath run) {
-		// clear old path
-		map.clear();
-
-		LatLng[] path = run.getPath();
-		PolylineOptions pathLine = new PolylineOptions().geodesic(true).add(path);
-		if (path.length > 0) {
-			pathLine.add(path[0]);
-		}
-		map.addPolyline(pathLine);
-	}
-	
-	// Calculate average latitude and longitude of a path.
-	private LatLng averagePathPoints() {
-		double totalLat = 0;
-		double totalLon = 0;
-
-		LatLng[] path = run.getPath();
-		for(int i = 0; i < path.length; i++) {
-			totalLat += path[i].latitude;
-			totalLon += path[i].longitude;
-		}
-		
-		return new LatLng(totalLat/path.length, totalLon/path.length);
-	}
-	
-	// Zoom to a given point on the map.
-	private void zoomToLocation() {
-		LatLng point = averagePathPoints();
-		double lat = point.latitude;
-		double lon = point.longitude;
-		
-		if (map != null) {
-			LatLng coordinates = new LatLng(lat, lon);
-			map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 17f));
-		}
-	}
-	
-	
 	//Code for saving a runPath object to a file
 	/*
 	 * In the format:
@@ -161,8 +113,8 @@ public class FinishRunActivity extends Activity {
 	 * 		.
 	 * 
 	 */
-	public void writeToFile(LatLng[] run, long dist, long time, long hilliness){
-		File mediaStorageDir = new File(LoginActivity.LOGIN_FILEPATH);
+	public void writeToFile(LatLng[] run, double dist, long time, long hilliness){
+		File mediaStorageDir = new File(LoginActivity.APP_FILEPATH);
 
 		// Create the storage directory if it does not exist (it should for the login.txt file...
 		if (!mediaStorageDir.exists()) {
@@ -171,13 +123,13 @@ public class FinishRunActivity extends Activity {
 			}
 		}
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-		File file = new File(SavedRunsCollectionAdapter.APP_FILEPATH + File.separator + RegisterActivity.USERNAME+"_"+ timeStamp + ".jpg");
+		File file = new File(mediaStorageDir.getPath(), RegisterActivity.USERNAME+"_"+ timeStamp + ".txt");
 		// look for last index of "_" --> get username before it
-		
 		
 		try {
 			//TODO: test which of these is correct:
-			FileOutputStream outputStream = openFileOutput(file.getAbsolutePath(), Context.MODE_PRIVATE); //TODO check this works/is the right mode
+			FileOutputStream outputStream = new FileOutputStream(file);
+			//FileOutputStream outputStream = openFileOutput(file.getAbsolutePath(), Context.MODE_PRIVATE); //TODO check this works/is the right mode
 			
 			final String toWrite = dist +"\n" + time + "\n" + hilliness;
 			outputStream.write(toWrite.getBytes());
@@ -189,6 +141,7 @@ public class FinishRunActivity extends Activity {
 			
 			//outputStream.flush(); //may not be necessary
 			outputStream.close();
+			Log.i("FunPath", "Wrote to file: " + file.getPath());
 		} catch (IOException e) {
 			//TODO handle error...
 			Log.i("FunPath", "Error updating "+file.getPath()+" with new registered user.");
