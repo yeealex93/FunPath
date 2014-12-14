@@ -281,8 +281,8 @@ public class RunTrackerActivity extends Activity {
 		final double secondsPerMinute = 1.0/60;
 		final double minutesPerHour = 1.0/60;
 		int hours = (int) (timeMillis * millisecondsPerSecond * secondsPerMinute * minutesPerHour);
-		int minutes = (int) (timeMillis * millisecondsPerSecond * secondsPerMinute);
-		int seconds = (int) (timeMillis * millisecondsPerSecond);
+		int minutes = (int) (timeMillis * millisecondsPerSecond * secondsPerMinute) % 60;
+		int seconds = (int) (timeMillis * millisecondsPerSecond) % 60;
 		String hourStr = hours + "";
 		String minuteStr = minutes + "";
 		String secondStr = seconds + "";
