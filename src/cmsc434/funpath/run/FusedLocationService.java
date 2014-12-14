@@ -15,8 +15,8 @@ import com.google.android.gms.maps.LocationSource.OnLocationChangedListener;
 
 // Code adapted from: http://javapapers.com/android/android-location-fused-provider/
 public class FusedLocationService implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-	private static final long INTERVAL = 1000 * 30;
-	private static final long FASTEST_INTERVAL = 1000 * 5;
+	private static final long INTERVAL = 1000 * 10;
+	private static final long FASTEST_INTERVAL = 1000 * 3;
 
 	private LocationRequest locationRequest;
 	private GoogleApiClient googleApiClient;
