@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import cmsc434.funpath.R;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,9 +34,14 @@ public class FinishRunActivity extends Activity {
 			run[i] = (LatLng) runpathArrIn[i];
 		}
 		
-		runTrackerIntent.getLongExtra(RunTrackerActivity.DISTANCE_TRAVELLED, 0);
-		runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN_MILLISECONDS, 0);
+		long distLong = runTrackerIntent.getLongExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
+		long timeLong = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN_MILLISECONDS, -1);
 		
+		TextView distance = (TextView) findViewById(R.id.review_distance);
+		TextView time = (TextView) findViewById(R.id.review_time);
+		
+		distance.setText(distLong+"");
+		time.setText(timeLong+"");
 		
 		
 		// Get map fragment
@@ -43,6 +49,7 @@ public class FinishRunActivity extends Activity {
 				.findFragmentById(R.id.review_map);
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
+		
 		
 		setPath(new RunPath(run));
 		zoomToLocation();

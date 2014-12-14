@@ -67,7 +67,6 @@ public class RunTrackerActivity extends Activity {
 		finishRunButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				long distanceTravelled = 0; // TODO get distance travelled extra
 				long timeTakenMilliseconds = 0; // TODO get time taken extra
 				boolean runCompleted = false;
 				Intent finishRun = new Intent(RunTrackerActivity.this, FinishRunActivity.class);
