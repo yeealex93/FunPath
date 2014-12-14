@@ -96,7 +96,7 @@ public class RegisterActivity extends Activity {
 	// Write newUsername/newPassword pair to login.txt
 	public void updateLoginData(String newUsername, String newPassword) {
 		//File file = new File(getApplicationContext().getFilesDir(), LoginActivity.LOGIN_FILENAME);
-		File file = new File(LoginActivity.LOGIN_FILEPATH, LoginActivity.LOGIN_FILENAME);
+		File file = new File(LoginActivity.APP_FILEPATH, LoginActivity.LOGIN_FILENAME);
 		
 		try {
 			//TODO: test which of these is correct:

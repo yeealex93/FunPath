@@ -73,6 +73,10 @@
             android:label="@string/savedruns_name" >
         </activity>
         <activity
+            android:name=".prerun.SavedPhotoActivity"
+            android:label="@string/savedruns_name" >
+        </activity>
+        <activity
             android:name=".run.FinishRunActivity"
             android:label="@string/finish_name" >
         </activity>

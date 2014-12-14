@@ -25,6 +25,7 @@ import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
+import cmsc434.funpath.prerun.SavedRunsCollectionAdapter;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -68,6 +69,11 @@ public class FinishRunActivity extends Activity {
 		
 		setPath(run);
 		zoomToLocation();
+
+		// save path
+		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
+		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
+		writeToFile(run.getPath(), distanceTravelled, timeTaken, hilliness);
 	}
 
 //	private RunPath getRunPathFromIntent(Intent runTrackerIntent) {
@@ -160,8 +166,8 @@ public class FinishRunActivity extends Activity {
 	 * 		.
 	 * 
 	 */
-	public void writeToFile(LatLng[] run, long dist, long time, long hilliness){
-		File mediaStorageDir = new File(LoginActivity.LOGIN_FILEPATH);
+	public void writeToFile(LatLng[] run, double dist, long time, long hilliness){
+		File mediaStorageDir = new File(LoginActivity.APP_FILEPATH);
 
 		// Create the storage directory if it does not exist (it should for the login.txt file...
 		if (!mediaStorageDir.exists()) {
@@ -172,7 +178,6 @@ public class FinishRunActivity extends Activity {
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
 		File file = new File(mediaStorageDir.getPath(), RegisterActivity.USERNAME+"_"+ timeStamp + ".jpg");
 		// look for last index of "_" --> get username before it
-		
 		
 		try {
 			//TODO: test which of these is correct:
@@ -188,6 +193,7 @@ public class FinishRunActivity extends Activity {
 			
 			//outputStream.flush(); //may not be necessary
 			outputStream.close();
+			Log.i("FunPath", "Wrote to file: " + file.getPath());
 		} catch (IOException e) {
 			//TODO handle error...
 			Log.i("FunPath", "Error updating "+file.getPath()+" with new registered user.");
