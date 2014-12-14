@@ -6,11 +6,34 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="cmsc434.funpath.login.HomeActivity" >
+    tools:context=".prerun.SavedRunsActivity" >
+
+	<fragment
+	    android:id="@+id/saved_map"
+	    android:name="com.google.android.gms.maps.MapFragment"
+	    android:layout_width="match_parent"
+	    android:layout_height="320dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true"
+	    tools:context=".run.FinishRunActivity" />
 
     <TextView
+        android:id="@+id/saved_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/TODO_nothing_here" />
+        android:layout_alignLeft="@+id/saved_map"
+        android:layout_below="@+id/saved_map"
+        android:text="@string/saved_distance"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/saved_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/saved_distance"
+        android:layout_below="@+id/saved_distance"
+        android:text="@string/saved_time"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

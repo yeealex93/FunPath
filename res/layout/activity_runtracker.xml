@@ -18,7 +18,7 @@
 	    android:layout_alignParentRight="true"
 	    android:layout_alignParentTop="true"
 	    tools:context=".run.RunTrackerActivity" />
-
+    
 	<TextView
 	    android:id="@+id/distanceDisplay"
 	    android:layout_width="wrap_content"

@@ -46,8 +46,14 @@
     <!-- PreviewRunActivity Strings -->
     
     <!-- SavedRunsActivity Strings -->
+    <string name="saved_distance">Distance:</string>
+	<string name="saved_time">Time:</string>
+        
     
     <!-- FinishRunActivity Strings -->
+	<string name="review_new_run_button">Generate New Run</string>
+    <string name="review_distance">Distance:</string>
+    <string name="review_time">Time:</string>
     
     <!-- RunTrackerActivity Strings -->
 	<string name="pause_run_button">Pause Run</string>

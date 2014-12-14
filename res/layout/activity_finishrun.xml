@@ -8,9 +8,41 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cmsc434.funpath.login.HomeActivity" >
 
+	<fragment
+	    android:id="@+id/review_map"
+	    android:name="com.google.android.gms.maps.MapFragment"
+	    android:layout_width="match_parent"
+	    android:layout_height="320dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true"
+	    tools:context=".run.FinishRunActivity" />
+
+    <Button
+        android:id="@+id/review_new_run_button"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="@string/review_new_run_button" />
+
     <TextView
+        android:id="@+id/review_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/TODO_nothing_here" />
+        android:layout_alignLeft="@+id/review_map"
+        android:layout_below="@+id/review_map"
+        android:text="@string/review_distance"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/review_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/review_distance"
+        android:layout_below="@+id/review_distance"
+        android:text="@string/review_time"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
