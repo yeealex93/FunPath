@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/options_logout"
-        android:orderInCategory="100"
-        android:showAsAction="never"
+        android:icon="@drawable/exit_door_small"
+        android:showAsAction="ifRoom"
         android:title="@string/options_logout"/>
     
 </menu>

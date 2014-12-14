@@ -65,6 +65,7 @@ public class LoginActivity extends Activity {
 				// checking login credentials!
 				if (loginMap.containsKey(username) && password.equals(loginMap.get(username))) {
 					
+					RegisterActivity.USERNAME = username;
 					Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 					startActivity(intent);
 					

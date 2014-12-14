@@ -14,6 +14,7 @@ public class FinishRunActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_finishrun);
 		
+		
 		Intent runTrackerIntent = getIntent();
 		runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
 		runTrackerIntent.getLongExtra(RunTrackerActivity.DISTANCE_TRAVELLED, 0);

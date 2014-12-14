@@ -1,6 +1,7 @@
 package cmsc434.funpath.prerun;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,8 +28,8 @@ public class SavedRunsActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.options_logout) {
-			return true;
+		if (id == R.id.options_return_home) {
+			startActivity(new Intent(getApplicationContext(), cmsc434.funpath.login.HomeActivity.class));
 		}
 		return super.onOptionsItemSelected(item);
 	}

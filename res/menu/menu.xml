@@ -11,8 +11,8 @@
     -->
 	<item
         android:id="@+id/options_return_home"
-        android:orderInCategory="90"
-        android:showAsAction="never"
+        android:icon="@drawable/home"
+        android:showAsAction="ifRoom"
         android:title="@string/options_home"/>
     
 

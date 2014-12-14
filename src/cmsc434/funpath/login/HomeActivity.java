@@ -24,7 +24,7 @@ public class HomeActivity extends Activity {
 		// add the username to this field to read "Hi, "+username ^
 		TextView hiUsernameView = (TextView) findViewById(R.id.hi_username);
 		if (RegisterActivity.USERNAME != null) {
-			hiUsernameView.setText(hiUsernameView.getText() + " " + RegisterActivity.USERNAME);
+			hiUsernameView.setText(hiUsernameView.getText() + " " + RegisterActivity.USERNAME + ".");
 		} 
 //		else {
 //		    // in theory, should have an else redirect to login screen
