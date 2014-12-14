@@ -1,12 +1,11 @@
 package cmsc434.funpath.prerun;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +23,8 @@ import android.widget.TextView;
 import cmsc434.funpath.R;
 import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
+import cmsc434.funpath.map.utils.TextDisplayTools;
+import cmsc434.funpath.run.RunPath;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -109,6 +110,10 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 		private SavedRunsCollectionAdapter adapter; // used to delete
 		private File file;
 
+		private RunPath run;
+		private long timeElapsed;
+		private String elevationText;
+
 		public SavedRunFragment(SavedRunsCollectionAdapter adapter, File file) {
 			this.adapter = adapter;
 			this.file = file;
@@ -122,12 +127,13 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_photo, container, false);
 			
-			
-			LatLng[] run = displayData(rootView, file.getPath());
-			
+			// load data
+			readData(file.getPath());
+			displayData(rootView);
 			//TODO load map from run!!!
 			//displayRunData(rootView, run);
 
+			// delete button
 			Button deleteButton = (Button) rootView.findViewById(R.id.saved_delete_button);
 			deleteButton.setOnClickListener(new OnClickListener() {
 				@Override
@@ -135,6 +141,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 					adapter.remove(file);
 				}
 			});
+
 			return rootView;
 		}
 
@@ -156,50 +163,61 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 //			map.addPolyline(pathLine);
 //		}
 		
-		private LatLng[] displayData(View rootView, String photoPath) {
-			//read in distance, elapsed time, elevation change 
-			TextView distView = (TextView) rootView.findViewById(R.id.saved_distance);
-			TextView timeView = (TextView) rootView.findViewById(R.id.saved_time);
-			TextView elevationView = (TextView) rootView.findViewById(R.id.saved_elevation);
+		private void readData(String path) {
 			
-			Log.i("LOADING RUN", "filepath: "+file.getPath()); //TODO comment out
+			Log.i("Reading run", "filepath: "+file.getPath());
 			
 			try {
-				BufferedReader br = new BufferedReader(new FileReader(file));
-				String [] latlong;
-			    
-				//Reading in distance, time, and elevation outside of loop
-				String line = br.readLine();  //distance
-			    distView.setText(distView.getText()+" " + line + "m"); //TODO check units
-			    
-			    line = br.readLine();  //time
-			    timeView.setText(timeView.getText() + " " + line + "s"); //TODO convert units/format for readability?
-			    
-			    int ele = Integer.parseInt(br.readLine()); //elevation
+				Scanner reader = new Scanner(file);
+			    String line;
+
+			    // load distance (discarded)
+				line = reader.nextLine();
+
+				// load time
+			    line = reader.nextLine();
+			    this.timeElapsed = Long.parseLong(line);
+
+			    // load elevation
+			    int ele = Integer.parseInt(reader.nextLine()); //elevation
 			    if (ele == 0) {
-			    	line = "LOW";
+			    	this.elevationText = "LOW";
 			    } else if (ele == 1) {
-			    	line = "MEDIUM";
+			    	this.elevationText = "MEDIUM";
 			    } else { //ele == 2
-			    	line = "HIGH";
+			    	this.elevationText = "HIGH";
 			    }
-			    elevationView.setText(elevationView.getText() + " " + line);
 			    
-			    ArrayList<LatLng> rundata = new ArrayList<LatLng>(20);
-			    //LatLng [] rundata = new LatLng[];
-			    while ((line = br.readLine()) != null) {
-			        latlong = line.split("\t");
-			        rundata.add(new LatLng(Double.parseDouble(latlong[0]), Double.parseDouble(latlong[1])));
-			    }
-			    br.close();
-			    return (LatLng[]) rundata.toArray();
+			    // load runpath
+			    LatLng[] rundata = getLatLngArray(reader);
+			    reader.close();
+			    this.run = new RunPath(rundata);
 			    
 			} catch (Exception e) {
 				Log.i("FunPath", "EXCEPTION while reading "+file.getPath());
 				e.printStackTrace();
-				return null; //TODO errors will break things!!!
 			}
+		}
 
+		private void displayData(View rootView) {
+			TextView distView = (TextView) rootView.findViewById(R.id.saved_distance);
+			distView.setText(TextDisplayTools.getDistanceText(run.getPathDistanceInMeters()));
+
+			TextView timeView = (TextView) rootView.findViewById(R.id.saved_time);
+			timeView.setText(TextDisplayTools.getTimeText(timeElapsed));
+
+			TextView elevationView = (TextView) rootView.findViewById(R.id.saved_elevation);
+			elevationView.setText(elevationText);
+		}
+
+		private LatLng[] getLatLngArray(Scanner reader) {
+			ArrayList<LatLng> rundata = new ArrayList<LatLng>();
+			String line;
+			while ((line = reader.nextLine()) != null) {
+				String[] latlong = line.split("\t");
+			    rundata.add(new LatLng(Double.parseDouble(latlong[0]), Double.parseDouble(latlong[1])));
+			}
+			return (LatLng[]) rundata.toArray();
 		}
 
 		
