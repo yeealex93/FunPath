@@ -1,6 +1,5 @@
 package cmsc434.funpath.run;
 
-import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -258,21 +257,45 @@ public class RunTrackerActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	// TODO display time elapsed instead
 	// TODO allow pausing
 	public void updateTime() {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				try {
-					Calendar calendar = Calendar.getInstance();
-					int hours = calendar.get(Calendar.HOUR);
-					int minutes = calendar.get(Calendar.MINUTE);
-					int seconds = calendar.get(Calendar.SECOND);
-					String curTime = hours + ":" + minutes + ":" + seconds;
+					boolean runStarted = pathIndex >= 0;
+					String curTime;
+					if (runStarted) {
+						timeElapsedMilliseconds += 1000;
+						curTime = formatTimeMillisAsString(timeElapsedMilliseconds);
+					} else {
+						curTime = "Run not started";
+					}
 					timeDisplay.setText(curTime);
 				} catch (Exception e) {}
 			}
 		});
+	}
+
+	private String formatTimeMillisAsString(long timeMillis) {
+		final double millisecondsPerSecond = 1.0/1000;
+		final double secondsPerMinute = 1.0/60;
+		final double minutesPerHour = 1.0/60;
+		int hours = (int) (timeMillis * millisecondsPerSecond * secondsPerMinute * minutesPerHour);
+		int minutes = (int) (timeMillis * millisecondsPerSecond * secondsPerMinute);
+		int seconds = (int) (timeMillis * millisecondsPerSecond);
+		String hourStr = hours + "";
+		String minuteStr = minutes + "";
+		String secondStr = seconds + "";
+		if (seconds < 10) {
+			secondStr = "0" + seconds;
+		}
+		if (minutes < 10) {
+			minuteStr = "0" + minutes;
+		}
+		if (hours == 0) {
+			return minuteStr + ":" + secondStr;
+		}
+		return hourStr + ":" + minuteStr + ":" + secondStr;
 	}
 
 	private class UpdateTimeEverySecond implements Runnable{
