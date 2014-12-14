@@ -37,15 +37,16 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 		mLocationManager = (LocationManager) this.getSystemService(Service.LOCATION_SERVICE);
 		
 		
-		TextView distance = (TextView) findViewById(R.id.distanceField);
+		final TextView distance = (TextView) findViewById(R.id.distanceField);
 		distance.setText("0.0");
 		
-		Switch kmMiSwitch = (Switch) findViewById(R.id.kmMiSwitch);
-		boolean inMetric = kmMiSwitch.isChecked(); //km = on, mi = off
+		final Switch kmMiSwitch = (Switch) findViewById(R.id.kmMiSwitch);
+		final boolean inMetric = kmMiSwitch.isChecked(); //km = on, mi = off
 		
 		zip = (TextView) findViewById(R.id.locationField);
+		zip.setText("20740");
 		
-		SeekBar hillinessBar = (SeekBar) findViewById(R.id.hillySeekBar);
+		final SeekBar hillinessBar = (SeekBar) findViewById(R.id.hillySeekBar);
 		hillinessBar.setMax(2); // 3 states for low, med, high hilliness
 		
 		Button next = (Button) findViewById(R.id.nextButton);
@@ -53,6 +54,9 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(ConfigureRunActivity.this, PreviewRunActivity.class);
+				i.putExtra("Distance", distance.getText());
+				i.putExtra("Units", kmMiSwitch.isChecked());
+				i.putExtra("Hilliness", hillinessBar.getProgress());
 				startActivity(i);
 			}
 			
@@ -63,8 +67,13 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 		super.onResume();
 		
 		//Location networkLocation = this.mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-		Toast.makeText(this, "resuming", Toast.LENGTH_LONG).show();
-		this.mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 1000.0f, this);		
+		//Toast.makeText(this, "resuming", Toast.LENGTH_LONG).show();
+		this.mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 10.0f, this);		
+	}
+	
+	protected void onPause() {
+		mLocationManager.removeUpdates(this);
+		super.onPause();
 	}
 	
 	
@@ -91,6 +100,7 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
+//		Toast.makeText(this, "changed!!", Toast.LENGTH_LONG).show();
 		// TODO Auto-generated method stub
 		if(location != null) {
 			lon = location.getLongitude();
