@@ -98,13 +98,20 @@ public class RegisterActivity extends Activity {
 	public void updateLoginData(String newUsername, String newPassword) {
 		//File file = new File(getApplicationContext().getFilesDir(), LoginActivity.LOGIN_FILENAME);
 		File dir = new File(LoginActivity.APP_FILEPATH);
+
+		// Create the storage directory if it does not exist (it should for the login.txt file...
+		if (!dir.exists()) {
+			if (!dir.mkdirs()) {
+				return; //PROBLEM!!
+			}
+		}
 		File file = new File(dir.getPath(), LoginActivity.LOGIN_FILENAME);
 		
 		try {
 			//TODO: test which of these is correct:
 			FileOutputStream outputStream;
 			if (file.exists()){
-				outputStream = openFileOutput(file.getPath(), Context.MODE_APPEND);
+				outputStream = new FileOutputStream(file, true);
 				Log.i("REGISTER FILE", "login.txt exists, open for appending.");
 			} else {
 				outputStream = new FileOutputStream(file);
