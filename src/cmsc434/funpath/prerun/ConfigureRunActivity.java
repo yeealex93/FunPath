@@ -54,7 +54,8 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(ConfigureRunActivity.this, PreviewRunActivity.class);
-				i.putExtra("Distance", distance.getText());
+				Toast.makeText(ConfigureRunActivity.this, "distance: "+distance.getText().toString(), Toast.LENGTH_LONG).show();
+				i.putExtra("Distance", distance.getText().toString());
 				i.putExtra("Units", kmMiSwitch.isChecked());
 				i.putExtra("Hilliness", hillinessBar.getProgress());
 				startActivity(i);
