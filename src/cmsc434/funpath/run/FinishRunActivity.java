@@ -69,6 +69,11 @@ public class FinishRunActivity extends Activity {
 		
 		setPath(run);
 		zoomToLocation();
+
+		// save path
+		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
+		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
+		writeToFile(run.getPath(), distanceTravelled, timeTaken, hilliness);
 	}
 
 //	private RunPath getRunPathFromIntent(Intent runTrackerIntent) {
@@ -161,7 +166,7 @@ public class FinishRunActivity extends Activity {
 	 * 		.
 	 * 
 	 */
-	public void writeToFile(LatLng[] run, long dist, long time, long hilliness){
+	public void writeToFile(LatLng[] run, double dist, long time, long hilliness){
 		File mediaStorageDir = new File(LoginActivity.LOGIN_FILEPATH);
 
 		// Create the storage directory if it does not exist (it should for the login.txt file...
@@ -189,6 +194,7 @@ public class FinishRunActivity extends Activity {
 			
 			//outputStream.flush(); //may not be necessary
 			outputStream.close();
+			Log.i("FunPath", "Wrote to file: " + file.getPath());
 		} catch (IOException e) {
 			//TODO handle error...
 			Log.i("FunPath", "Error updating "+file.getPath()+" with new registered user.");
