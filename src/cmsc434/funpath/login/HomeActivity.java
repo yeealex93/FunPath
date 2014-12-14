@@ -70,7 +70,9 @@ public class HomeActivity extends Activity {
 		int id = item.getItemId();
 		if (id == R.id.options_logout) {
 			RegisterActivity.USERNAME = "";
-			startActivity(new Intent(getApplicationContext(), cmsc434.funpath.login.LoginActivity.class));
+			Intent logoutIntent = new Intent(getApplicationContext(), cmsc434.funpath.login.LoginActivity.class);
+			logoutIntent.putExtra(LoginActivity.LOGOUT_KEY, true);
+			startActivity(logoutIntent);
 		}
 		return super.onOptionsItemSelected(item);
 	}

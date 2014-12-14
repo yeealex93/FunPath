@@ -7,6 +7,7 @@ import java.io.IOException;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -81,6 +82,15 @@ public class RegisterActivity extends Activity {
 					//3. update login.txt file
 					
 					USERNAME = username;
+					
+					
+					//NOT USING REGISTER preferences... no way to get to register without passing through login first
+					//Set the preferences USERNAME_KEY to indicate who is logged in
+//					SharedPreferences settings = RegisterActivity.this.getPreferences(MODE_PRIVATE);
+//					SharedPreferences.Editor editor = settings.edit();
+//					editor.putString(LoginActivity.USERNAME_KEY, username);
+//					editor.commit(); //Commit the edit!
+					
 					LoginActivity.loginMap.put(username, passwordView.getText().toString());
 					updateLoginData(username, passwordView.getText().toString());
 					

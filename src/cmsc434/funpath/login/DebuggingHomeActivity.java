@@ -2,6 +2,7 @@ package cmsc434.funpath.login;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +21,16 @@ public class DebuggingHomeActivity extends Activity {
 		setContentView(R.layout.activity_debugging_home);
 
 		addDebugUiControl();
+		
+		//Check if a user is logged in already from previous uses. If so, go immediately to HomeActivity.
+		SharedPreferences settings = this.getPreferences(MODE_PRIVATE);
+		String loggedInUser = settings.getString(LoginActivity.USERNAME_KEY, "");
+		if (!loggedInUser.equals("")) {
+			RegisterActivity.USERNAME = loggedInUser;
+			
+			//Redirect to home page
+			startActivity(new Intent(this, HomeActivity.class));
+		}
 	}
 
 	// Enable access to any other activity

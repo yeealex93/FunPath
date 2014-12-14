@@ -1,15 +1,15 @@
 package cmsc434.funpath.login;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -24,7 +24,8 @@ public class LoginActivity extends Activity {
 
 	public static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "funpath";
 	public static final String LOGIN_FILENAME = "login.txt"; //Change if textfile name changes!
-	
+	public static final String USERNAME_KEY = "USERNAME";
+	public static final String LOGOUT_KEY = "LOGOUT";
 	
 	private static final String FAILED_LOGIN = "Invalid username/password combination.";
 	
@@ -36,6 +37,23 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		
 		loadLoginData();
+		
+		boolean logout = getIntent().getBooleanExtra(LOGOUT_KEY, false);
+		if (logout) {
+			LogoutUserPreferences();
+		} else {
+			
+			//Check if a user is logged in already from previous uses. If so, go immediately to HomeActivity.
+			SharedPreferences settings = this.getPreferences(MODE_PRIVATE);
+			String loggedInUser = settings.getString(USERNAME_KEY, "");
+			if (!loggedInUser.equals("")) {
+				RegisterActivity.USERNAME = loggedInUser;
+				
+				//Redirect to home page
+				startActivity(new Intent(this, HomeActivity.class));
+			}
+		}
+		
 		
 		Button newUserButton = (Button) findViewById(R.id.new_user_register_button);
 		newUserButton.setOnClickListener(new OnClickListener(){
@@ -69,6 +87,13 @@ public class LoginActivity extends Activity {
 				if (loginMap.containsKey(username) && password.equals(loginMap.get(username))) {
 					
 					RegisterActivity.USERNAME = username;
+					
+					//Set the preferences USERNAME_KEY to indicate who is logged in
+					SharedPreferences settings = LoginActivity.this.getPreferences(MODE_PRIVATE);
+					SharedPreferences.Editor editor = settings.edit();
+					editor.putString(USERNAME_KEY, username);
+					editor.commit(); //Commit the edit!
+					
 					Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 					startActivity(intent);
 					
@@ -81,6 +106,17 @@ public class LoginActivity extends Activity {
 		});
 	}
 
+	
+	
+	public void LogoutUserPreferences(){
+		RegisterActivity.USERNAME = ""; //just in case, sets USERNAME to empty string too. This is usually done manually as well
+		SharedPreferences settings = this.getPreferences(MODE_PRIVATE);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString(USERNAME_KEY, ""); //logs out the user
+		editor.commit(); //Commit the edit!
+	}
+	
+	
 	// Read in login data from login.txt and populate loginMap with username/password pairs
 	private void loadLoginData() {
 		File directory = new File(APP_FILEPATH);
@@ -108,17 +144,22 @@ public class LoginActivity extends Activity {
 		}
 		
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			Scanner kb = new Scanner(file);
+			//BufferedReader br = new BufferedReader(new FileReader(file));
+			
 			String [] loginStr;
-		    String line = br.readLine();
-		    Log.i("LOGIN LOOP", "first line = "+line);
-		    while (line != null && !line.trim().equals("")) {
-		        loginStr = line.split("\t");
-		        Log.i("LOGIN LOOP", "usr: "+loginStr[0] +",  pw: "+loginStr[1]); //TODO comment out
-		        loginMap.put(loginStr[0], loginStr[1]);
-		        line = br.readLine();
+			while (kb.hasNextLine()){
+				String line = kb.nextLine();
+				if (!line.trim().equals("")){
+					//In case there are random empty newlines, they are ignored
+					
+			        loginStr = line.split("\t");
+			        Log.i("LOGIN LOOP", "usr: "+loginStr[0] +",  pw: "+loginStr[1]); //TODO comment out
+			        loginMap.put(loginStr[0], loginStr[1]);
+				}
 		    }
-		    br.close();
+			
+		    kb.close();
 		} catch (IOException e) {
 			//TODO handle error... not sure what to do honestly. 
 			//App should probably crash if it can't read login data...
