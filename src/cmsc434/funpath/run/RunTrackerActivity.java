@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
 import cmsc434.funpath.R;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -21,9 +25,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 // display map of run & user position using a MapView
+// TODO actually track position along path
+// TODO track time, allow pause/unpause
 public class RunTrackerActivity extends Activity {
 	private static final float INITIAL_ZOOM = 20f;
 
+	// intent extras
+	public static final String RUNPATH_ARRAY = "RUNPATH_ARRAY";
+	public static final String DISTANCE_TRAVELLED = "DISTANCE_TRAVELLED";
+	public static final String TIME_TAKEN_MILLISECONDS = "TIME_TAKEN_MILLISECONDS";
+	public static final String RUN_COMPLETED = "RUN_COMPLETED";
+
+	private TextView distanceDisplay;
 	private GoogleMap map;
 	private FusedLocationService fusedLocationService; // gets location updates
 
@@ -34,10 +47,27 @@ public class RunTrackerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_runtracker);
 
+		// Basic gui code
+		distanceDisplay = (TextView) findViewById(R.id.distanceDisplay);
+		Button finishRunButton = (Button) findViewById(R.id.finishRunButton);
+		finishRunButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				long distanceTravelled = 0; // TODO get distance travelled extra
+				long timeTakenMilliseconds = 0; // TODO get time taken extra
+				boolean runCompleted = false;
+				Intent finishRun = new Intent(RunTrackerActivity.this, FinishRunActivity.class);
+				finishRun.putExtra(RUNPATH_ARRAY, currentPath.getPath());
+				finishRun.putExtra(DISTANCE_TRAVELLED, distanceTravelled);
+				finishRun.putExtra(TIME_TAKEN_MILLISECONDS, timeTakenMilliseconds);
+				finishRun.putExtra(RUN_COMPLETED, runCompleted);
+				startActivity(finishRun);
+			}
+		});
+
+		// Map code
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
 				.findFragmentById(R.id.map);
-		//		mapFragment.getMapAsync(this);
-
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
 
@@ -46,7 +76,6 @@ public class RunTrackerActivity extends Activity {
 			private boolean firstCall = true;
 			@Override
 			public void onLocationChanged(Location location) {
-				//				Log.i("LocationChanged", location.toString());
 				if (firstCall) {
 					firstCall = false;
 					zoomToLocation(location);
@@ -73,6 +102,9 @@ public class RunTrackerActivity extends Activity {
 			pathLine.add(path[0]);
 		}
 		map.addPolyline(pathLine);
+		// show path distance
+		distanceDisplay.setText("Distance (m): " + run.getPathDistanceInMeters());
+//		Toast.makeText(this, "Distance (m): " + run.getPathDistanceInMeters(), Toast.LENGTH_SHORT).show();
 	}
 
 	protected void clearPathOnLongPress() { // debug - paths cannot be cleared by actual users
