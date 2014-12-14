@@ -151,11 +151,21 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 		}
 
 		private void displayRunMap(View rootView) {
-			SupportMapFragment mapFragment = (SupportMapFragment) owner.getSupportFragmentManager().findFragmentById(R.id.saved_map);
-			GoogleMap map = mapFragment.getMap();
+			// create map fragment programmatically
+		    FragmentManager fm = getChildFragmentManager();
+		    SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
+		    if (mapFragment == null) {
+		    	mapFragment = SupportMapFragment.newInstance();
+		        fm.beginTransaction().replace(R.id.map, mapFragment).commit();
+		    }
 
-			MapTools.drawPath(map, run);
-			MapTools.zoomToLocation(map, run);
+//			SupportMapFragment mapFragment = (SupportMapFragment) owner.getSupportFragmentManager().findFragmentById(R.id.saved_map);
+
+			GoogleMap map = mapFragment.getMap();
+			if (map != null) { // TODO when non-null do this
+				MapTools.drawPath(map, run);
+				MapTools.zoomToLocation(map, run);
+			}
 		}
 		
 		private void readData(String path) {

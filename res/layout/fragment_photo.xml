@@ -9,6 +9,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cmsc436.project.thermalcamera.MainActivity" >
 
+    <RelativeLayout
+        android:id="@+id/map"
+	    android:layout_width="match_parent"
+	    android:layout_height="350dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true">
+    </RelativeLayout>
+    <!-- 
 	<fragment
         android:id="@+id/saved_map"
 	    android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -16,7 +25,7 @@
 	    android:layout_height="350dp"
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentRight="true"
-	    android:layout_alignParentTop="true" />
+	    android:layout_alignParentTop="true" /> -->
     
 	<!--
 	<fragment
@@ -34,8 +43,8 @@
         android:id="@+id/saved_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/saved_map"
-        android:layout_below="@+id/saved_map"
+        android:layout_alignLeft="@+id/map"
+        android:layout_below="@+id/map"
         android:paddingTop="5dp"
         android:text="@string/saved_distance"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -65,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/saved_map"
+        android:layout_alignRight="@+id/map"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="14dp"
         android:background="@drawable/trash_can_small" />
