@@ -36,6 +36,10 @@ public class RunTrackerActivity extends Activity {
 	public static final String TIME_TAKEN_MILLISECONDS = "TIME_TAKEN_MILLISECONDS";
 	public static final String RUN_COMPLETED = "RUN_COMPLETED";
 
+
+	private static final RunPath aroundCsic = new RunPath(new LatLng[]{new LatLng(38.990175,-76.9365), new LatLng(38.98965,-76.93645), new LatLng(38.98967624772949, -76.93633887916803), new LatLng(38.98966399969287, -76.93621147423983), new LatLng(38.98968693218526, -76.9360800459981), new LatLng(38.98988133687924, -76.93588323891163), new LatLng(38.98997775723984, -76.93586379289627), new LatLng(38.99008355888978, -76.93588189780712), new LatLng(38.99019613584117, -76.9359677284956), new LatLng(38.99017346410841, -76.93600829690695), new LatLng(38.99016199794195, -76.93609949201345)});
+	public static final RunPath[] possiblePaths = new RunPath[]{aroundCsic};
+
 	private TextView distanceDisplay;
 	private GoogleMap map;
 	private FusedLocationService fusedLocationService; // gets location updates
@@ -83,7 +87,6 @@ public class RunTrackerActivity extends Activity {
 			}
 		});
 
-		RunPath aroundCsic = new RunPath(new LatLng[]{new LatLng(38.990175,-76.9365), new LatLng(38.98965,-76.93645), new LatLng(38.98967624772949, -76.93633887916803), new LatLng(38.98966399969287, -76.93621147423983), new LatLng(38.98968693218526, -76.9360800459981), new LatLng(38.98988133687924, -76.93588323891163), new LatLng(38.98997775723984, -76.93586379289627), new LatLng(38.99008355888978, -76.93588189780712), new LatLng(38.99019613584117, -76.9359677284956), new LatLng(38.99017346410841, -76.93600829690695), new LatLng(38.99016199794195, -76.93609949201345)});
 		setPath(aroundCsic);
 
 		// debug, for path generation

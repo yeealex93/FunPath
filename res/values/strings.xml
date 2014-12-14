@@ -41,7 +41,14 @@
 	<string name="register_button">Register</string>
 	<string name="return_to_login_button">Return to Login Screen</string>
     
-    <!-- ConfgiureRunActivity Strings -->
+    <!-- ConfigureRunActivity Strings -->
+   	<string name="distance">Distance</string>
+	<string name="location">Location</string>
+	<string name="elevation">Elevation Change</string>
+	<string name="low_elevation_change">Low</string>
+	<string name="med_elevation_change">Med</string>
+	<string name="high_elevation_change">High</string>
+	<string name="next_button">Next</string>
     
     <!-- PreviewRunActivity Strings -->
     
@@ -58,5 +65,6 @@
     <!-- RunTrackerActivity Strings -->
 	<string name="pause_run_button">Pause Run</string>
 	<string name="finish_run_button">Finish Run</string>
+
     
 </resources>
