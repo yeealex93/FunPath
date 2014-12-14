@@ -6,14 +6,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/cyan"
     tools:context="cmsc434.funpath.login.HomeActivity" >
 
 
- 	<TextView
-        android:id="@+id/username_prompt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/home_name" />
 
     <TextView
         android:id="@+id/welcome_to_funpath"
@@ -30,7 +26,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/generate_custom_run_button"
-        android:layout_below="@+id/username_prompt"
         android:layout_marginTop="77dp"
         android:text="@string/hi"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -52,5 +47,13 @@
         android:layout_below="@+id/generate_custom_run_button"
         android:layout_marginTop="28dp"
         android:text="@string/view_past_runs" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/trail_mod_stretched" />
 
 </RelativeLayout>

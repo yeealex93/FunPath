@@ -4,6 +4,9 @@
     <string name="TODO_nothing_here">Nothing here yet. Press the back button to go back.</string>
     
     <string name="go_string">Go!</string>
+    
+    <!-- Background colors -->
+    <color name="cyan">#ccffff</color>
 
     <!-- Actionbar Options -->
     <string name="options_logout">Logout</string>

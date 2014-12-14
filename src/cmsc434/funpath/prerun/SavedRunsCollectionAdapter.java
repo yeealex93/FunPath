@@ -98,20 +98,21 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.activity_savedruns, container, false);
 			
-			displayRun(rootView);
+			displayRunData(rootView);
 			
-//TODO
-//			Button deleteButton = (Button) rootView.findViewById(R.id.);
-//			deleteButton.setOnClickListener(new OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					adapter.remove(file);
-//				}
-//			});
+
+			Button deleteButton = (Button) rootView.findViewById(R.id.saved_delete_button);
+			deleteButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					adapter.remove(file);
+				}
+			});
 			return rootView;
 		}
 
-		private void displayRun(View rootView) {
+		private void displayRunData(View rootView) {
+			//TODO display map
 //			ImageView imageView = ((ImageView) rootView.findViewById(R.id.sa));
 //			imageView.setImageBitmap(BitmapFactory.decodeFile(file.getPath()));
 
