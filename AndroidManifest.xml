@@ -35,8 +35,8 @@
 		    android:value="AIzaSyAUZNukhHHUDDwhZ_VHehdg7paxigWuyWM"/>
 
         <activity
-            android:name=".login.DebuggingHomeActivity" 
-            android:label="@string/home_name" >
+            android:name=".login.LoginActivity" 
+            android:label="@string/login_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,16 +45,9 @@
         </activity>
         
         
-        <!-- This tag is unnecessary once debugging home is removed!!!! -->
         <activity
             android:name=".login.HomeActivity"
-            android:label="@string/login_name" >
-        </activity>
-        
-        
-        <activity
-            android:name=".login.LoginActivity"
-            android:label="@string/login_name" >
+            android:label="@string/home_name" >
         </activity>
         <activity
             android:name=".login.RegisterActivity"
