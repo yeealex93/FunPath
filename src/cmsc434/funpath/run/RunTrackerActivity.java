@@ -1,7 +1,8 @@
 package cmsc434.funpath.run;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -55,6 +56,7 @@ public class RunTrackerActivity extends Activity {
 	private RunPath currentPath;
 	private int pathIndex;
 	private double distanceTravelled;
+	private long timeElapsedMilliseconds;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +73,11 @@ public class RunTrackerActivity extends Activity {
 		finishRunButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				long timeTakenMilliseconds = 0; // TODO get time taken extra
 				boolean runCompleted = false;
 				Intent finishRun = new Intent(RunTrackerActivity.this, FinishRunActivity.class);
 				finishRun.putExtra(RUNPATH_ARRAY, currentPath.getPath());
 				finishRun.putExtra(DISTANCE_TRAVELLED, distanceTravelled);
-				finishRun.putExtra(TIME_TAKEN_MILLISECONDS, timeTakenMilliseconds);
+				finishRun.putExtra(TIME_TAKEN_MILLISECONDS, timeElapsedMilliseconds);
 				finishRun.putExtra(RUN_COMPLETED, runCompleted);
 				finishRun.putExtra(ConfigureRunActivity.HILLINESS, elevation);
 				startActivity(finishRun);
@@ -178,7 +179,7 @@ public class RunTrackerActivity extends Activity {
 		// show path distance
 		pathIndex = -1;
 		distanceTravelled = 0;
-		//		distanceDisplay.setText("Distance (m): " + run.getPathDistanceInMeters());
+		timeElapsedMilliseconds = 0;
 	}
 
 	protected void clearPathOnLongPress() { // debug - paths cannot be cleared by actual users
@@ -259,40 +260,31 @@ public class RunTrackerActivity extends Activity {
 
 	// TODO display time elapsed instead
 	// TODO allow pausing
-	public void updateTime(final Calendar calendar) {
+	public void updateTime() {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				try {
+					Calendar calendar = Calendar.getInstance();
 					int hours = calendar.get(Calendar.HOUR);
 					int minutes = calendar.get(Calendar.MINUTE);
 					int seconds = calendar.get(Calendar.SECOND);
 					String curTime = hours + ":" + minutes + ":" + seconds;
 					timeDisplay.setText(curTime);
-					// TODO get update text to work
-//					timeDisplay.invalidate();
-//					timeDisplay.postInvalidate();
 				} catch (Exception e) {}
 			}
 		});
 	}
 
 	private class UpdateTimeEverySecond implements Runnable{
-		private final Calendar calendar;
-
-		public UpdateTimeEverySecond() {
-			calendar = Calendar.getInstance();
-		}
+		private Timer timer;
 
 		public void run() {
-			while(!Thread.currentThread().isInterrupted()){
-				try {
-					updateTime(calendar);
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-				} catch(Exception e) {
-				}
-			}
+			timer = new Timer();
+	        timer.schedule(new TimerTask() {
+	            public void run() {
+	            	updateTime();
+	            }
+	        }, 0, 1000);
 		}
 	}
 }
