@@ -176,7 +176,7 @@ public class FinishRunActivity extends Activity {
 			}
 		}
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-		File file = new File(mediaStorageDir.getPath(), RegisterActivity.USERNAME+"_"+ timeStamp + ".jpg");
+		File file = new File(mediaStorageDir.getPath(), RegisterActivity.USERNAME+"_"+ timeStamp + ".txt");
 		// look for last index of "_" --> get username before it
 		
 		try {

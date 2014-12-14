@@ -2,6 +2,8 @@ package cmsc434.funpath.login;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -93,14 +95,24 @@ public class LoginActivity extends Activity {
 		
 		//create or access existing login.txt file
 		File file = new File(APP_FILEPATH, LOGIN_FILENAME);
-		Log.i("LOADING", "filepath: "+file.getAbsolutePath()); //TODO comment out
+		Log.i("LOADING", "filepath: "+file.getPath()); //TODO comment out
+		
+		if (!file.exists()){
+			try {
+				FileOutputStream ow = new FileOutputStream(file);
+				Log.i("Login.txt CREATE", "login.txt did not exist; was just created.");
+			} catch (FileNotFoundException e) {
+				Log.i("Login.txt CREATE", "Failed to create new login.txt file.");
+				e.printStackTrace();
+			}
+		}
 		
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String [] loginStr;
 		    String line = br.readLine();
-		    
-		    while (line != null) {
+		    Log.i("LOGIN LOOP", "first line = "+line);
+		    while (line != null && !line.trim().equals("")) {
 		        loginStr = line.split("\t");
 		        Log.i("LOGIN LOOP", "usr: "+loginStr[0] +",  pw: "+loginStr[1]); //TODO comment out
 		        loginMap.put(loginStr[0], loginStr[1]);
@@ -119,6 +131,7 @@ public class LoginActivity extends Activity {
 			//or other non-IO error...
 			//Doing nothing again -- so playful!
 			Log.i("FunPath", "Non-IO error while reading login.txt.");
+			e.printStackTrace();
 		}
 	}
 	

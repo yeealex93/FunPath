@@ -82,6 +82,7 @@ public class RegisterActivity extends Activity {
 					
 					USERNAME = username;
 					LoginActivity.loginMap.put(username, passwordView.getText().toString());
+					updateLoginData(username, passwordView.getText().toString());
 					
 					RegisterActivity.this.getPreferences(MODE_PRIVATE);
 					
@@ -103,12 +104,14 @@ public class RegisterActivity extends Activity {
 			FileOutputStream outputStream;
 			if (file.exists()){
 				outputStream = openFileOutput(file.getPath(), Context.MODE_APPEND);
+				Log.i("REGISTER FILE", "login.txt exists, open for appending.");
 			} else {
 				outputStream = new FileOutputStream(file);
+				Log.i("REGISTER FILE", "login.txt does NOT exist, creating it.");
 			}
 			//FileOutputStream outputStream = openFileOutput(LoginActivity.LOGIN_FILENAME, Context.MODE_APPEND);
 			
-			final String toWrite = "\n" + newUsername + "\t" + newPassword;
+			final String toWrite = newUsername + "\t" + newPassword + "\n";
 			outputStream.write(toWrite.getBytes());
 			
 			//outputStream.flush(); //may not be necessary
