@@ -83,6 +83,7 @@ public class RegisterActivity extends Activity {
 					USERNAME = username;
 					LoginActivity.loginMap.put(username, passwordView.getText().toString());
 					
+					RegisterActivity.this.getPreferences(MODE_PRIVATE);
 					
 					Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
 					startActivity(intent);
@@ -105,7 +106,7 @@ public class RegisterActivity extends Activity {
 			final String toWrite = "\n" + newUsername + "\t" + newPassword;
 			outputStream.write(toWrite.getBytes());
 			
-			outputStream.flush(); //may not be necessary
+			//outputStream.flush(); //may not be necessary
 			outputStream.close();
 		} catch (IOException e) {
 			//TODO handle error...
