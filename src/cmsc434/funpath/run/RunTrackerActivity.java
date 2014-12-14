@@ -274,7 +274,7 @@ public class RunTrackerActivity extends Activity {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				try {
-					boolean runStarted = pathIndex >= 0 || true;
+					boolean runStarted = pathIndex >= 0; // || true for debug
 					String curTime;
 					if (!runStarted) {
 						curTime = "Run not started";

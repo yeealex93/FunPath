@@ -1,8 +1,13 @@
 package cmsc434.funpath.map.utils;
 
+import java.util.Locale;
+
+// Used for time display and distance display
 public class TextDisplayTools {
 	public static String getDistanceText(double distanceTravelled, double totalDistance) {
-		return "Distance (m): " + distanceTravelled + " / " + totalDistance;
+		String distTravelledString = String.format(Locale.US, "%.1f", distanceTravelled);
+		String totalDistString = String.format(Locale.US, "%.1f", totalDistance);
+		return "Distance (m): " + distTravelledString + " / " + totalDistString;
 	}
 
 	// Ex: 4:13 for 4 minutes 13 seconds
