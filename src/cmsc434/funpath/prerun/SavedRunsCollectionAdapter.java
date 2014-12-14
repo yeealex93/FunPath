@@ -4,19 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
-
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -26,18 +20,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import cmsc434.funpath.R;
 import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
-import cmsc434.funpath.run.RunPath;
+
+import com.google.android.gms.maps.model.LatLng;
 
 
 public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
-	//TODO set the filepath
-//	public static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "funpath";
-	private List<File> files = new ArrayList<File>(5);
+	private List<File> files = new ArrayList<File>();
 
 	public SavedRunsCollectionAdapter(FragmentManager fm) {
 		super(fm);
@@ -45,22 +37,38 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	}
 
 	private List<File> getAllFiles() {
+		File[] files = getFilesArray();
+		Log.i("FileList", "total files = " + files.length);
+		ArrayList<File> fileList = new ArrayList<File>();
+		fileList.addAll(Arrays.asList(files));
+		return fileList;
+	}
+
+	private File[] getFilesArray() {
+		Log.i("UserName", RegisterActivity.USERNAME);
 		File dir = new File(LoginActivity.APP_FILEPATH);
 		File[] files = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String filename) {
-				
 				//only get files that have this user's USERNAME in the name and are .txt files
-				String username = filename.substring(0, filename.lastIndexOf("_"));
+				String username = getUsernameFromFileName(filename);
+				Log.i("FileList", filename + " = " + username);
 				return RegisterActivity.USERNAME.equals(username) && filename.endsWith(".txt");
 				
 			}
+
+			private String getUsernameFromFileName(String filename) {
+				final Pattern regexFileName = Pattern.compile("(.+)_\\d+_\\d+\\..+"); // username
+				Matcher matcher = regexFileName.matcher(filename);
+				if (matcher.matches()) {
+					return matcher.group(1);
+				}
+				return null;
+			}
 		});
 		if (files == null) {
-			return new ArrayList<File>();
+			files = new File[0];
 		}
-		ArrayList<File> fileList = new ArrayList<File>(10);
-		fileList.addAll(Arrays.asList(files));
-		return fileList;
+		return files;
 	}
 
 	@Override
