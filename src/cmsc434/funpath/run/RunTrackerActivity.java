@@ -50,6 +50,7 @@ public class RunTrackerActivity extends Activity {
 
 	private RunPath currentPath;
 	private int pathIndex;
+	private double distanceTravelled;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -120,13 +121,21 @@ public class RunTrackerActivity extends Activity {
 		updateDistance(location);
 	}
 
-	private void updateDistance(Location location) {
-		// TODO call at beginning?
+	private void updateDistance(Location curLocation) {
 		float totalDistance = currentPath.getPathDistanceInMeters();
-		float remainingDistance = totalDistance;
+		float remainingDistance = getRemainingDistance(curLocation);
+		// update distance travelled
+		float newDistanceTravelled = Math.max(totalDistance - remainingDistance, 0);
+		if (distanceTravelled < newDistanceTravelled) {
+			distanceTravelled = newDistanceTravelled;
+		}
+		distanceDisplay.setText("Distance (m): " + distanceTravelled + " / " + totalDistance);
+	}
+
+	private float getRemainingDistance(Location curLocation) {
 		int nextPathIndex = pathIndex + 1;
-		LatLng curPos = getLatLng(location);
-		remainingDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, curPos);
+		LatLng curPos = getLatLng(curLocation);
+		float remainingDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, curPos);
 		// sanity check
 		LatLng exactPos;
 		if (nextPathIndex < currentPath.getPath().length) {
@@ -136,9 +145,7 @@ public class RunTrackerActivity extends Activity {
 		}
 		float worstDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, exactPos);
 		remainingDistance = Math.max(worstDistance, remainingDistance);
-
-		float distanceTravelled = Math.max(totalDistance - remainingDistance, 0);
-		distanceDisplay.setText("Distance (m): " + distanceTravelled + " / " + totalDistance);
+		return remainingDistance;
 	}
 
 	private boolean reachedPoint(LatLng pos1, LatLng pos2) {
@@ -159,6 +166,7 @@ public class RunTrackerActivity extends Activity {
 		map.addPolyline(pathLine);
 		// show path distance
 		pathIndex = -1;
+		distanceTravelled = 0;
 //		distanceDisplay.setText("Distance (m): " + run.getPathDistanceInMeters());
 	}
 
