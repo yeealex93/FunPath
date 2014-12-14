@@ -142,17 +142,17 @@ public class LoginActivity extends Activity {
 		}
 	}
 
-	@Override
-	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		Toast.makeText(this, "Keypressed " +keyCode, Toast.LENGTH_SHORT).show();
-		
-		if(v.equals(this.findViewById(R.id.login_username)) && keyCode==KeyEvent.KEYCODE_ENTER) {
-			Toast.makeText(this, "enter pressed", Toast.LENGTH_SHORT).show();
-			this.findViewById(R.id.login_password).requestFocus();
-			return true;
-		}
-		return false;
-	}
+//	@Override
+//	public boolean onKey(View v, int keyCode, KeyEvent event) {
+//		Toast.makeText(this, "Keypressed " +keyCode, Toast.LENGTH_SHORT).show();
+//		
+//		if(v.equals(this.findViewById(R.id.login_username)) && keyCode==KeyEvent.KEYCODE_ENTER) {
+//			Toast.makeText(this, "enter pressed", Toast.LENGTH_SHORT).show();
+//			this.findViewById(R.id.login_password).requestFocus();
+//			return true;
+//		}
+//		return false;
+//	}
 	
 	// http://stackoverflow.com/questions/5702771/how-to-use-single-textwatcher-for-multiple-edittexts/6172024#6172024
 	private class GenericTextWatcher implements TextWatcher {
