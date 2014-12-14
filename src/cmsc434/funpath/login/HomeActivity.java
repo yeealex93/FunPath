@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import cmsc434.funpath.R;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
-import cmsc434.funpath.prerun.SavedPhotoActivity;
+import cmsc434.funpath.prerun.SavedRunsActivity;
 
 public class HomeActivity extends Activity {
 
@@ -48,7 +48,7 @@ public class HomeActivity extends Activity {
 		viewRunsButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(HomeActivity.this, SavedPhotoActivity.class);
+				Intent intent = new Intent(HomeActivity.this, SavedRunsActivity.class);
 				startActivity(intent);
 			}
 		});

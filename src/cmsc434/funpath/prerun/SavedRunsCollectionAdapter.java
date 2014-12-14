@@ -49,7 +49,6 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	}
 
 	private File[] getFilesArray() {
-		RegisterActivity.USERNAME = "test"; // TODO remove debug
 		Log.i("UserName", RegisterActivity.USERNAME);
 		File dir = new File(LoginActivity.APP_FILEPATH);
 		File[] files = dir.listFiles(new FilenameFilter() {
