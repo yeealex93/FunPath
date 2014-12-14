@@ -100,7 +100,12 @@ public class RegisterActivity extends Activity {
 		
 		try {
 			//TODO: test which of these is correct:
-			FileOutputStream outputStream = openFileOutput(file.getAbsolutePath(), Context.MODE_APPEND);
+			FileOutputStream outputStream;
+			if (file.exists()){
+				outputStream = openFileOutput(file.getPath(), Context.MODE_APPEND);
+			} else {
+				outputStream = new FileOutputStream(file);
+			}
 			//FileOutputStream outputStream = openFileOutput(LoginActivity.LOGIN_FILENAME, Context.MODE_APPEND);
 			
 			final String toWrite = "\n" + newUsername + "\t" + newPassword;
