@@ -55,19 +55,19 @@ public class RegisterActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				//TODO error checking
+				//TODO error checking all set?
 				String username = usernameView.getText().toString();
 				if (LoginActivity.loginMap.containsKey(username)) {
 					
 					//if the username already exists
 					Toast.makeText(RegisterActivity.this, DUPLICATE_USERNAME, Toast.LENGTH_LONG).show();
 					
-				} else if (username != "" ){
+				} else if (username.equals("")){
 					
 					//if username is empty
 					Toast.makeText(RegisterActivity.this, USERNAME_BLANK, Toast.LENGTH_LONG).show();
 					
-				} else if (passwordView.getText().toString().equals(passwordConfirmView.getText().toString())) {
+				} else if (!passwordView.getText().toString().equals(passwordConfirmView.getText().toString())) {
 					
 					//if passwords are not the same
 					Toast.makeText(RegisterActivity.this, PASSWORDS_DONT_MATCH, Toast.LENGTH_LONG).show();
@@ -94,6 +94,7 @@ public class RegisterActivity extends Activity {
 	
 	// Write newUsername/newPassword pair to login.txt
 	public void updateLoginData(String newUsername, String newPassword) {
+		//File file = new File(getApplicationContext().getFilesDir(), LoginActivity.LOGIN_FILENAME);
 		File file = new File(LoginActivity.LOGIN_FILEPATH, LoginActivity.LOGIN_FILENAME);
 		
 		try {

@@ -1,15 +1,12 @@
 package cmsc434.funpath.login;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 import cmsc434.funpath.R;
 
 public class LoginActivity extends Activity {
@@ -24,6 +23,7 @@ public class LoginActivity extends Activity {
 	public static final String LOGIN_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "files";
 	public static final String LOGIN_FILENAME = "login.txt"; //Change if textfile name changes!
 	
+	private static final String FAILED_LOGIN = "Invalid username/password combination.";
 	
 	public static final HashMap<String, String> loginMap = new HashMap<String, String>();
 	
@@ -48,24 +48,50 @@ public class LoginActivity extends Activity {
 			
 		});
 		
+		final EditText usernameView = (EditText) findViewById(R.id.login_username);
+		final EditText passwordView = (EditText) findViewById(R.id.login_password);
+		
 		Button loginButton = (Button) findViewById(R.id.login_button);
 		loginButton.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
 				
-				//TODO check credentials!
+				final String username = usernameView.getText().toString();
+				final String password = passwordView.getText().toString();
 				
-				Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-				startActivity(intent);
+				Log.i("LOGIN", "usr: "+username+",  pwd: "+password); //TODO comment out
+				
+				// checking login credentials!
+				if (loginMap.containsKey(username) && password.equals(loginMap.get(username))) {
+					
+					Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+					startActivity(intent);
+					
+				} else {
+					Toast.makeText(getApplicationContext(), FAILED_LOGIN, Toast.LENGTH_LONG).show();
+				}
+				
 			}
 			
 		});
 	}
 
 	// Read in login data from login.txt and populate loginMap with username/password pairs
-	private static void loadLoginData() {
+	private void loadLoginData() {
+		File directory = new File(LOGIN_FILEPATH);
+
+		// Create the storage directory if it does not exist
+		if (!directory.exists()) {
+			if (!directory.mkdirs()) {
+				Log.d("LOGIN DIRECTORY", "failed to create directory");
+				return;
+			}
+		}
+		
+		//create or access existing login.txt file
 		File file = new File(LOGIN_FILEPATH, LOGIN_FILENAME);
+		Log.i("LOADING", "filepath: "+file.getAbsolutePath()); //TODO comment out
 		
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
@@ -74,6 +100,7 @@ public class LoginActivity extends Activity {
 		    
 		    while (line != null) {
 		        loginStr = line.split("\t");
+		        Log.i("LOGIN LOOP", "usr: "+loginStr[0] +",  pw: "+loginStr[1]); //TODO comment out
 		        loginMap.put(loginStr[0], loginStr[1]);
 		        line = br.readLine();
 		    }
@@ -83,6 +110,8 @@ public class LoginActivity extends Activity {
 			//App should probably crash if it can't read login data...
 			//Doing nothing for now.
 			Log.i("FunPath", "IO EXCEPTION while reading login.txt.");
+			e.printStackTrace();
+			
 		} catch (Exception e) {
 			//in case there's a typo/spacing error in text file and a NullPointerException is thrown
 			//or other non-IO error...
