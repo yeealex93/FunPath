@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import cmsc434.funpath.R;
+import cmsc434.funpath.prerun.ConfigureRunActivity;
 
 public class FinishRunActivity extends Activity {
 
@@ -19,8 +20,9 @@ public class FinishRunActivity extends Activity {
 		runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
 		runTrackerIntent.getLongExtra(RunTrackerActivity.DISTANCE_TRAVELLED, 0);
 		runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN_MILLISECONDS, 0);
+		runTrackerIntent.getIntExtra(ConfigureRunActivity.HILLINESS, 0);
 		
-		
+		//TODO save the distance, time, elevation change
 		
 	}
 

@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import cmsc434.funpath.R;
+import cmsc434.funpath.prerun.ConfigureRunActivity;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -60,14 +61,16 @@ public class RunTrackerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_runtracker);
 
+		final int elevation = getIntent().getIntExtra(ConfigureRunActivity.HILLINESS, 0);
+		
 		// Basic gui code
 		distanceDisplay = (TextView) findViewById(R.id.distanceDisplay);
 		timeDisplay = (TextView) findViewById(R.id.timeDisplay);
+		
 		Button finishRunButton = (Button) findViewById(R.id.finishRunButton);
 		finishRunButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				long distanceTravelled = 0; // TODO get distance travelled extra
 				long timeTakenMilliseconds = 0; // TODO get time taken extra
 				boolean runCompleted = false;
 				Intent finishRun = new Intent(RunTrackerActivity.this, FinishRunActivity.class);
@@ -75,6 +78,7 @@ public class RunTrackerActivity extends Activity {
 				finishRun.putExtra(DISTANCE_TRAVELLED, distanceTravelled);
 				finishRun.putExtra(TIME_TAKEN_MILLISECONDS, timeTakenMilliseconds);
 				finishRun.putExtra(RUN_COMPLETED, runCompleted);
+				finishRun.putExtra(ConfigureRunActivity.HILLINESS, elevation);
 				startActivity(finishRun);
 			}
 		});

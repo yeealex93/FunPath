@@ -24,6 +24,11 @@ import cmsc434.funpath.R;
 
 public class ConfigureRunActivity extends Activity implements LocationListener {
 
+	public static final String DISTANCE = "DISTANCE";
+	public static final String HILLINESS = "HILLINESS";
+	public static final String UNITS = "UNITS";
+	public static final String DISTANCE_METERS = "DISTANCE_METERS";
+	
 	private LocationManager mLocationManager;
 	private double lat = 0;
 	private double lon = 0;
@@ -55,9 +60,9 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 			public void onClick(View v) {
 				Intent i = new Intent(ConfigureRunActivity.this, PreviewRunActivity.class);
 				Toast.makeText(ConfigureRunActivity.this, "distance: "+distance.getText().toString(), Toast.LENGTH_LONG).show();
-				i.putExtra("Distance", distance.getText().toString());
-				i.putExtra("Units", kmMiSwitch.isChecked());
-				i.putExtra("Hilliness", hillinessBar.getProgress());
+				i.putExtra("DISTANCE", distance.getText().toString());
+				i.putExtra("UNITS", kmMiSwitch.isChecked());
+				i.putExtra("HILLINESS", hillinessBar.getProgress());
 				startActivity(i);
 			}
 			

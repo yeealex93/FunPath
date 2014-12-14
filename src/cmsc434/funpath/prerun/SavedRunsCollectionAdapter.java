@@ -12,12 +12,14 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import cmsc434.funpath.R;
 
 
@@ -96,7 +98,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.activity_savedruns, container, false);
+			View rootView = inflater.inflate(R.layout.fragment_photo, container, false);
 			
 			displayRunData(rootView);
 			
@@ -113,10 +115,26 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 
 		private void displayRunData(View rootView) {
 			//TODO display map
-//			ImageView imageView = ((ImageView) rootView.findViewById(R.id.sa));
-//			imageView.setImageBitmap(BitmapFactory.decodeFile(file.getPath()));
+			ImageView imageView = ((ImageView) rootView.findViewById(R.id.saved_map));
+			imageView.setImageBitmap(BitmapFactory.decodeFile(file.getPath()));
 
 			
+		}
+		
+		private void displayTemperature(View rootView, String photoPath) {
+			//TODO 
+			//read in distance, elapsed time, elevation change 
+			
+			
+//			String fileName = new File(photoPath).getName();
+//			Temperature[] temperatures = TemperatureUtil.loadTemperaturesFromFileName(fileName);
+//			Log.i("Temp", fileName);
+//			if (temperatures != null) {
+//				Temperature photoTemp = temperatures[0];
+//				Temperature homeTemp = temperatures[1];
+//				TextView temperatureText = (TextView) rootView.findViewById(R.id.temperature_value);
+//				temperatureText.setText("PhotoTemp: " + photoTemp + ", HomeTemp:" + homeTemp);
+//			}
 		}
 
 		

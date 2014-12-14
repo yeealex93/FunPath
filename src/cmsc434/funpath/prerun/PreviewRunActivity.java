@@ -1,7 +1,11 @@
 package cmsc434.funpath.prerun;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import cmsc434.funpath.R;
 import cmsc434.funpath.run.RunPath;
 import cmsc434.funpath.run.RunTrackerActivity;
@@ -23,15 +27,46 @@ public class PreviewRunActivity extends Activity {
 		RunPath[] paths = RunTrackerActivity.possiblePaths;
 		
 		// Get extras
-		double wantedDist = Double.parseDouble(getIntent().getStringExtra("Distance"));
-		boolean inKm = getIntent().getBooleanExtra("Units",false);
+		final double wantedDist = Double.parseDouble(getIntent().getStringExtra(ConfigureRunActivity.DISTANCE));
+		final boolean inKm = getIntent().getBooleanExtra(ConfigureRunActivity.UNITS, false);
+		final int hilliness = getIntent().getIntExtra(ConfigureRunActivity.HILLINESS, 0);
 		
 		// Put everything in meters
-		double wantedDistInMeters = convertToMeters(wantedDist, inKm);
+		final double wantedDistInMeters = convertToMeters(wantedDist, inKm);
 		
 		// Find the path that has a length closest to what the user wants
 		int indexBestPath = findBestPath(paths, wantedDistInMeters);
 		RunPath bestPath = paths[indexBestPath];
+		
+		// Set up button listener
+		Button startRun = (Button) findViewById(R.id.preview_begin_run);
+		startRun.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent startIntent = new Intent(PreviewRunActivity.this, RunTrackerActivity.class);
+				
+				//any of these needed?
+				//startIntent.putExtra(ConfigureRunActivity.DISTANCE_METERS, wantedDistInMeters);
+				//startIntent.putExtra(ConfigureRunActivity.UNITS, inKm);
+				//startIntent.putExtra(ConfigureRunActivity.DISTANCE, wantedDist);
+				
+				startIntent.putExtra(ConfigureRunActivity.HILLINESS, hilliness);
+				
+				startActivity(startIntent);
+			}
+			
+		});
+		Button generateRun = (Button) findViewById(R.id.preview_generate_run);
+		generateRun.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				//TODO generate new run!
+			}
+			
+		});
+		
 		
 		// Get map fragment
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
