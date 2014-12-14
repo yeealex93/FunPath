@@ -31,8 +31,6 @@ import cmsc434.funpath.run.RunPath;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
-
 
 public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	private FragmentActivity owner; // used to access support fragment manager to access map fragment
@@ -138,8 +136,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			// load data
 			readData(file.getPath());
 			displayData(rootView);
-			//TODO load map from run!!!
-			//displayRunData(rootView, run);
+			displayRunMap(rootView);
 
 			// delete button
 			Button deleteButton = (Button) rootView.findViewById(R.id.saved_delete_button);
@@ -158,6 +155,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			GoogleMap map = mapFragment.getMap();
 
 			MapTools.drawPath(map, run);
+			MapTools.zoomToLocation(map, run);
 		}
 		
 		private void readData(String path) {
