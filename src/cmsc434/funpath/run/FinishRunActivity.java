@@ -181,7 +181,8 @@ public class FinishRunActivity extends Activity {
 		
 		try {
 			//TODO: test which of these is correct:
-			FileOutputStream outputStream = openFileOutput(file.getAbsolutePath(), Context.MODE_PRIVATE); //TODO check this works/is the right mode
+			FileOutputStream outputStream = new FileOutputStream(file.getPath());
+			//FileOutputStream outputStream = openFileOutput(file.getAbsolutePath(), Context.MODE_PRIVATE); //TODO check this works/is the right mode
 			
 			final String toWrite = dist +"\n" + time + "\n" + hilliness;
 			outputStream.write(toWrite.getBytes());
