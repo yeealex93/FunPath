@@ -25,6 +25,7 @@ import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
+import cmsc434.funpath.prerun.SavedRunsCollectionAdapter;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -170,7 +171,7 @@ public class FinishRunActivity extends Activity {
 			}
 		}
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-		File file = new File(mediaStorageDir.getPath() + File.separator + RegisterActivity.USERNAME+"_"+ timeStamp + ".jpg");
+		File file = new File(SavedRunsCollectionAdapter.APP_FILEPATH + File.separator + RegisterActivity.USERNAME+"_"+ timeStamp + ".jpg");
 		// look for last index of "_" --> get username before it
 		
 		

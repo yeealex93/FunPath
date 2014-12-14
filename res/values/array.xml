@@ -7,6 +7,7 @@
         <item>cmsc434.funpath.prerun.ConfigureRunActivity</item>
         <item>cmsc434.funpath.prerun.PreviewRunActivity</item>
         <item>cmsc434.funpath.prerun.SavedRunsActivity</item>
+        <item>cmsc434.funpath.prerun.SavedPhotoActivity</item>
         <item>cmsc434.funpath.run.FinishRunActivity</item>
         <item>cmsc434.funpath.run.RunTrackerActivity</item>
     </string-array>
