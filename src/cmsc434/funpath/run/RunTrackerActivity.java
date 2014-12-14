@@ -1,5 +1,8 @@
 package cmsc434.funpath.run;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
@@ -44,12 +47,13 @@ public class RunTrackerActivity extends Activity {
 	private static final RunPath nearSouthCampus = new RunPath(new LatLng[]{new LatLng(38.982477163899595, -76.94291733205318), new LatLng(38.98247950950659, -76.94345377385616), new LatLng(38.982721627856165, -76.94347623735666)});
 	public static final RunPath[] possiblePaths = new RunPath[]{aroundCsic, aroundCsicAndWindTunnel, acrossBridgeAndBack, cutThroughPathtoPaintBranch};
 
-	private TextView distanceDisplay;
+	private TextView distanceDisplay, timeDisplay;
 	private GoogleMap map;
 	private FusedLocationService fusedLocationService; // gets location updates
 
 	private RunPath currentPath;
 	private int pathIndex;
+	private double distanceTravelled;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class RunTrackerActivity extends Activity {
 
 		// Basic gui code
 		distanceDisplay = (TextView) findViewById(R.id.distanceDisplay);
+		timeDisplay = (TextView) findViewById(R.id.timeDisplay);
 		Button finishRunButton = (Button) findViewById(R.id.finishRunButton);
 		finishRunButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -73,6 +78,9 @@ public class RunTrackerActivity extends Activity {
 				startActivity(finishRun);
 			}
 		});
+
+		// time update
+		new Thread(new UpdateTimeEverySecond()).start();   
 
 		// Map code
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
@@ -93,7 +101,7 @@ public class RunTrackerActivity extends Activity {
 			}
 		});
 
-//		setPath(aroundCsic); // TODO set path from intent
+		//		setPath(aroundCsic); // TODO set path from intent
 		setPath(nearSouthCampus);
 
 		// debug, for path generation
@@ -120,13 +128,21 @@ public class RunTrackerActivity extends Activity {
 		updateDistance(location);
 	}
 
-	private void updateDistance(Location location) {
-		// TODO call at beginning?
+	private void updateDistance(Location curLocation) {
 		float totalDistance = currentPath.getPathDistanceInMeters();
-		float remainingDistance = totalDistance;
+		float remainingDistance = getRemainingDistance(curLocation);
+		// update distance travelled
+		float newDistanceTravelled = Math.max(totalDistance - remainingDistance, 0);
+		if (distanceTravelled < newDistanceTravelled) {
+			distanceTravelled = newDistanceTravelled;
+		}
+		distanceDisplay.setText("Distance (m): " + distanceTravelled + " / " + totalDistance);
+	}
+
+	private float getRemainingDistance(Location curLocation) {
 		int nextPathIndex = pathIndex + 1;
-		LatLng curPos = getLatLng(location);
-		remainingDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, curPos);
+		LatLng curPos = getLatLng(curLocation);
+		float remainingDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, curPos);
 		// sanity check
 		LatLng exactPos;
 		if (nextPathIndex < currentPath.getPath().length) {
@@ -136,9 +152,7 @@ public class RunTrackerActivity extends Activity {
 		}
 		float worstDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, exactPos);
 		remainingDistance = Math.max(worstDistance, remainingDistance);
-
-		float distanceTravelled = Math.max(totalDistance - remainingDistance, 0);
-		distanceDisplay.setText("Distance (m): " + distanceTravelled + " / " + totalDistance);
+		return remainingDistance;
 	}
 
 	private boolean reachedPoint(LatLng pos1, LatLng pos2) {
@@ -159,7 +173,8 @@ public class RunTrackerActivity extends Activity {
 		map.addPolyline(pathLine);
 		// show path distance
 		pathIndex = -1;
-//		distanceDisplay.setText("Distance (m): " + run.getPathDistanceInMeters());
+		distanceTravelled = 0;
+		//		distanceDisplay.setText("Distance (m): " + run.getPathDistanceInMeters());
 	}
 
 	protected void clearPathOnLongPress() { // debug - paths cannot be cleared by actual users
@@ -236,5 +251,44 @@ public class RunTrackerActivity extends Activity {
 			startActivity(new Intent(getApplicationContext(), cmsc434.funpath.login.HomeActivity.class));
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	// TODO display time elapsed instead
+	// TODO allow pausing
+	public void updateTime(final Calendar calendar) {
+		runOnUiThread(new Runnable() {
+			public void run() {
+				try {
+					int hours = calendar.get(Calendar.HOUR);
+					int minutes = calendar.get(Calendar.MINUTE);
+					int seconds = calendar.get(Calendar.SECOND);
+					String curTime = hours + ":" + minutes + ":" + seconds;
+					timeDisplay.setText(curTime);
+					// TODO get update text to work
+//					timeDisplay.invalidate();
+//					timeDisplay.postInvalidate();
+				} catch (Exception e) {}
+			}
+		});
+	}
+
+	private class UpdateTimeEverySecond implements Runnable{
+		private final Calendar calendar;
+
+		public UpdateTimeEverySecond() {
+			calendar = Calendar.getInstance();
+		}
+
+		public void run() {
+			while(!Thread.currentThread().isInterrupted()){
+				try {
+					updateTime(calendar);
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				} catch(Exception e) {
+				}
+			}
+		}
 	}
 }
