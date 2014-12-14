@@ -19,7 +19,6 @@ import android.widget.TextView;
 import cmsc434.funpath.R;
 import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
-import cmsc434.funpath.prerun.ConfigureRunActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,33 +29,17 @@ import com.google.android.gms.maps.model.PolylineOptions;
 public class FinishRunActivity extends Activity {
 	
 	private GoogleMap map;
-	private LatLng[] run;
+	private RunPath run;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_finishrun);
 		
-		
 		Intent runTrackerIntent = getIntent();
-		long distanceTraveled = runTrackerIntent.getLongExtra(RunTrackerActivity.DISTANCE_TRAVELLED, 0);
-		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, 0);
-		long hilliness = runTrackerIntent.getIntExtra(ConfigureRunActivity.HILLINESS, 0);
-		Parcelable[] runpathArrIn= runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
+		double distanceTraveled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, 0);
 		
-		run = new LatLng[runpathArrIn.length];
-		for (int i = 0; i < runpathArrIn.length; i++) {
-			run[i] = (LatLng) runpathArrIn[i];
-		}
-		
-		long distLong = runTrackerIntent.getLongExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
-		long timeLong = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
-		
-		TextView distance = (TextView) findViewById(R.id.review_distance);
-		TextView time = (TextView) findViewById(R.id.review_time);
-		
-		distance.setText(distLong+"");
-		time.setText(timeLong+"");
+		setDistanceAndTimeDisplays(runTrackerIntent);
 		
 		// Get map fragment
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
@@ -64,9 +47,29 @@ public class FinishRunActivity extends Activity {
 		map = mapFragment.getMap();
 		map.setMyLocationEnabled(true);
 		
-		
-		setPath(new RunPath(run));
+		run = getRunPathFromIntent(runTrackerIntent);
+		setPath(run);
 		zoomToLocation();
+	}
+
+	private RunPath getRunPathFromIntent(Intent runTrackerIntent) {
+		Parcelable[] runpathArrIn = runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
+		LatLng[] run = new LatLng[runpathArrIn.length];
+		for (int i = 0; i < runpathArrIn.length; i++) {
+			run[i] = (LatLng) runpathArrIn[i];
+		}
+		return new RunPath(run);
+	}
+
+	private void setDistanceAndTimeDisplays(Intent runTrackerIntent) {
+		double distDouble = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
+		long timeLong = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
+		
+		TextView distance = (TextView) findViewById(R.id.review_distance);
+		TextView time = (TextView) findViewById(R.id.review_time);
+		
+		distance.setText(distDouble+"");
+		time.setText(timeLong+"");
 	}
 
 	@Override
@@ -102,12 +105,13 @@ public class FinishRunActivity extends Activity {
 		double totalLat = 0;
 		double totalLon = 0;
 
-		for(int i = 0; i < run.length; i++) {
-			totalLat += run[i].latitude;
-			totalLon += run[i].longitude;
+		LatLng[] path = run.getPath();
+		for(int i = 0; i < path.length; i++) {
+			totalLat += path[i].latitude;
+			totalLon += path[i].longitude;
 		}
 		
-		return new LatLng(totalLat/run.length, totalLon/run.length);
+		return new LatLng(totalLat/path.length, totalLon/path.length);
 	}
 	
 	// Zoom to a given point on the map.
