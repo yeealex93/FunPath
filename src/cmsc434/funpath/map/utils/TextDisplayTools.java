@@ -16,6 +16,8 @@ public class TextDisplayTools {
 
 	// Ex: 4:13 for 4 minutes 13 seconds
 	public static String getTimeText(long timeSeconds) {
+		final String prefix = "Time: ";
+
 		final double secondsPerMinute = 1.0/60;
 		final double minutesPerHour = 1.0/60;
 		int hours = (int) (timeSeconds * secondsPerMinute * minutesPerHour);
@@ -31,8 +33,8 @@ public class TextDisplayTools {
 			minuteStr = "0" + minutes;
 		}
 		if (hours == 0) {
-			return minuteStr + ":" + secondStr;
+			return prefix + minuteStr + ":" + secondStr;
 		}
-		return hourStr + ":" + minuteStr + ":" + secondStr;
+		return prefix + hourStr + ":" + minuteStr + ":" + secondStr;
 	}
 }
