@@ -29,8 +29,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 // display map of run & user position using a MapView
-// TODO actually track position along path
-// TODO track time, allow pause/unpause
 public class RunTrackerActivity extends Activity {
 	private static final float INITIAL_ZOOM = 20f;
 	private static final float DISTANCE_THRESHOLD_CHECKPOINT_REACHED = 20;
@@ -56,6 +54,7 @@ public class RunTrackerActivity extends Activity {
 	private int pathIndex;
 	private double distanceTravelled;
 	private long timeElapsedMilliseconds;
+	private boolean paused = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +66,19 @@ public class RunTrackerActivity extends Activity {
 		// Basic gui code
 		distanceDisplay = (TextView) findViewById(R.id.distanceDisplay);
 		timeDisplay = (TextView) findViewById(R.id.timeDisplay);
+
+		final Button pauseRunButton = (Button) findViewById(R.id.pauseRunButton);
+		pauseRunButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				paused = !paused;
+				if (paused) {
+					pauseRunButton.setText("Resume Run");
+				} else {
+					pauseRunButton.setText("Pause Run");
+				}
+			}
+		});
 		
 		Button finishRunButton = (Button) findViewById(R.id.finishRunButton);
 		finishRunButton.setOnClickListener(new OnClickListener() {
@@ -257,18 +269,19 @@ public class RunTrackerActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	// TODO allow pausing
 	public void updateTime() {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				try {
 					boolean runStarted = pathIndex >= 0;
 					String curTime;
-					if (runStarted) {
-						timeElapsedMilliseconds += 1000;
-						curTime = formatTimeMillisAsString(timeElapsedMilliseconds);
-					} else {
+					if (!runStarted) {
 						curTime = "Run not started";
+					} else {
+						if (!paused) {
+							timeElapsedMilliseconds += 1000;
+						}
+						curTime = formatTimeMillisAsString(timeElapsedMilliseconds);
 					}
 					timeDisplay.setText(curTime);
 				} catch (Exception e) {}
