@@ -25,7 +25,6 @@ import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -65,22 +64,13 @@ public class FinishRunActivity extends Activity {
 		map.setMyLocationEnabled(true);
 		
 		MapTools.drawPath(map, run);
-		zoomToLocation();
+		MapTools.zoomToLocation(map, run);
 
 		// save path
 		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
 		long timeTaken = runTrackerIntent.getLongExtra(RunTrackerActivity.TIME_TAKEN, -1);
 		writeToFile(run.getPath(), distanceTravelled, timeTaken, hilliness);
 	}
-
-//	private RunPath getRunPathFromIntent(Intent runTrackerIntent) {
-//		Parcelable[] runpathArrIn = runTrackerIntent.getParcelableArrayExtra(RunTrackerActivity.RUNPATH_ARRAY);
-//		LatLng[] run = new LatLng[runpathArrIn.length];
-//		for (int i = 0; i < runpathArrIn.length; i++) {
-//			run[i] = (LatLng) runpathArrIn[i];
-//		}
-//		return new RunPath(run);
-//	}
 
 	private void setDistanceDisplayFromIntent(Intent runTrackerIntent) {
 		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
@@ -109,33 +99,6 @@ public class FinishRunActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	// Calculate average latitude and longitude of a path.
-	private LatLng averagePathPoints() {
-		double totalLat = 0;
-		double totalLon = 0;
-
-		LatLng[] path = run.getPath();
-		for(int i = 0; i < path.length; i++) {
-			totalLat += path[i].latitude;
-			totalLon += path[i].longitude;
-		}
-		
-		return new LatLng(totalLat/path.length, totalLon/path.length);
-	}
-	
-	// Zoom to a given point on the map.
-	private void zoomToLocation() {
-		LatLng point = averagePathPoints();
-		double lat = point.latitude;
-		double lon = point.longitude;
-		
-		if (map != null) {
-			LatLng coordinates = new LatLng(lat, lon);
-			map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 17f));
-		}
-	}
-	
 	
 	//Code for saving a runPath object to a file
 	/*
