@@ -54,6 +54,9 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 
 
 		final TextView distance = (TextView) findViewById(R.id.distanceField);
+		distance.setText("");
+		
+		distance.addTextChangedListener(new GenericTextWatcher());
 
 		final Switch kmMiSwitch = (Switch) findViewById(R.id.kmMiSwitch);
 		final boolean inMetric = kmMiSwitch.isChecked(); //km = on, mi = off
@@ -65,6 +68,7 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 		hillinessBar.setMax(2); // 3 states for low, med, high hilliness
 
 		Button next = (Button) findViewById(R.id.nextButton);
+		next.setEnabled(false);
 		next.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -176,9 +180,15 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			
-			
-			
+			String txt = s.toString();
+			Button next = (Button) findViewById(R.id.nextButton);
+
+			if(txt.equals("")) {
+				next.setEnabled(false);
+			} else {
+				next.setEnabled(true);
+			}
+				
 		}
 		
 		
