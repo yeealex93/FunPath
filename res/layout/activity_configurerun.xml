@@ -40,6 +40,7 @@
 	        android:layout_alignBottom="@+id/distanceField"
 	        android:layout_alignParentRight="true"
 	        android:layout_marginRight="20dp"
+	        android:background="#ffffff"
 	        android:textOff="mi"
 	        android:textOn="km" />
 
