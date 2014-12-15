@@ -55,6 +55,30 @@ public class PreviewRunActivity extends Activity {
 			Log.i("Path", "Dist = " + path.getPathDistanceInMeters());
 		}
 
+		Button generateRun = (Button) findViewById(R.id.preview_generate_run);
+		generateRun.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				if(notAllowed.size() == paths.length) {
+					notAllowed.clear();
+				}
+				
+				RunPath nextBest = findBestPath(paths, wantedDistInMeters);
+				afterBestPathFound(nextBest, hilliness, units);
+			}
+
+		});
+
+		TextView hillyView = (TextView) findViewById(R.id.preview_elevation);
+		hillyView.setText(TextDisplayTools.getElevationText(hilliness));
+		
+		afterBestPathFound(bestPath, hilliness, units);
+	}
+
+	private void afterBestPathFound(final RunPath bestPath, final int hilliness, final String units){
+		
+		
 		// Set up button listener
 		Button startRun = (Button) findViewById(R.id.preview_begin_run);
 		startRun.setOnClickListener(new OnClickListener(){
@@ -69,35 +93,14 @@ public class PreviewRunActivity extends Activity {
 				//startIntent.putExtra(ConfigureRunActivity.DISTANCE, wantedDist);
 
 				startIntent.putExtra(ConfigureRunActivity.HILLINESS, hilliness);
-				startIntent.putExtra(ConfigureRunActivity.UNITS, inKm);
+				startIntent.putExtra(ConfigureRunActivity.UNITS, units);
 				startIntent.putExtra(RunTrackerActivity.RUNPATH_ARRAY, bestPath.getPath());
 
 				startActivity(startIntent);
 			}
 
 		});
-		Button generateRun = (Button) findViewById(R.id.preview_generate_run);
-		generateRun.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				if(notAllowed.size() == paths.length) {
-					notAllowed.clear();
-				}
-				
-				RunPath nextBest = findBestPath(paths, wantedDistInMeters);
-				afterBestPathFound(nextBest);
-			}
-
-		});
-
-		TextView hillyView = (TextView) findViewById(R.id.preview_elevation);
-		hillyView.setText(TextDisplayTools.getElevationText(hilliness));
 		
-		afterBestPathFound(bestPath);
-	}
-
-	private void afterBestPathFound(RunPath bestPath){
 		// Set our text for the distance and elevation text areas
 		TextView distanceView = (TextView) findViewById(R.id.preview_distance);
 		distanceView.setText(TextDisplayTools.getDistanceText(bestPath.getPathDistanceInMeters(),units));
