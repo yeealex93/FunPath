@@ -67,6 +67,7 @@
 	    android:layout_alignLeft="@+id/timeDisplay"
 	    android:layout_alignParentBottom="true"
 	    android:background="@drawable/my_button"
+	     android:drawableLeft="@drawable/pause_small"
 	    android:text="@string/pause_run_button" />
 
 </RelativeLayout>

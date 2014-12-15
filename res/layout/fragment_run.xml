@@ -35,11 +35,13 @@
 
     <Button
         android:id="@+id/saved_delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignBottom="@+id/rerun_saved_button"
         android:layout_alignLeft="@+id/map"
-        android:background="@drawable/trash_can_small" />
+        android:drawableStart="@drawable/trash_can_small"
+        android:background="@drawable/my_button"
+        />
 
     <TextView
         android:id="@+id/saved_distance"
