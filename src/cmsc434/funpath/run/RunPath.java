@@ -37,7 +37,9 @@ public class RunPath {
 			lastPoint = curPoint;
 		}
 		// add dist to starting point
-		totalDistance += getDistanceBetweenCoords(lastPoint, path[0]);
+		if (path.length > 0) {
+			totalDistance += getDistanceBetweenCoords(lastPoint, path[0]);
+		}
 		return totalDistance;
 	}
 

@@ -183,6 +183,9 @@ public class RunTrackerActivity extends Activity {
 		if (nextPathIndex < currentPath.getPath().length) {
 			exactPos = currentPath.getPath()[nextPathIndex];
 		} else {
+			if (currentPath.getPath().length == 0) {
+				return 0;
+			}
 			exactPos = currentPath.getPath()[0];
 		}
 		float worstDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, exactPos);
