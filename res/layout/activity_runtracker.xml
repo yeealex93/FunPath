@@ -57,6 +57,7 @@
 	    android:layout_alignBaseline="@+id/pauseRunButton"
 	    android:layout_alignBottom="@+id/pauseRunButton"
 	    android:layout_alignRight="@+id/progressBar"
+	    android:background="@drawable/my_button"
 	    android:text="@string/finish_run_button" />
 
 	<Button
@@ -65,6 +66,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_alignLeft="@+id/timeDisplay"
 	    android:layout_alignParentBottom="true"
+	    android:background="@drawable/my_button"
 	    android:text="@string/pause_run_button" />
 
 </RelativeLayout>

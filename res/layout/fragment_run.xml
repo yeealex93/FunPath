@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:background="@drawable/my_button"
         android:text="@string/rerun_saved" />
     
     <RelativeLayout

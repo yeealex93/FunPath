@@ -47,17 +47,19 @@
 	    android:layout_alignRight="@+id/preview_map"
 	    android:drawableLeft="@drawable/runner_transparent_small"
 	    android:textSize="14sp"
+	    android:background="@drawable/my_button"
 	    android:text="@string/preview_begin_run" />
 
 	<Button
 	    android:id="@+id/preview_generate_run"
-	    android:layout_width="120dp"
+	    android:layout_width="110dp"
 	    android:layout_height="50dp"
 	    android:layout_alignLeft="@+id/preview_elevation"
 	    android:layout_alignRight="@+id/preview_elevation"
 	    android:layout_below="@+id/preview_elevation"
 	    android:layout_marginTop="5dp"
 	    android:text="@string/preview_generate_run"
+	    android:background="@drawable/my_button"
 	    android:textSize="14sp" />
 
 </RelativeLayout>

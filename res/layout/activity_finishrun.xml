@@ -41,8 +41,9 @@
         android:id="@+id/review_new_run_button"
         android:layout_width="220dp"
         android:layout_height="40dp"
-        android:layout_alignLeft="@+id/review_time"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/review_time"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/my_button"
         android:text="@string/finish_review_button" />
     
 </RelativeLayout>
