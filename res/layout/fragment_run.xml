@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/saved_time"
         android:layout_below="@+id/saved_time"
+        android:layout_alignBottom="@+id/saved_delete_button"
         android:paddingTop="5dp"
         android:text="@string/saved_elevation"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -27,15 +28,14 @@
         android:layout_alignParentRight="true"
         android:text="@string/rerun_saved" />
     
-    
     <RelativeLayout
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="350dp"
+        android:layout_above="@+id/saved_distance"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/saved_distance"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp" >
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/saved_time"
         android:layout_toRightOf="@+id/saved_delete_button"
-        android:paddingTop="5dp"
+        android:paddingTop="10dp"
         android:text="@string/saved_distance"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
