@@ -191,6 +191,9 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implem
 					Intent startIntent = new Intent(activity, RunTrackerActivity.class);
 					startIntent.putExtra(ConfigureRunActivity.HILLINESS, hilliness);
 					startIntent.putExtra(RunTrackerActivity.RUNPATH_ARRAY, run.getPath());
+					if (units != null) {
+						startIntent.putExtra(ConfigureRunActivity.UNITS, units.equals("km"));
+					}
 					
 					startActivity(startIntent);
 				}
