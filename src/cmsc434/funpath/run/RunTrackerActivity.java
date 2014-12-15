@@ -146,12 +146,14 @@ public class RunTrackerActivity extends Activity {
 		int nextPathIndex = pathIndex + 1;
 		// update path index
 		LatLng nextPos = null;
-		if (nextPathIndex >= currentPath.getPath().length) {
+		if (nextPathIndex == currentPath.getPath().length) {
 			if (currentPath.getPath().length > 0) {
 				nextPos = currentPath.getPath()[0];
 			}
-		} else {
+		} else if (nextPathIndex < currentPath.getPath().length) {
 			nextPos = currentPath.getPath()[nextPathIndex];
+		} else {
+			nextPos = null;
 		}
 		if (nextPos != null && reachedPoint(nextPos, curPos)) {
 			pathIndex++;
@@ -180,17 +182,18 @@ public class RunTrackerActivity extends Activity {
 		LatLng curPos = getLatLng(curLocation);
 		float remainingDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, curPos);
 		// sanity check
-		LatLng exactPos;
-		if (nextPathIndex < currentPath.getPath().length) {
-			exactPos = currentPath.getPath()[nextPathIndex];
-		} else {
-			if (currentPath.getPath().length == 0) {
-				return 0;
-			}
-			exactPos = currentPath.getPath()[0];
+		if (currentPath.getPath().length == 0) {
+			return 0;
 		}
-		float worstDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, exactPos);
-		remainingDistance = Math.max(worstDistance, remainingDistance);
+		float worstDistance;
+		if (pathIndex >= 0 && pathIndex < currentPath.getPath().length) {
+			LatLng exactPos = currentPath.getPath()[pathIndex];
+			worstDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, exactPos);
+		} else {// if (pathIndex == currentPath.getPath().length) {
+			worstDistance = 0;
+		}
+		Log.i("Dist", "Remaining: " + remainingDistance + ", Worst: " + worstDistance);
+		remainingDistance = Math.min(worstDistance, remainingDistance);
 		return remainingDistance;
 	}
 
@@ -220,9 +223,12 @@ public class RunTrackerActivity extends Activity {
 		}
 
 		int nextPathIndex = pathIndex + 1;
+		Log.i("Checkpoint", "Next path index: " + nextPathIndex + " of " + path.length);
 		if (nextPathIndex == path.length) {
+			Log.i("Checkpoint", "Final stretch!");
 			nextPathIndex = 0;
 		} else if (nextPathIndex > path.length) { // remove checkpoint - done
+			Log.i("Checkpoint", "Done");
 			setNextCheckpoint(null);
 			return;
 		}
