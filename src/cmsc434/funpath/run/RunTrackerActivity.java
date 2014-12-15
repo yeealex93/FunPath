@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import cmsc434.funpath.R;
+import cmsc434.funpath.login.RegisterActivity;
 import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
@@ -64,6 +66,7 @@ public class RunTrackerActivity extends Activity {
 
 	private Button pauseRunButton;
 	private ProgressBar progressBar;
+	private String units;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,12 @@ public class RunTrackerActivity extends Activity {
 
 		// load from intent
 		final int elevation = getIntent().getIntExtra(ConfigureRunActivity.HILLINESS, 0);
+		boolean inMetric = getIntent().getBooleanExtra(ConfigureRunActivity.UNITS, false);
+		if (inMetric){
+			units = "km";
+		}else {
+			units = "mi";
+		}
 
 		// load path
 		Parcelable[] runPathArray = getIntent().getParcelableArrayExtra(RUNPATH_ARRAY);
@@ -188,7 +197,7 @@ public class RunTrackerActivity extends Activity {
 			distanceTravelled = newDistanceTravelled;
 		}
 		progressBar.setProgress((int) (distanceTravelled * 100 / totalDistance));
-		distanceDisplay.setText(TextDisplayTools.getDistanceText(distanceTravelled, totalDistance));
+		distanceDisplay.setText(TextDisplayTools.getDistanceText(distanceTravelled, totalDistance, units));
 	}
 
 	private float getRemainingDistance(Location curLocation) {

@@ -69,6 +69,7 @@ public class PreviewRunActivity extends Activity {
 				//startIntent.putExtra(ConfigureRunActivity.DISTANCE, wantedDist);
 
 				startIntent.putExtra(ConfigureRunActivity.HILLINESS, hilliness);
+				startIntent.putExtra(ConfigureRunActivity.UNITS, inKm);
 				startIntent.putExtra(RunTrackerActivity.RUNPATH_ARRAY, bestPath.getPath());
 
 				startActivity(startIntent);
