@@ -155,6 +155,21 @@ public class ConfettiActivity extends Activity{
 			newBubble = new ConfettiView(ConfettiActivity.this, r.nextInt(950), r.nextInt(50));
 			mFrame.addView(newBubble);
 			newBubble.start();
+			newBubble = new ConfettiView(ConfettiActivity.this, r.nextInt(950), r.nextInt(50));
+			mFrame.addView(newBubble);
+			newBubble.start();
+			newBubble = new ConfettiView(ConfettiActivity.this, r.nextInt(950), r.nextInt(50));
+			mFrame.addView(newBubble);
+			newBubble.start();
+			newBubble = new ConfettiView(ConfettiActivity.this, r.nextInt(950), r.nextInt(50));
+			mFrame.addView(newBubble);
+			newBubble.start();
+			newBubble = new ConfettiView(ConfettiActivity.this, r.nextInt(950), r.nextInt(50));
+			mFrame.addView(newBubble);
+			newBubble.start();
+			newBubble = new ConfettiView(ConfettiActivity.this, r.nextInt(950), r.nextInt(50));
+			mFrame.addView(newBubble);
+			newBubble.start();
 			
 			
 			Log.i("CONFETTI", "started confetti");
@@ -222,8 +237,9 @@ public class ConfettiActivity extends Activity{
 			// Set movement direction and speed
 			// Limit movement speed in the x 
 			// direction to [-2..2] pixels per movement.
-			mDx = r.nextInt(5) - 3;
-			mDy = 3;
+			//mDx = r.nextInt(5) - 3;
+			mDx = 0;
+			mDy = 2;
 
 		}
 
