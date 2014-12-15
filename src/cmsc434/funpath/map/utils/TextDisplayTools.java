@@ -13,6 +13,18 @@ public class TextDisplayTools {
 		String totalDistString = String.format(Locale.US, "%.1f", totalDistance);
 		return "Distance (m): " + distTravelledString + " / " + totalDistString;
 	}
+	public static String getDistanceText(double distanceTravelled, String units) {
+		if (units.equals("mi")){
+			//converting from m to mi
+			distanceTravelled *= 0.000621371;
+		} else { //units.equals("km")
+			//converting from m to km
+			distanceTravelled *= 0.001;
+		}
+		String distTravelledString = String.format(Locale.US, "%.1f", distanceTravelled);
+		return "Distance (" + units + "): " + distTravelledString;
+	}
+	
 	public static String getDistanceText(double distanceTravelled, double totalDistance, String units) {
 		if (units.equals("mi")){
 			//converting from m to mi

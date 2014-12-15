@@ -27,6 +27,7 @@ public class PreviewRunActivity extends Activity {
 
 	private GoogleMap map;
 	private final ArrayList<Integer> notAllowed = new ArrayList<Integer>();
+	private String units;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,12 @@ public class PreviewRunActivity extends Activity {
 		// Get extras
 		final double wantedDist = Double.parseDouble(getIntent().getStringExtra(ConfigureRunActivity.DISTANCE));
 		final boolean inKm = getIntent().getBooleanExtra(ConfigureRunActivity.UNITS, false);
+		if(inKm) {
+			units = "km";
+		} else {
+			units = "mi";
+		}
+		
 		final int hilliness = getIntent().getIntExtra(ConfigureRunActivity.HILLINESS, 0);
 
 		// Put everything in meters
@@ -92,7 +99,7 @@ public class PreviewRunActivity extends Activity {
 	private void afterBestPathFound(RunPath bestPath){
 		// Set our text for the distance and elevation text areas
 		TextView distanceView = (TextView) findViewById(R.id.preview_distance);
-		distanceView.setText(TextDisplayTools.getDistanceText(bestPath.getPathDistanceInMeters()));
+		distanceView.setText(TextDisplayTools.getDistanceText(bestPath.getPathDistanceInMeters(),units));
 
 		// Get map fragment
 		MapFragment mapFragment = (MapFragment) getFragmentManager()
