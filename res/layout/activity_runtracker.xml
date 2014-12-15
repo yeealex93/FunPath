@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/background"
+    android:background="@drawable/background_bottomless"
     tools:context="cmsc434.funpath.login.HomeActivity" >
 
 	<fragment
@@ -63,8 +63,8 @@
 	    android:id="@+id/pauseRunButton"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_below="@+id/distanceDisplay"
-	    android:layout_centerHorizontal="true"
+	    android:layout_alignLeft="@+id/timeDisplay"
+	    android:layout_alignParentBottom="true"
 	    android:text="@string/pause_run_button" />
 
 </RelativeLayout>
