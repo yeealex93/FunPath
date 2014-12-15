@@ -31,7 +31,7 @@
     <string name="generate_custom_run">Generate Custom Run</string>
     <string name="view_past_runs">View Past Runs</string>
     <string name="welcome_to_funpath">Welcome to FunPath!</string>
-    <string name="hi">Hi, </string>
+    <string name="hi">Hi</string>
     
     <!-- LoginActivity Strings -->
     <string name="username">Username</string>
