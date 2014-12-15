@@ -16,6 +16,9 @@
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentRight="true"
 	    android:layout_alignParentTop="true"
+	    android:layout_marginRight="15dp"
+	    android:layout_marginTop="15dp"
+	    android:layout_marginLeft="15dp"
 	    tools:context=".run.FinishRunActivity" />
 
     <TextView
