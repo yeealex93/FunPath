@@ -162,6 +162,7 @@ public class RunTrackerActivity extends Activity {
 		}
 		if (nextPos != null && reachedPoint(nextPos, curPos)) {
 			pathIndex++;
+			MapTools.drawPath(map, currentPath, pathIndex);
 			updateNextCheckpoint();
 		}
 		// update distance
@@ -220,10 +221,11 @@ public class RunTrackerActivity extends Activity {
 	}
 
 	public void setPath(RunPath run) {
-		MapTools.drawPath(map, run);
+		pathIndex = -1;
+		// draw path
+		MapTools.drawPath(map, run, pathIndex);
 		this.currentPath = run;
 		// show path distance
-		pathIndex = -1;
 		distanceTravelled = 0;
 		timeElapsedSeconds = 0;
 		updateNextCheckpoint();

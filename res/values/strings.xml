@@ -66,7 +66,8 @@
     <!-- SavedRunsActivity Strings -->
     <string name="saved_distance">Distance:</string>
 	<string name="saved_time">Time:</string>
-    <string name="saved_elevation">Elevation:</string>   
+    <string name="saved_elevation">Elevation:</string>
+    <string name="rerun_saved">Re-Run</string>
     <string name="undo">Undo</string>
     
     <!-- FinishRunActivity Strings -->

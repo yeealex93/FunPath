@@ -73,6 +73,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 	
     <Button
+        android:id="@+id/rerun_saved_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/saved_delete_button"
+        android:layout_toLeftOf="@+id/saved_delete_button"
+        android:text="@string/rerun_saved" />
+    
+    <Button
         android:id="@+id/saved_delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -87,4 +95,5 @@
         <TextView android:id="@+id/undobar_message" style="@style/UndoBarMessage" />
         <Button android:id="@+id/undobar_button" style="@style/UndoBarButton" />
     </LinearLayout> -->
+
 </RelativeLayout>
