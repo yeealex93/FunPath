@@ -1,7 +1,6 @@
 package cmsc434.funpath.map.utils;
 
 import android.graphics.Color;
-import android.util.Log;
 import cmsc434.funpath.run.RunPath;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
