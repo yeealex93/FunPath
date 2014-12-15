@@ -31,6 +31,8 @@ import com.google.android.gms.maps.model.LatLng;
 // display map of run & user position using a MapView
 // TODO show next checkpoint, only allow one direction?
 public class RunTrackerActivity extends Activity {
+	public static final boolean DEBUG_TOOLS_ENABLED = true; // allows path adding and clearing, disable for released version
+
 	private static final float INITIAL_ZOOM = 20f;
 	private static final float DISTANCE_THRESHOLD_CHECKPOINT_REACHED = 20;
 
@@ -119,7 +121,7 @@ public class RunTrackerActivity extends Activity {
 				finishRun.putExtra(RUNPATH_ARRAY, currentPath.getPath());
 				finishRun.putExtra(DISTANCE_TRAVELLED, distanceTravelled);
 				finishRun.putExtra(TIME_TAKEN, timeElapsedSeconds);
-				finishRun.putExtra(RUN_COMPLETED, runCompleted);
+				finishRun.putExtra(RUN_COMPLETED, runCompleted); // TODO currently unused
 				finishRun.putExtra(ConfigureRunActivity.HILLINESS, elevation);
 				startActivity(finishRun);
 			}
@@ -129,8 +131,10 @@ public class RunTrackerActivity extends Activity {
 		new Thread(new UpdateTimeEverySecond()).start();   
 
 		// debug, for path generation
-		showCoordinatesOnTap();
-		clearPathOnLongPress();
+		if (DEBUG_TOOLS_ENABLED) {
+			showCoordinatesOnTap();
+			clearPathOnLongPress();
+		}
 	}
 
 	protected void updatePositionAndDistance(Location location) {
