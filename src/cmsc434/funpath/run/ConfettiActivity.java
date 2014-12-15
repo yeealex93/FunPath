@@ -60,14 +60,15 @@ public class ConfettiActivity extends Activity{
 		
 		Log.i("CONFETTI", "starting bubble");
 		
-		Random r = new Random();
-		ConfettiView newBubble = new ConfettiView(this, r.nextInt(widthMax), r.nextInt(50));
-		mFrame.addView(newBubble);
-		newBubble.start();
-		
-		newBubble = new ConfettiView(this, r.nextInt(widthMax), r.nextInt(50));
-		mFrame.addView(newBubble);
-		newBubble.start();
+		new RunConfettiTask().execute();
+//		Random r = new Random();
+//		ConfettiView newBubble = new ConfettiView(this, r.nextInt(widthMax), r.nextInt(50));
+//		mFrame.addView(newBubble);
+//		newBubble.start();
+//		
+//		newBubble = new ConfettiView(this, r.nextInt(widthMax), r.nextInt(50));
+//		mFrame.addView(newBubble);
+//		newBubble.start();
 		
 		Log.i("CONFETTI", "started bubbles");
 		
