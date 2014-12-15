@@ -8,27 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cmsc436.project.thermalcamera.MainActivity" >
 
-
-    <TextView
-        android:id="@+id/saved_distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/map"
-        android:layout_below="@+id/map"
-        android:paddingTop="5dp"
-        android:text="@string/saved_distance"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/saved_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/saved_distance"
-        android:layout_below="@+id/saved_distance"
-        android:paddingTop="5dp"
-        android:text="@string/saved_time"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
     <TextView
         android:id="@+id/saved_elevation"
         android:layout_width="wrap_content"
@@ -36,7 +15,7 @@
         android:layout_alignLeft="@+id/saved_time"
         android:layout_below="@+id/saved_time"
         android:paddingTop="5dp"
-        android:text="@string/saved_time"
+        android:text="@string/saved_elevation"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 
@@ -47,14 +26,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="@string/rerun_saved" />
-
-    <Button
-        android:id="@+id/saved_delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/rerun_saved_button"
-        android:layout_alignRight="@+id/rerun_saved_button"
-        android:background="@drawable/trash_can_small" />
     
     
     <RelativeLayout
@@ -64,11 +35,39 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_above="@id/saved_delete_button"
+        android:layout_above="@+id/saved_distance"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp" >
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/saved_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/rerun_saved_button"
+        android:layout_alignLeft="@+id/map"
+        android:background="@drawable/trash_can_small" />
+
+    <TextView
+        android:id="@+id/saved_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/saved_time"
+        android:layout_toRightOf="@+id/saved_delete_button"
+        android:paddingTop="5dp"
+        android:text="@string/saved_distance"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/saved_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/saved_distance"
+        android:layout_alignTop="@+id/saved_delete_button"
+        android:paddingTop="5dp"
+        android:text="@string/saved_time"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
