@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/background"
+    android:background="@drawable/background_bottomless"
     tools:context="cmsc434.funpath.login.HomeActivity" >
 
 	<fragment
@@ -19,15 +19,6 @@
 	    android:layout_alignParentRight="true"
 	    android:layout_alignParentTop="true"
 	    tools:context=".run.RunTrackerActivity" />
-    
-	<TextView
-	    android:id="@+id/distanceDisplay"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/map"
-	    android:layout_below="@+id/map"
-	    android:text="@string/review_distance"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 	<TextView
 	    android:id="@+id/timeDisplay"
@@ -37,34 +28,43 @@
 	    android:layout_below="@+id/distanceDisplay"
 	    android:text="@string/review_time"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-	
-	<Button
-	    android:id="@+id/finishRunButton"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true"
-	    android:layout_alignRight="@+id/map"
-	    android:text="@string/finish_run_button" />
 
-	<Button
-	    android:id="@+id/pauseRunButton"
+	<TextView
+	    android:id="@+id/distanceDisplay"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_alignBaseline="@+id/finishRunButton"
-	    android:layout_alignBottom="@+id/finishRunButton"
-	    android:layout_alignLeft="@+id/distanceDisplay"
-	    android:text="@string/pause_run_button" />
+	    android:layout_alignLeft="@+id/map"
+	    android:layout_below="@+id/map"
+	    android:layout_marginTop="18dp"
+	    android:text="@string/review_distance"
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
 
 	<ProgressBar
 	    android:id="@+id/progressBar"
 	    style="?android:attr/progressBarStyleHorizontal"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_above="@+id/pauseRunButton"
+	    android:layout_alignLeft="@+id/distanceDisplay"
+	    android:layout_alignRight="@+id/map"
+	    android:layout_below="@+id/map"
+	    android:max="100"
+	    android:progress="0" />
+
+	<Button
+	    android:id="@+id/finishRunButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBaseline="@+id/pauseRunButton"
+	    android:layout_alignBottom="@+id/pauseRunButton"
+	    android:layout_alignRight="@+id/progressBar"
+	    android:text="@string/finish_run_button" />
+
+	<Button
+	    android:id="@+id/pauseRunButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
 	    android:layout_alignLeft="@+id/timeDisplay"
-	    android:layout_alignRight="@+id/finishRunButton"
-	    android:layout_below="@+id/timeDisplay"
-        android:progress="0"
-	    android:max="100" />
+	    android:layout_alignParentBottom="true"
+	    android:text="@string/pause_run_button" />
 
 </RelativeLayout>
