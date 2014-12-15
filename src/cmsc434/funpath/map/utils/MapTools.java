@@ -1,5 +1,7 @@
 package cmsc434.funpath.map.utils;
 
+import android.graphics.Color;
+import android.util.Log;
 import cmsc434.funpath.run.RunPath;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,6 +22,39 @@ public class MapTools {
 			pathLine.add(path[0]);
 		}
 		map.addPolyline(pathLine);
+	}
+
+	// Draw the path on the map. Display current progress.
+	public static void drawPath(GoogleMap map, RunPath run, int index) {
+		// clear old path
+		map.clear();
+
+		LatLng[] path = run.getPath();
+		// draw completed
+		int i;
+		PolylineOptions pathLine = new PolylineOptions().geodesic(true).color(Color.RED);
+		for (i = 0; i < path.length && i <= index; i++) {
+			pathLine = pathLine.add(path[i]);
+		}
+		if (index >= path.length) {
+			if (path.length > 0) {
+				pathLine.add(path[0]);
+			}
+		}
+		map.addPolyline(pathLine);
+		if (index >= path.length) return;
+		if (i > 0) {
+			i--;
+		}
+		// draw incomplete
+		PolylineOptions pathLine2 = new PolylineOptions().geodesic(true);
+		for (int j = i; j < path.length; j++) {
+			pathLine2 = pathLine2.add(path[j]);
+		}
+		if (path.length > 0) {
+			pathLine2.add(path[0]);
+		}
+		map.addPolyline(pathLine2);
 	}
 
 	// Zoom to a given point on the map.
