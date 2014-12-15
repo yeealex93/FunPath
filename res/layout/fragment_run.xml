@@ -8,17 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cmsc436.project.thermalcamera.MainActivity" >
 
-    <TextView
-        android:id="@+id/saved_elevation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/saved_time"
-        android:layout_below="@+id/saved_time"
-        android:layout_alignBottom="@+id/saved_delete_button"
-        android:paddingTop="5dp"
-        android:text="@string/saved_elevation"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
 
     <Button
         android:id="@+id/rerun_saved_button"
@@ -51,10 +40,22 @@
         android:background="@drawable/trash_can_small" />
 
     <TextView
+        android:id="@+id/saved_elevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/rerun_saved_button"
+        android:layout_alignBottom="@+id/rerun_saved_button"
+        android:layout_alignRight="@+id/saved_distance"
+        android:paddingTop="5dp"
+        android:text="@string/saved_elevation"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
         android:id="@+id/saved_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/saved_time"
+        android:layout_marginBottom="16dp"
         android:layout_toRightOf="@+id/saved_delete_button"
         android:paddingTop="10dp"
         android:text="@string/saved_distance"
@@ -64,8 +65,8 @@
         android:id="@+id/saved_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/saved_elevation"
         android:layout_alignLeft="@+id/saved_distance"
-        android:layout_alignTop="@+id/saved_delete_button"
         android:paddingTop="5dp"
         android:text="@string/saved_time"
         android:textAppearance="?android:attr/textAppearanceMedium" />
