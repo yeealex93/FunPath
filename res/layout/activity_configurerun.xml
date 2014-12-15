@@ -7,7 +7,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cmsc434.funpath.login.HomeActivity"
-    android:background="@color/cyan">
+    android:background="@drawable/background">
 
     <TextView
         android:id="@+id/preview_elevation"

@@ -51,11 +51,13 @@
         </activity>
         <activity
             android:name=".login.HomeActivity"
-            android:label="@string/home_name" >
+            android:label="@string/home_name"
+            android:theme="@style/MyTheme" >
         </activity>
         <activity
             android:name=".login.RegisterActivity"
-            android:label="@string/register_name" >
+            android:label="@string/register_name"
+            android:theme="@style/MyTheme" >
         </activity>
         <activity
             android:name=".prerun.ConfigureRunActivity"
