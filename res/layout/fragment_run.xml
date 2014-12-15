@@ -19,26 +19,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp" >
 
-        <Button
-            android:id="@+id/saved_delete_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/trash_can_small" />
     </RelativeLayout>
-    <!--
-	<fragment
-        android:id="@+id/saved_map"
-	    android:name="com.google.android.gms.maps.SupportMapFragment"
-	    android:layout_width="match_parent"
-	    android:layout_height="350dp"
-	    android:layout_alignParentLeft="true"
-	    android:layout_alignParentRight="true"
-	    android:layout_alignParentTop="true" />
-    -->
-
-
 
     <TextView
         android:id="@+id/saved_distance"
@@ -70,19 +51,21 @@
         android:text="@string/saved_time"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <!--
-    <LinearLayout android:id="@+id/undobar" style="@style/UndoBar">
-        <TextView android:id="@+id/undobar_message" style="@style/UndoBarMessage" />
-        <Button android:id="@+id/undobar_button" style="@style/UndoBarButton" />
-    </LinearLayout>
-    -->
 
     <Button
         android:id="@+id/rerun_saved_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/saved_elevation"
-        android:layout_alignRight="@+id/map"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:text="@string/rerun_saved" />
+
+    <Button
+        android:id="@+id/saved_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rerun_saved_button"
+        android:layout_alignRight="@+id/rerun_saved_button"
+        android:background="@drawable/trash_can_small" />
 
 </RelativeLayout>
