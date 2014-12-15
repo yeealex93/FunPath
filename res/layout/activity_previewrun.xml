@@ -41,7 +41,7 @@
 
 	<Button
 	    android:id="@+id/preview_generate_run"
-	    android:layout_width="110dp"
+	    android:layout_width="140dp"
 	    android:layout_height="50dp"
 	    android:layout_alignLeft="@+id/preview_elevation"
 	    android:layout_alignParentBottom="true"

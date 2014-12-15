@@ -62,7 +62,7 @@
 
 	<Button
 	    android:id="@+id/pauseRunButton"
-	    android:layout_width="145dp"
+	    android:layout_width="155dp"
 	    android:layout_height="wrap_content"
 	    android:layout_alignLeft="@+id/timeDisplay"
 	    android:layout_alignParentBottom="true"
