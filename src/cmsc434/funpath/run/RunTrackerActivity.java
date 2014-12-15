@@ -32,9 +32,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 // display map of run & user position using a MapView, only allows one direction of following path through checkpoints
-// TODO show progress bar
 public class RunTrackerActivity extends Activity {
-	public static final boolean DEBUG_TOOLS_ENABLED = true; // allows path adding and clearing, disable for released version
+	public static final boolean DEBUG_TOOLS_ENABLED = false; // allows path adding and clearing, disable for released version
 
 	private static final float INITIAL_ZOOM = 20f;
 	private static final float DISTANCE_THRESHOLD_CHECKPOINT_REACHED = 20;
