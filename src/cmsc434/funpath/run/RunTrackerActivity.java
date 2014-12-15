@@ -30,9 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-// display map of run & user position using a MapView
-// TODO test checkpoints, only allow one direction?
-// TODO doesn't reach last checkpoint?
+// display map of run & user position using a MapView, only allows one direction of following path through checkpoints
 public class RunTrackerActivity extends Activity {
 	public static final boolean DEBUG_TOOLS_ENABLED = true; // allows path adding and clearing, disable for released version
 
@@ -62,6 +60,8 @@ public class RunTrackerActivity extends Activity {
 	private double distanceTravelled; // in meters
 	private long timeElapsedSeconds; // only starts counting after reaching checkpoint
 	private boolean paused = false;
+
+	private Button pauseRunButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +103,7 @@ public class RunTrackerActivity extends Activity {
 		distanceDisplay = (TextView) findViewById(R.id.distanceDisplay);
 		timeDisplay = (TextView) findViewById(R.id.timeDisplay);
 
-		final Button pauseRunButton = (Button) findViewById(R.id.pauseRunButton);
+		pauseRunButton = (Button) findViewById(R.id.pauseRunButton);
 		pauseRunButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -161,6 +161,12 @@ public class RunTrackerActivity extends Activity {
 		}
 		// update distance
 		updateDistance(location);
+		boolean isComplete = pathIndex >= currentPath.getPath().length;
+		if (isComplete) {
+			paused = true;
+			pauseRunButton.setEnabled(false);
+			// TODO notify user that they completed
+		}
 	}
 
 	private void updateDistance(Location curLocation) {
