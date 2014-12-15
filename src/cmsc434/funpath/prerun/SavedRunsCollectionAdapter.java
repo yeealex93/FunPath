@@ -41,8 +41,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 // TODO allow undo delete
 public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implements UndoListener {
-	private Activity activity; // used to show ActivityToast for undo buttom message
 	private List<File> files = new ArrayList<File>();
+	private String units;
+
+	private Activity activity; // used to show ActivityToast for undo buttom message
 
 	// for undo
 	private File lastDeletedFile;
@@ -141,6 +143,10 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implem
 		FileWriter writer = new FileWriter(file);
 		writer.append(entireFileContents);
 		writer.close();
+	}
+
+	public void setUnits(String units) {
+		this.units = units;
 	}
 
 	@Override
@@ -263,7 +269,11 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implem
 
 		private void displayData(View rootView) {
 			TextView distView = (TextView) rootView.findViewById(R.id.saved_distance);
-			distView.setText(TextDisplayTools.getDistanceText(run.getPathDistanceInMeters()));
+			if (units != null) {
+				distView.setText(TextDisplayTools.getDistanceText(run.getPathDistanceInMeters(), units));
+			} else {
+				distView.setText(TextDisplayTools.getDistanceText(run.getPathDistanceInMeters()));
+			}
 
 			TextView timeView = (TextView) rootView.findViewById(R.id.saved_time);
 			timeView.setText(TextDisplayTools.getTimeText(timeElapsed));

@@ -3,6 +3,7 @@ package cmsc434.funpath.login;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import cmsc434.funpath.R;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
 import cmsc434.funpath.prerun.SavedRunsActivity;
+import cmsc434.funpath.run.RunTrackerActivity;
 
 public class HomeActivity extends Activity {
 
@@ -33,6 +35,12 @@ public class HomeActivity extends Activity {
 //			Intent i = new Intent(this, LoginActivity.class);
 //			startActivity(i);
 //		}
+		final String units;
+		if (getIntent().hasExtra(RunTrackerActivity.UNITS_STRING)) {
+			units = getIntent().getStringExtra(RunTrackerActivity.UNITS_STRING);
+		} else {
+			units = null;
+		}
 		
 		Button generateRunButton = (Button) findViewById(R.id.generate_custom_run_button);
 		generateRunButton.setOnClickListener(new OnClickListener(){
@@ -49,6 +57,9 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(HomeActivity.this, SavedRunsActivity.class);
+				if (units != null) {
+					intent.putExtra(RunTrackerActivity.UNITS_STRING, units);
+				}
 				startActivity(intent);
 			}
 		});

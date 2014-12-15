@@ -48,11 +48,13 @@ public class FinishRunActivity extends Activity {
 		setTimeDisplayFromIntent(runTrackerIntent);
 
 		// Button handlnig
+		final String units = runTrackerIntent.getStringExtra(RunTrackerActivity.UNITS_STRING);
 		Button goBackHome = (Button) findViewById(R.id.review_new_run_button);
 		goBackHome.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(FinishRunActivity.this, HomeActivity.class);
+				intent.putExtra(RunTrackerActivity.UNITS_STRING, units);
 				startActivity(intent);
 			}
 		});
