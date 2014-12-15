@@ -3,6 +3,7 @@ package cmsc434.funpath.prerun;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,7 +25,6 @@ public class PreviewRunActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_previewrun);
-		RunPath[] paths = RunTrackerActivity.possiblePaths;
 		
 		// Get extras
 		final double wantedDist = Double.parseDouble(getIntent().getStringExtra(ConfigureRunActivity.DISTANCE));
@@ -35,8 +35,11 @@ public class PreviewRunActivity extends Activity {
 		final double wantedDistInMeters = convertToMeters(wantedDist, inKm);
 		
 		// Find the path that has a length closest to what the user wants
-		int indexBestPath = findBestPath(paths, wantedDistInMeters);
-		final RunPath bestPath = paths[indexBestPath];
+		RunPath[] paths = RunTrackerActivity.possiblePaths;
+		final RunPath bestPath = findBestPath(paths, wantedDistInMeters);
+		for (RunPath path : paths) {
+			Log.i("Path", "Dist = " + path.getPathDistanceInMeters());
+		}
 		
 		// Set up button listener
 		Button startRun = (Button) findViewById(R.id.preview_begin_run);
@@ -84,19 +87,19 @@ public class PreviewRunActivity extends Activity {
 	}
 	
 	// Find the path with length closest to what the user wants to run.
-	private int findBestPath(RunPath[] paths, double wantedDist) {
+	private RunPath findBestPath(RunPath[] paths, double wantedDist) {
 		double closestDiff = Integer.MAX_VALUE;
 		int bestPos = 0;
 		
-		for(int i = 0; i < paths.length; i++) {
+		for (int i = 0; i < paths.length; i++) {
 			double diff = Math.abs(wantedDist - paths[i].getPathDistanceInMeters());
-			if(diff < closestDiff) {
+			if (diff < closestDiff) {
 				closestDiff = diff;
 				bestPos = i;
 			}
 		}
 		
-		return bestPos;
+		return paths[bestPos];
 	}
 	
 	// Convert miles and kilometers to miles.

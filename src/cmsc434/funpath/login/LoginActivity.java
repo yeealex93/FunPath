@@ -15,10 +15,8 @@ import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -142,7 +140,7 @@ public class LoginActivity extends Activity {
 		
 		if (!file.exists()){
 			try {
-				FileOutputStream ow = new FileOutputStream(file);
+				new FileOutputStream(file);
 				Log.i("Login.txt CREATE", "login.txt did not exist; was just created.");
 			} catch (FileNotFoundException e) {
 				Log.i("Login.txt CREATE", "Failed to create new login.txt file.");
