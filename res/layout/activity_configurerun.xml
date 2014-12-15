@@ -16,15 +16,6 @@
         android:text="@string/distance" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/preview_distance"
-        android:layout_below="@+id/preview_distance"
-        android:layout_marginTop="105dp"
-        android:text="@string/elevation" />
-
-    <TextView
         android:id="@+id/preview_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -93,15 +84,6 @@
         android:layout_alignParentRight="true"
         android:text="@string/high_elevation_change" />
 
-    <Button
-        android:id="@+id/nextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="35dp"
-        android:text="@string/next_button" />
-
     <Switch
         android:id="@+id/kmMiSwitch"
         android:layout_width="wrap_content"
@@ -110,5 +92,23 @@
         android:layout_alignTop="@+id/distanceField"
         android:textOff="mi"
         android:textOn="km" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/preview_distance"
+        android:layout_centerVertical="true"
+        android:text="@string/elevation" />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView5"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/my_button"
+        android:text="@string/next_button" />
 
 </RelativeLayout>

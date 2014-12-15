@@ -12,9 +12,7 @@
         -->
     </style>
 
-    <style name="ApplicationStyle" parent="android:Theme">
-        <item name="android:buttonStyle">@drawable/my_button</item>
-    </style>
+
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">

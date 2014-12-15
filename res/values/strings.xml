@@ -46,7 +46,7 @@
 	<string name="register_password">Password</string>
 	<string name="register_password_confirm">Confirm Password</string>
 	<string name="register_button">Register</string>
-	<string name="return_to_login_button">Return to Login Screen</string>
+	<string name="return_to_login_button">Back to Login</string>
     
     <!-- ConfigureRunActivity Strings -->
    	<string name="distance">Distance</string>
