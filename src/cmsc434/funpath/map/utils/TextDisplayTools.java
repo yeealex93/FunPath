@@ -2,11 +2,6 @@ package cmsc434.funpath.map.utils;
 
 import java.util.Locale;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import cmsc434.funpath.login.RegisterActivity;
-import cmsc434.funpath.prerun.ConfigureRunActivity;
-
 // Used for time display and distance display
 public class TextDisplayTools {
 	public static String getDistanceText(double totalDistance) {
