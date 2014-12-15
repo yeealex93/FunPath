@@ -50,8 +50,8 @@
     
     <!-- ConfigureRunActivity Strings -->
    	<string name="distance">How far would you like to run?</string>
-	<string name="location">Location</string>
-	<string name="elevation">Elevation Change</string>
+	<string name="location">Current location (ZIP):</string>
+	<string name="elevation">How hilly would you like your run?</string>
 	<string name="low_elevation_change">Low</string>
 	<string name="med_elevation_change">Med</string>
 	<string name="high_elevation_change">High</string>
