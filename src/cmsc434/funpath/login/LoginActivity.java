@@ -114,9 +114,9 @@ public class LoginActivity extends Activity {
 		});
 		
 		//TODO remove: testing for confetti activity
-//		Intent i = new Intent(this, ConfettiActivity.class);
-//		startActivity(i);
-//				
+		Intent i = new Intent(this, ConfettiActivity.class);
+		startActivity(i);
+				
 	}
 
 	

@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -60,11 +61,11 @@ public class ConfettiActivity extends Activity{
 		Log.i("CONFETTI", "starting bubble");
 		
 		Random r = new Random();
-		BubbleView newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
+		ConfettiView newBubble = new ConfettiView(this, r.nextInt(widthMax), r.nextInt(50));
 		mFrame.addView(newBubble);
 		newBubble.start();
 		
-		newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
+		newBubble = new ConfettiView(this, r.nextInt(widthMax), r.nextInt(50));
 		mFrame.addView(newBubble);
 		newBubble.start();
 		
@@ -117,11 +118,29 @@ public class ConfettiActivity extends Activity{
 	}
 
 
+	 private class RunConfettiTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			Random r = new Random();
+			ConfettiView newBubble = new ConfettiView(ConfettiActivity.this, r.nextInt(950), r.nextInt(50));
+			mFrame.addView(newBubble);
+			newBubble.start();
+			
+			newBubble = new ConfettiView(ConfettiActivity.this, r.nextInt(950), r.nextInt(50));
+			mFrame.addView(newBubble);
+			newBubble.start();
+			return null;
+		}
+
+	 }
+	
+	
 	// BubbleView is a View that displays a bubble.
 	// This class handles animating, drawing, and popping amongst other actions.
 	// A new BubbleView is created for each bubble on the display
 
-	public class BubbleView extends View {
+	public class ConfettiView extends View {
 
 		private static final int BITMAP_SIZE = 64;
 		private static final int REFRESH_RATE = 40;
@@ -133,7 +152,7 @@ public class ConfettiActivity extends Activity{
 		private float mXPos, mYPos, mDx, mDy, mRadius;
 		private long mRotate, mDRotate;
 
-		BubbleView(Context context, float x, float y) {
+		ConfettiView(Context context, float x, float y) {
 			super(context);
 
 			// Create a new random number generator to
@@ -160,7 +179,8 @@ public class ConfettiActivity extends Activity{
 			mPainter.setAntiAlias(true);
 
 		}
-
+		
+		
 		private void setRotation(Random r) {
 
 			// set rotation in range [1, 2]
@@ -178,22 +198,7 @@ public class ConfettiActivity extends Activity{
 			mDy = 20;
 
 		}
-//
-//		private void createScaledBitmap(Random r) {
-//
-//			if (speedMode != RANDOM) {
-//				mScaledBitmapWidth = BITMAP_SIZE * 3;
-//			} else {
-//
-//				// TODO - set scaled bitmap size in range [1..3] * BITMAP_SIZE
-//				mScaledBitmapWidth = BITMAP_SIZE * (r.nextInt(3)+1);
-//
-//			}
-//
-//			// TODO - create the scaled bitmap using size set above
-//			Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.b64);
-//			mScaledBitmap = Bitmap.createScaledBitmap(bitmap, mScaledBitmapWidth, mScaledBitmapWidth, false);
-//		}
+
 
 		// Start moving the BubbleView & updating the display
 		private void start() {
@@ -216,10 +221,10 @@ public class ConfettiActivity extends Activity{
 
 					
 					if (moveWhileOnScreen()) {
-						BubbleView.this.postInvalidate();
+						ConfettiView.this.postInvalidate();
 						Log.i("ON SCREEN!", "on screen");
 					} else {
-						BubbleView.this.stop(false); //TODO check if popped
+						ConfettiView.this.stop(false); //TODO check if popped
 					}
 					
 				}
@@ -245,7 +250,7 @@ public class ConfettiActivity extends Activity{
 
 						// TODO - Remove the BubbleView from mFrame
 						
-						mFrame.removeView(BubbleView.this);
+						mFrame.removeView(ConfettiView.this);
 
 						
 					}
@@ -305,58 +310,6 @@ public class ConfettiActivity extends Activity{
 		}
 		
 	}
-
-//	@Override
-//	public void onBackPressed() {
-//		openOptionsMenu();
-//	}
-
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		super.onCreateOptionsMenu(menu);
-//
-//		getMenuInflater().inflate(R.menu.menu, menu);
-//
-//		return true;
-//	}
-
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		// TODO- Add cases to handle addition and deletion of bubbles 
-//		// from options menu added bubbles should be given random locations.
-//		// The bubble to delete is the most recently added bubble that
-//		// is still in the frame.
-//		
-//		// Hint: You can get all Views in mFrame using the 
-//		// ViewGroup.getChildCount() method
-//		switch (item.getItemId()) {
-//		case R.id.menu_add_bubble:
-//			Random r = new Random();
-//			BubbleView newBubble = new BubbleView(this, r.nextInt(mDisplayWidth), r.nextInt(mDisplayHeight));
-//			mFrame.addView(newBubble); //Add at the beginning
-//			newBubble.start();
-//			return true;
-//		case R.id.menu_delete_bubble:
-//			if (mFrame.getChildCount() > 0){
-//				mFrame.removeViewAt(mFrame.getChildCount() - 1);
-//			}
-//			return true;
-//		case R.id.menu_still_mode:
-//			speedMode = STILL;
-//			return true;
-//		case R.id.menu_single_speed:
-//			speedMode = SINGLE;
-//			return true;
-//		case R.id.menu_random_mode:
-//			speedMode = RANDOM;
-//			return true;
-//		case R.id.quit:
-//			exitRequested();
-//			return true;
-//		default:
-//			return super.onOptionsItemSelected(item);
-//		}
-//	}
 
 	private void exitRequested() {
 		super.onBackPressed();
