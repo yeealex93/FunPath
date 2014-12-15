@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 // display map of run & user position using a MapView
 // TODO test checkpoints, only allow one direction?
+// TODO doesn't reach last checkpoint?
 public class RunTrackerActivity extends Activity {
 	public static final boolean DEBUG_TOOLS_ENABLED = true; // allows path adding and clearing, disable for released version
 
@@ -219,12 +220,14 @@ public class RunTrackerActivity extends Activity {
 		}
 
 		int nextPathIndex = pathIndex + 1;
-		if (nextPathIndex >= path.length) {
+		if (nextPathIndex == path.length) {
 			nextPathIndex = 0;
-		} else {
-			LatLng nextCheckpointCoords = path[nextPathIndex];
-			setNextCheckpoint(nextCheckpointCoords);
+		} else if (nextPathIndex > path.length) { // remove checkpoint - done
+			setNextCheckpoint(null);
+			return;
 		}
+		LatLng nextCheckpointCoords = path[nextPathIndex];
+		setNextCheckpoint(nextCheckpointCoords);
 	}
 
 	private void setNextCheckpoint(LatLng nextCheckpointCoords) {
