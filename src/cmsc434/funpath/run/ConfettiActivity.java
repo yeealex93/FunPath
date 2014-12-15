@@ -1,10 +1,12 @@
 package cmsc434.funpath.run;
 
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -63,11 +65,26 @@ public class ConfettiActivity extends Activity{
 		
 		Log.i("CONFETTI", "starting bubble");
 		
-		new RunConfettiTask().execute();
-
-		Log.i("CONFETTI", "started bubbles");
+		RunConfettiTask animation = new RunConfettiTask();
+		animation.execute();
+		try {
+			animation.get(4000, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		new EndConfettiTask().execute();
+		Log.i("CONFETTI", "finishing!");
+		finish();
+		//Log.i("CONFETTI", "started bubbles");
+		
+		//new EndConfettiTask().execute();
 	
 		//no good, just blocks thread + animation
 //		new Runnable(){
