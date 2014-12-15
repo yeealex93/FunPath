@@ -8,19 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cmsc436.project.thermalcamera.MainActivity" >
 
-    <RelativeLayout
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/saved_delete_button"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp" >
-
-    </RelativeLayout>
 
     <TextView
         android:id="@+id/saved_distance"
@@ -68,5 +55,20 @@
         android:layout_above="@+id/rerun_saved_button"
         android:layout_alignRight="@+id/rerun_saved_button"
         android:background="@drawable/trash_can_small" />
+    
+    
+    <RelativeLayout
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/saved_delete_button"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp" >
+
+    </RelativeLayout>
 
 </RelativeLayout>
