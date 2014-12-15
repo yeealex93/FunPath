@@ -29,6 +29,9 @@ public class ConfettiActivity extends Activity{
 //
 //	private static final String TAG = "Lab-Graphics";
 
+	private final int WIDTH = 1000;
+	private final int HEIGHT = 2000;
+	
 	// The Main view
 	private RelativeLayout mFrame;
 
@@ -61,47 +64,24 @@ public class ConfettiActivity extends Activity{
 		Log.i("CONFETTI", "starting bubble");
 		
 		new RunConfettiTask().execute();
-//		Random r = new Random();
-//		ConfettiView newBubble = new ConfettiView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
-//		
-//		newBubble = new ConfettiView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
-		
+
 		Log.i("CONFETTI", "started bubbles");
-		
-//		newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
-//		newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
-//		newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
-//		newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
-//		newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
-//		newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
-//		newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
-//		newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
-//		newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
-//		newBubble = new BubbleView(this, r.nextInt(widthMax), r.nextInt(50));
-//		mFrame.addView(newBubble);
-//		newBubble.start();
+	
+		new Runnable(){
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				exitRequested();
+				//ConfettiActivity.this.finish();
+			}
+			
+		}.run();
 		
 	}
 
@@ -111,8 +91,12 @@ public class ConfettiActivity extends Activity{
 		if (hasFocus) {
 
 			// Get the size of the display so this View knows where borders are
-			mDisplayWidth = mFrame.getWidth();
-			mDisplayHeight = mFrame.getHeight();
+			//mDisplayWidth = mFrame.getWidth();
+			//mDisplayHeight = mFrame.getHeight();
+			
+			mDisplayWidth = WIDTH;
+			mDisplayHeight = HEIGHT;
+			
 			Log.i("CONFETTI", "width:  "+mDisplayWidth);
 			Log.i("CONFETTI", "height: " +mDisplayHeight);
 		}
