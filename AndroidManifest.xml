@@ -24,7 +24,7 @@
 		
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_launcher_fun_path_icon"
         android:label="@string/home_name"
         android:theme="@style/AppTheme" >
         <meta-data
