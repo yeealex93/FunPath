@@ -185,7 +185,7 @@ public class RunTrackerActivity extends Activity {
 		if (distanceTravelled < newDistanceTravelled) {
 			distanceTravelled = newDistanceTravelled;
 		}
-		progressBar.setProgress((int) (distanceTravelled / totalDistance));
+		progressBar.setProgress((int) (distanceTravelled * 100 / totalDistance));
 		distanceDisplay.setText(TextDisplayTools.getDistanceText(distanceTravelled, totalDistance));
 	}
 
