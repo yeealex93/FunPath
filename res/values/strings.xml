@@ -9,6 +9,7 @@
     
     <!-- Background colors -->
     <color name="cyan">#ccffff</color>
+    <color name="white">#ffffff</color>
 
     <!-- Actionbar Options -->
     <string name="options_logout">Logout</string>

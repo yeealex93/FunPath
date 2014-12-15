@@ -154,6 +154,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implem
 		private RunPath run;
 		private long timeElapsed;
 		private String elevationText;
+		private int ele;
 
 		public SavedRunFragment(SavedRunsCollectionAdapter adapter, File file) {
 			this.adapter = adapter;
@@ -209,7 +210,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implem
 				line = reader.nextLine();
 				wholeFileText += line + "\n";
 				Log.i("Reading run", line);
-			    int ele = Integer.parseInt(line); //elevation
+			    ele = Integer.parseInt(line); //elevation
 			    if (ele == 0) {
 			    	this.elevationText = "LOW";
 			    } else if (ele == 1) {
@@ -251,7 +252,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implem
 			timeView.setText(TextDisplayTools.getTimeText(timeElapsed));
 
 			TextView elevationView = (TextView) rootView.findViewById(R.id.saved_elevation);
-			elevationView.setText(elevationText);
+			elevationView.setText(TextDisplayTools.getElevationTextShort(ele));
 		}
 
 		private void displayRunMap(View rootView) {

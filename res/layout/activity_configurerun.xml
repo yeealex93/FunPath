@@ -6,7 +6,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="cmsc434.funpath.login.HomeActivity" >
+    tools:context="cmsc434.funpath.login.HomeActivity"
+    android:background="@color/cyan">
 
     <TextView
         android:id="@+id/preview_elevation"
@@ -41,7 +42,8 @@
         android:layout_below="@+id/preview_elevation"
         android:layout_marginTop="14dp"
         android:ems="10"
-        android:inputType="number|numberDecimal" >
+        android:inputType="number|numberDecimal"
+        android:background="@color/white">
 
         <requestFocus />
     </EditText>
