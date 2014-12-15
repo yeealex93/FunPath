@@ -145,7 +145,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implem
 
 	@Override
 	public CharSequence getPageTitle(int position) {
-		return (position + 1) + "";
+		return "Run " + (position + 1) + " of " + getCount();
 	}
 
 	public class SavedRunFragment extends Fragment implements OnMapReadyCallback {
