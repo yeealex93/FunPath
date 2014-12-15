@@ -83,18 +83,15 @@ public class RegisterActivity extends Activity {
 					
 					USERNAME = username;
 					
-					
-					//NOT USING REGISTER preferences... no way to get to register without passing through login first
+					//TODO check that "LoginActivity" is the proper name string - not working yet!
 					//Set the preferences USERNAME_KEY to indicate who is logged in
-//					SharedPreferences settings = RegisterActivity.this.getPreferences(MODE_PRIVATE);
-//					SharedPreferences.Editor editor = settings.edit();
-//					editor.putString(LoginActivity.USERNAME_KEY, username);
-//					editor.commit(); //Commit the edit!
+					SharedPreferences settings = RegisterActivity.this.getSharedPreferences(LoginActivity.PREFERENCES_KEY, MODE_PRIVATE);
+					SharedPreferences.Editor editor = settings.edit();
+					editor.putString(LoginActivity.USERNAME_KEY, username);
+					editor.commit(); //Commit the edit!
 					
 					LoginActivity.loginMap.put(username, passwordView.getText().toString());
 					updateLoginData(username, passwordView.getText().toString());
-					
-					RegisterActivity.this.getPreferences(MODE_PRIVATE);
 					
 					Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
 					startActivity(intent);

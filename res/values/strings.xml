@@ -5,12 +5,15 @@
     
     <string name="go_string">Go!</string>
     
+    
+    
     <!-- Background colors -->
     <color name="cyan">#ccffff</color>
 
     <!-- Actionbar Options -->
     <string name="options_logout">Logout</string>
     <string name="options_home">Return to Home</string>
+    
     
     <!-- Screen Titles -->
     <string name="home_name">FunPath</string>

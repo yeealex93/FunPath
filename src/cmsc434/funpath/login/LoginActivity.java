@@ -30,6 +30,8 @@ public class LoginActivity extends Activity {
 	public static final String LOGIN_FILENAME = "login.txt"; //Change if textfile name changes!
 	public static final String USERNAME_KEY = "USERNAME";
 	public static final String LOGOUT_KEY = "LOGOUT";
+	public static final String PREFERENCES_KEY = "FUNPATH_KEY";
+	
 	
 	private static final String FAILED_LOGIN = "Invalid username/password combination.";
 	
@@ -48,7 +50,7 @@ public class LoginActivity extends Activity {
 		} else {
 			
 			//Check if a user is logged in already from previous uses. If so, go immediately to HomeActivity.
-			SharedPreferences settings = this.getPreferences(MODE_PRIVATE);
+			SharedPreferences settings = this.getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE);
 			String loggedInUser = settings.getString(USERNAME_KEY, "");
 			if (!loggedInUser.equals("")) {
 				RegisterActivity.USERNAME = loggedInUser;
@@ -96,7 +98,7 @@ public class LoginActivity extends Activity {
 					RegisterActivity.USERNAME = username;
 					
 					//Set the preferences USERNAME_KEY to indicate who is logged in
-					SharedPreferences settings = LoginActivity.this.getPreferences(MODE_PRIVATE);
+					SharedPreferences settings = LoginActivity.this.getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE);
 					SharedPreferences.Editor editor = settings.edit();
 					editor.putString(USERNAME_KEY, username);
 					editor.commit(); //Commit the edit!
@@ -117,11 +119,12 @@ public class LoginActivity extends Activity {
 	
 	public void LogoutUserPreferences(){
 		RegisterActivity.USERNAME = ""; //just in case, sets USERNAME to empty string too. This is usually done manually as well
-		SharedPreferences settings = this.getPreferences(MODE_PRIVATE);
+		SharedPreferences settings = this.getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString(USERNAME_KEY, ""); //logs out the user
 		editor.commit(); //Commit the edit!
 	}
+	
 	
 	
 	// Read in login data from login.txt and populate loginMap with username/password pairs
