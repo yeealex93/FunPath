@@ -35,6 +35,19 @@ public class TextDisplayTools {
 	
 	
 
+	public static String getElevationText(int hilliness) {
+		String ret = "Elevation change: ";
+		switch(hilliness) {
+		case 0:
+			return ret + "Low";
+		case 1:
+			return ret + "Medium";
+		case 2:
+			return ret + "High";
+		}
+		return "Unknown elevation.";
+	}
+	
 	// Ex: 4:13 for 4 minutes 13 seconds
 	public static String getTimeText(long timeSeconds) {
 		final String prefix = "Time: ";

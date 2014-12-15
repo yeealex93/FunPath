@@ -30,8 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-// display map of run & user position using a MapView
-// TODO test checkpoints, only allow one direction?
+// display map of run & user position using a MapView, only allows one direction of following path through checkpoints
 public class RunTrackerActivity extends Activity {
 	public static final boolean DEBUG_TOOLS_ENABLED = true; // allows path adding and clearing, disable for released version
 
@@ -61,6 +60,8 @@ public class RunTrackerActivity extends Activity {
 	private double distanceTravelled; // in meters
 	private long timeElapsedSeconds; // only starts counting after reaching checkpoint
 	private boolean paused = false;
+
+	private Button pauseRunButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +103,7 @@ public class RunTrackerActivity extends Activity {
 		distanceDisplay = (TextView) findViewById(R.id.distanceDisplay);
 		timeDisplay = (TextView) findViewById(R.id.timeDisplay);
 
-		final Button pauseRunButton = (Button) findViewById(R.id.pauseRunButton);
+		pauseRunButton = (Button) findViewById(R.id.pauseRunButton);
 		pauseRunButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -145,12 +146,14 @@ public class RunTrackerActivity extends Activity {
 		int nextPathIndex = pathIndex + 1;
 		// update path index
 		LatLng nextPos = null;
-		if (nextPathIndex >= currentPath.getPath().length) {
+		if (nextPathIndex == currentPath.getPath().length) {
 			if (currentPath.getPath().length > 0) {
 				nextPos = currentPath.getPath()[0];
 			}
-		} else {
+		} else if (nextPathIndex < currentPath.getPath().length) {
 			nextPos = currentPath.getPath()[nextPathIndex];
+		} else {
+			nextPos = null;
 		}
 		if (nextPos != null && reachedPoint(nextPos, curPos)) {
 			pathIndex++;
@@ -158,6 +161,12 @@ public class RunTrackerActivity extends Activity {
 		}
 		// update distance
 		updateDistance(location);
+		boolean isComplete = pathIndex >= currentPath.getPath().length;
+		if (isComplete) {
+			paused = true;
+			pauseRunButton.setEnabled(false);
+			// TODO notify user that they completed
+		}
 	}
 
 	private void updateDistance(Location curLocation) {
@@ -179,14 +188,20 @@ public class RunTrackerActivity extends Activity {
 		LatLng curPos = getLatLng(curLocation);
 		float remainingDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, curPos);
 		// sanity check
-		LatLng exactPos;
-		if (nextPathIndex < currentPath.getPath().length) {
-			exactPos = currentPath.getPath()[nextPathIndex];
-		} else {
-			exactPos = currentPath.getPath()[0];
+		if (currentPath.getPath().length == 0) {
+			return 0;
 		}
-		float worstDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, exactPos);
-		remainingDistance = Math.max(worstDistance, remainingDistance);
+		float worstDistance;
+		if (pathIndex >= 0 && pathIndex < currentPath.getPath().length) {
+			LatLng exactPos = currentPath.getPath()[pathIndex];
+			worstDistance = currentPath.getRemainingDistanceInMeters(nextPathIndex, exactPos);
+		} else if (pathIndex < 0) {
+			worstDistance = remainingDistance;
+		} else {// if (pathIndex == currentPath.getPath().length) {
+			worstDistance = 0;
+		}
+		Log.i("Dist", "Remaining: " + remainingDistance + ", Worst: " + worstDistance);
+		remainingDistance = Math.min(worstDistance, remainingDistance);
 		return remainingDistance;
 	}
 
@@ -216,12 +231,17 @@ public class RunTrackerActivity extends Activity {
 		}
 
 		int nextPathIndex = pathIndex + 1;
-		if (nextPathIndex >= path.length) {
+		Log.i("Checkpoint", "Next path index: " + nextPathIndex + " of " + path.length);
+		if (nextPathIndex == path.length) {
+			Log.i("Checkpoint", "Final stretch!");
 			nextPathIndex = 0;
-		} else {
-			LatLng nextCheckpointCoords = path[nextPathIndex];
-			setNextCheckpoint(nextCheckpointCoords);
+		} else if (nextPathIndex > path.length) { // remove checkpoint - done
+			Log.i("Checkpoint", "Done");
+			setNextCheckpoint(null);
+			return;
 		}
+		LatLng nextCheckpointCoords = path[nextPathIndex];
+		setNextCheckpoint(nextCheckpointCoords);
 	}
 
 	private void setNextCheckpoint(LatLng nextCheckpointCoords) {
