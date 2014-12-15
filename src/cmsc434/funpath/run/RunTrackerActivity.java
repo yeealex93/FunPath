@@ -122,7 +122,7 @@ public class RunTrackerActivity extends Activity {
 		finishRunButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				boolean runCompleted = false;
+				boolean runCompleted = pathIndex >= currentPath.getPath().length;
 				Intent finishRun = new Intent(RunTrackerActivity.this, FinishRunActivity.class);
 				finishRun.putExtra(RUNPATH_ARRAY, currentPath.getPath());
 				finishRun.putExtra(DISTANCE_TRAVELLED, distanceTravelled);
