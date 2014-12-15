@@ -49,7 +49,7 @@
 	<string name="return_to_login_button">Back to Login</string>
     
     <!-- ConfigureRunActivity Strings -->
-   	<string name="distance">Distance</string>
+   	<string name="distance">How far would you like to run?</string>
 	<string name="location">Location</string>
 	<string name="elevation">Elevation Change</string>
 	<string name="low_elevation_change">Low</string>
