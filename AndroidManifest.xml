@@ -61,23 +61,28 @@
         </activity>
         <activity
             android:name=".prerun.ConfigureRunActivity"
-            android:label="@string/configure_name" >
+            android:label="@string/configure_name" 
+            android:theme="@style/MyTheme" >
         </activity>
         <activity
             android:name=".prerun.PreviewRunActivity"
-            android:label="@string/preview_name" >
+            android:label="@string/preview_name" 
+            android:theme="@style/MyTheme" >
         </activity>
         <activity
             android:name=".prerun.SavedRunsActivity"
-            android:label="@string/savedruns_name" >
+            android:label="@string/savedruns_name"
+            android:theme="@style/MyTheme" >
         </activity>
         <activity
             android:name=".run.FinishRunActivity"
-            android:label="@string/finish_name" >
+            android:label="@string/finish_name"
+            android:theme="@style/MyTheme" >
         </activity>
         <activity
             android:name=".run.RunTrackerActivity"
-            android:label="@string/tracker_name" >
+            android:label="@string/tracker_name"
+            android:theme="@style/MyTheme" >
         </activity>
     </application>
 
