@@ -5,7 +5,6 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -18,7 +17,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import cmsc434.funpath.R;
-import cmsc434.funpath.login.RegisterActivity;
 import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.ConfigureRunActivity;
@@ -45,6 +43,7 @@ public class RunTrackerActivity extends Activity {
 	public static final String DISTANCE_TRAVELLED = "DISTANCE_TRAVELLED";
 	public static final String TIME_TAKEN = "TIME_TAKEN_MILLISECONDS";
 	public static final String RUN_COMPLETED = "RUN_COMPLETED";
+	public static final String UNITS_STRING = "UNITS_STRING";
 
 	private static final RunPath aroundCsic = new RunPath(new LatLng[]{new LatLng(38.990175,-76.9365), new LatLng(38.98965,-76.93645), new LatLng(38.98967624772949, -76.93633887916803), new LatLng(38.98966399969287, -76.93621147423983), new LatLng(38.98968693218526, -76.9360800459981), new LatLng(38.98988133687924, -76.93588323891163), new LatLng(38.98997775723984, -76.93586379289627), new LatLng(38.99008355888978, -76.93588189780712), new LatLng(38.99019613584117, -76.9359677284956), new LatLng(38.99017346410841, -76.93600829690695), new LatLng(38.99016199794195, -76.93609949201345)});
 	private static final RunPath aroundCsicAndWindTunnel = new RunPath(new LatLng[]{new LatLng(38.98985, -76.9358), new LatLng(38.98985, -76.93586), new LatLng(38.98998, -76.93583), new LatLng(38.99014, -76.93587), new LatLng(38.99014, -76.93587), new LatLng(38.99017, -76.93587), new LatLng(38.99021, -76.93598), new LatLng(38.99018, -76.93601), new LatLng(38.99017, -76.93602), new LatLng(38.99017, -76.93613), new LatLng(38.99017, -76.93613), new LatLng(38.99018, -76.9365), new LatLng(38.9902, -76.93665), new LatLng(38.9902, -76.93665), new LatLng(38.99018, -76.93696), new LatLng(38.99017, -76.93726), new LatLng(38.99017, -76.93726), new LatLng(38.98991, -76.93725), new LatLng(38.98961, -76.93711), new LatLng(38.98961, -76.93711), new LatLng(38.98947, -76.93704), new LatLng(38.98952, -76.93686), new LatLng(38.98952, -76.93686), new LatLng(38.98961, -76.93641), new LatLng(38.98961, -76.93635), new LatLng(38.9896, -76.9363), new LatLng(38.98959, -76.93628), new LatLng(38.98964, -76.93609), new LatLng(38.98971, -76.93597), new LatLng(38.98983, -76.93587)});
@@ -137,6 +136,7 @@ public class RunTrackerActivity extends Activity {
 				Intent finishRun = new Intent(RunTrackerActivity.this, FinishRunActivity.class);
 				finishRun.putExtra(RUNPATH_ARRAY, currentPath.getPath());
 				finishRun.putExtra(DISTANCE_TRAVELLED, distanceTravelled);
+				finishRun.putExtra(UNITS_STRING, units);
 				finishRun.putExtra(TIME_TAKEN, timeElapsedSeconds);
 				finishRun.putExtra(RUN_COMPLETED, runCompleted); // TODO currently unused
 				finishRun.putExtra(ConfigureRunActivity.HILLINESS, elevation);

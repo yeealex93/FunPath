@@ -75,8 +75,9 @@ public class FinishRunActivity extends Activity {
 	private void setDistanceDisplayFromIntent(Intent runTrackerIntent) {
 		double distanceTravelled = runTrackerIntent.getDoubleExtra(RunTrackerActivity.DISTANCE_TRAVELLED, -1);
 		float totalDistance = run.getPathDistanceInMeters();
+		String units = runTrackerIntent.getStringExtra(RunTrackerActivity.UNITS_STRING);
 		TextView distance = (TextView) findViewById(R.id.review_distance);
-		distance.setText(TextDisplayTools.getDistanceText(distanceTravelled, totalDistance));
+		distance.setText(TextDisplayTools.getDistanceText(distanceTravelled, totalDistance, units));
 	}
 
 	private void setTimeDisplayFromIntent(Intent runTrackerIntent) {
