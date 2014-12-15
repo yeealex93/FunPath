@@ -66,6 +66,7 @@
     <string name="saved_distance">Distance:</string>
 	<string name="saved_time">Time:</string>
     <string name="saved_elevation">Elevation:</string>   
+    <string name="undo">Undo</string>
     
     <!-- FinishRunActivity Strings -->
     <string name="review_distance">Distance:</string>

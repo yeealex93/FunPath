@@ -17,7 +17,7 @@ public class SavedRunsActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gallery_pager);
 
-		mDemoCollectionPagerAdapter = new SavedRunsCollectionAdapter(getSupportFragmentManager());
+		mDemoCollectionPagerAdapter = new SavedRunsCollectionAdapter(this, getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mDemoCollectionPagerAdapter);
 

@@ -82,4 +82,9 @@
         android:layout_marginRight="14dp"
         android:background="@drawable/trash_can_small" />
 
+    <!-- 
+    <LinearLayout android:id="@+id/undobar" style="@style/UndoBar">
+        <TextView android:id="@+id/undobar_message" style="@style/UndoBarMessage" />
+        <Button android:id="@+id/undobar_button" style="@style/UndoBarButton" />
+    </LinearLayout> -->
 </RelativeLayout>
