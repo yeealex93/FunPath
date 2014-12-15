@@ -32,6 +32,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+// TODO allow undo delete
 public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	private List<File> files = new ArrayList<File>();
 
@@ -225,6 +226,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 
 		@Override
 		public void onMapReady(GoogleMap map) {
+			map.getUiSettings().setScrollGesturesEnabled(false); // prevent user movement
 			MapTools.drawPath(map, run);
 			MapTools.zoomToLocation(map, run);
 		}
