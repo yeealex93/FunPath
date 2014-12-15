@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +32,7 @@ import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.prerun.UndoBarController.UndoListener;
 import cmsc434.funpath.run.RunPath;
+import cmsc434.funpath.run.RunTrackerActivity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -153,6 +155,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implem
 
 		private RunPath run;
 		private long timeElapsed;
+		private int hilliness;
 		private String elevationText;
 
 		public SavedRunFragment(SavedRunsCollectionAdapter adapter, File file) {
@@ -173,7 +176,19 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implem
 			displayData(rootView);
 			displayRunMap(rootView);
 
-			// delete button
+			// buttons
+			Button rerunButton = (Button) rootView.findViewById(R.id.rerun_saved_button);
+			rerunButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent startIntent = new Intent(activity, RunTrackerActivity.class);
+					startIntent.putExtra(ConfigureRunActivity.HILLINESS, hilliness);
+					startIntent.putExtra(RunTrackerActivity.RUNPATH_ARRAY, run.getPath());
+					
+					startActivity(startIntent);
+				}
+			});
+
 			Button deleteButton = (Button) rootView.findViewById(R.id.saved_delete_button);
 			deleteButton.setOnClickListener(new OnClickListener() {
 				@Override
@@ -210,6 +225,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implem
 				wholeFileText += line + "\n";
 				Log.i("Reading run", line);
 			    int ele = Integer.parseInt(line); //elevation
+				hilliness = ele;
 			    if (ele == 0) {
 			    	this.elevationText = "LOW";
 			    } else if (ele == 1) {
