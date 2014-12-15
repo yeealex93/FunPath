@@ -36,7 +36,8 @@
 
         <activity
             android:name=".login.LoginActivity" 
-            android:label="@string/login_name" >
+            android:label="@string/login_name"
+            android:theme="@style/MyTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,7 +45,10 @@
             </intent-filter>
         </activity>
         
-        
+        <activity
+            android:name=".run.ConfettiActivity"
+            android:theme="@style/Theme.Transparent" >
+        </activity>
         <activity
             android:name=".login.HomeActivity"
             android:label="@string/home_name" >

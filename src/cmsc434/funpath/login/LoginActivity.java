@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import cmsc434.funpath.R;
+import cmsc434.funpath.run.ConfettiActivity;
 
 public class LoginActivity extends Activity {
 
@@ -111,6 +112,11 @@ public class LoginActivity extends Activity {
 			}
 			
 		});
+		
+		//TODO remove: testing for confetti activity
+//		Intent i = new Intent(this, ConfettiActivity.class);
+//		startActivity(i);
+//				
 	}
 
 	
