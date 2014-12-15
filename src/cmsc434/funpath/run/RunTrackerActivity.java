@@ -27,9 +27,11 @@ import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.LocationSource.OnLocationChangedListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 // display map of run & user position using a MapView
-// TODO show next checkpoint, only allow one direction?
+// TODO test checkpoints, only allow one direction?
 public class RunTrackerActivity extends Activity {
 	public static final boolean DEBUG_TOOLS_ENABLED = true; // allows path adding and clearing, disable for released version
 
@@ -55,6 +57,7 @@ public class RunTrackerActivity extends Activity {
 
 	private RunPath currentPath;
 	private int pathIndex; // last checkpoint reached, -1 = hasn't started
+	private Marker nextCheckpoint; // located at currentPath.getPath()[pathIndex + 1], except when pathIndex == path.length, then it's [0]
 	private double distanceTravelled; // in meters
 	private long timeElapsedSeconds; // only starts counting after reaching checkpoint
 	private boolean paused = false;
@@ -151,6 +154,7 @@ public class RunTrackerActivity extends Activity {
 		}
 		if (nextPos != null && reachedPoint(nextPos, curPos)) {
 			pathIndex++;
+			updateNextCheckpoint();
 		}
 		// update distance
 		updateDistance(location);
@@ -201,6 +205,37 @@ public class RunTrackerActivity extends Activity {
 		pathIndex = -1;
 		distanceTravelled = 0;
 		timeElapsedSeconds = 0;
+		updateNextCheckpoint();
+	}
+
+	private void updateNextCheckpoint() {
+		LatLng[] path = this.currentPath.getPath();
+		if (path.length == 0) { // remove checkpoint
+			setNextCheckpoint(null);
+			return;
+		}
+
+		int nextPathIndex = pathIndex + 1;
+		if (nextPathIndex >= path.length) {
+			nextPathIndex = 0;
+		} else {
+			LatLng nextCheckpointCoords = path[nextPathIndex];
+			setNextCheckpoint(nextCheckpointCoords);
+		}
+	}
+
+	private void setNextCheckpoint(LatLng nextCheckpointCoords) {
+		if (nextCheckpoint != null) {
+			nextCheckpoint.remove();
+		}
+		if (nextCheckpointCoords == null) {
+			return;
+		} else {
+			Marker newCheckpoint = map.addMarker(new MarkerOptions()
+	                .position(nextCheckpointCoords)
+	                .draggable(false).visible(true));
+			nextCheckpoint = newCheckpoint;
+		}
 	}
 
 	protected void clearPathOnLongPress() { // debug - paths cannot be cleared by actual users
