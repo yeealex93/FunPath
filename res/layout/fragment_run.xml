@@ -40,25 +40,24 @@
         android:background="@drawable/trash_can_small" />
 
     <TextView
-        android:id="@+id/saved_elevation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/rerun_saved_button"
-        android:layout_alignBottom="@+id/rerun_saved_button"
-        android:layout_alignRight="@+id/saved_distance"
-        android:paddingTop="5dp"
-        android:text="@string/saved_elevation"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
         android:id="@+id/saved_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/saved_time"
-        android:layout_marginBottom="16dp"
-        android:layout_toRightOf="@+id/saved_delete_button"
+        android:layout_alignLeft="@+id/saved_time"
         android:paddingTop="10dp"
         android:text="@string/saved_distance"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/saved_elevation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/saved_delete_button"
+        android:layout_alignLeft="@+id/saved_time"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/saved_elevation"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -66,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/saved_elevation"
-        android:layout_alignLeft="@+id/saved_distance"
+        android:layout_toRightOf="@+id/saved_delete_button"
         android:paddingTop="5dp"
         android:text="@string/saved_time"
         android:textAppearance="?android:attr/textAppearanceMedium" />
