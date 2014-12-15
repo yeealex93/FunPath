@@ -123,6 +123,7 @@ public class ConfettiActivity extends Activity{
 
 		@Override
 		protected Void doInBackground(Void... params) {
+			Log.i("CONFETTI", "starting confetti");
 			Random r = new Random();
 			ConfettiView newBubble = new ConfettiView(ConfettiActivity.this, r.nextInt(950), r.nextInt(50));
 			mFrame.addView(newBubble);
@@ -131,6 +132,9 @@ public class ConfettiActivity extends Activity{
 			newBubble = new ConfettiView(ConfettiActivity.this, r.nextInt(950), r.nextInt(50));
 			mFrame.addView(newBubble);
 			newBubble.start();
+			
+			
+			Log.i("CONFETTI", "started confetti");
 			return null;
 		}
 
@@ -196,7 +200,7 @@ public class ConfettiActivity extends Activity{
 			// Limit movement speed in the x 
 			// direction to [-2..2] pixels per movement.
 			mDx = r.nextInt(5) - 3;
-			mDy = 20;
+			mDy = 3;
 
 		}
 
@@ -225,6 +229,7 @@ public class ConfettiActivity extends Activity{
 						ConfettiView.this.postInvalidate();
 						Log.i("ON SCREEN!", "on screen");
 					} else {
+						Log.i("CONFETTI", "not on screen =O");
 						ConfettiView.this.stop(false); //TODO check if popped
 					}
 					
@@ -252,7 +257,7 @@ public class ConfettiActivity extends Activity{
 						// TODO - Remove the BubbleView from mFrame
 						
 						mFrame.removeView(ConfettiView.this);
-
+						ConfettiView.this.invalidate();
 						
 					}
 				});
@@ -302,8 +307,9 @@ public class ConfettiActivity extends Activity{
 			// the move operation
 			float leftx = mXPos, rightx = mXPos + 2*mRadius;
 			float topy = mYPos, boty = mYPos + 2*mRadius;
-			return (rightx > 0 && leftx < mDisplayWidth &&
-					boty > 0 && topy < mDisplayHeight);
+			//return !(rightx < 0 || leftx > mDisplayWidth || boty < 0 || topy < mDisplayHeight);
+			return !(rightx > 0 && leftx < mDisplayWidth && boty > 0 && topy < mDisplayHeight);
+					
 //				float leftx = mXPos - mRadius, rightx = mXPos + mRadius;
 //				float boty = mYPos + mRadius, topy = mYPos - mRadius;
 //				return !(rightx < mDisplayWidth || leftx > mDisplayWidth ||
