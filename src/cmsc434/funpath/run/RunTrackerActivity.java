@@ -112,8 +112,10 @@ public class RunTrackerActivity extends Activity {
 				paused = !paused;
 				if (paused) {
 					pauseRunButton.setText("Resume Run");
+					pauseRunButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.play, 0, 0, 0);
 				} else {
 					pauseRunButton.setText("Pause Run");
+					pauseRunButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.pause_small, 0, 0, 0);
 				}
 			}
 		});
