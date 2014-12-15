@@ -2,6 +2,11 @@ package cmsc434.funpath.map.utils;
 
 import java.util.Locale;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import cmsc434.funpath.login.RegisterActivity;
+import cmsc434.funpath.prerun.ConfigureRunActivity;
+
 // Used for time display and distance display
 public class TextDisplayTools {
 	public static String getDistanceText(double totalDistance) {
@@ -13,6 +18,22 @@ public class TextDisplayTools {
 		String totalDistString = String.format(Locale.US, "%.1f", totalDistance);
 		return "Distance (m): " + distTravelledString + " / " + totalDistString;
 	}
+	public static String getDistanceText(double distanceTravelled, double totalDistance, String units) {
+		if (units.equals("mi")){
+			//converting from m to mi
+			distanceTravelled *= 0.000621371;
+			totalDistance *= 0.000621371;
+		} else { //units.equals("km")
+			//converting from m to km
+			distanceTravelled *= 0.001;
+			totalDistance *= 0.001;
+		}
+		String distTravelledString = String.format(Locale.US, "%.1f", distanceTravelled);
+		String totalDistString = String.format(Locale.US, "%.1f", totalDistance);
+		return "Distance (" + units + "): " + distTravelledString + " / " + totalDistString;
+	}
+	
+	
 
 	// Ex: 4:13 for 4 minutes 13 seconds
 	public static String getTimeText(long timeSeconds) {

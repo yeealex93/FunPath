@@ -7,6 +7,8 @@ import java.util.Locale;
 import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -21,6 +23,8 @@ import android.widget.Toast;
 import android.location.LocationListener;
 import android.widget.TextView;
 import cmsc434.funpath.R;
+import cmsc434.funpath.login.HomeActivity;
+import cmsc434.funpath.login.RegisterActivity;
 
 public class ConfigureRunActivity extends Activity implements LocationListener {
 
@@ -28,6 +32,9 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 	public static final String HILLINESS = "HILLINESS";
 	public static final String UNITS = "UNITS";
 	public static final String DISTANCE_METERS = "DISTANCE_METERS";
+	
+	public static final String DISTANCE_UNITS = "DISTANCE_UNITS";
+	public static final String UNITS_KEY = "_UNITS";
 	
 	private LocationManager mLocationManager;
 	private double lat = 0;
@@ -58,10 +65,22 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 		next.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				
+				SharedPreferences settings = ConfigureRunActivity.this.getSharedPreferences(RegisterActivity.USERNAME+UNITS_KEY, MODE_PRIVATE);
+				Editor editor = settings.edit();
+				if (inMetric){
+					editor.putString(DISTANCE_UNITS, "km");
+				}else {
+					editor.putString(DISTANCE_UNITS, "mi");
+				}
+				editor.commit();
+				//String unitsPreference = settings.getString(DISTANCE_UNITS, "mi");
+				
+				
 				Intent i = new Intent(ConfigureRunActivity.this, PreviewRunActivity.class);
 				Toast.makeText(ConfigureRunActivity.this, "distance: "+distance.getText().toString(), Toast.LENGTH_LONG).show();
 				i.putExtra(DISTANCE, distance.getText().toString());
-				i.putExtra(UNITS, kmMiSwitch.isChecked());
+				//i.putExtra(UNITS, kmMiSwitch.isChecked());
 				i.putExtra(HILLINESS, hillinessBar.getProgress());
 				startActivity(i);
 			}
