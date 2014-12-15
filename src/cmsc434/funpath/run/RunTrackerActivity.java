@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import cmsc434.funpath.R;
 import cmsc434.funpath.map.utils.MapTools;
@@ -63,6 +64,7 @@ public class RunTrackerActivity extends Activity {
 	private boolean paused = false;
 
 	private Button pauseRunButton;
+	private ProgressBar progressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +134,8 @@ public class RunTrackerActivity extends Activity {
 			}
 		});
 
+		progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
 		// time update
 		new Thread(new UpdateTimeEverySecond()).start();   
 
@@ -181,6 +185,7 @@ public class RunTrackerActivity extends Activity {
 		if (distanceTravelled < newDistanceTravelled) {
 			distanceTravelled = newDistanceTravelled;
 		}
+		progressBar.setProgress((int) (distanceTravelled / totalDistance));
 		distanceDisplay.setText(TextDisplayTools.getDistanceText(distanceTravelled, totalDistance));
 	}
 
