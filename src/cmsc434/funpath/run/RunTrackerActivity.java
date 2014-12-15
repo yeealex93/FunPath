@@ -348,7 +348,7 @@ public class RunTrackerActivity extends Activity {
 					boolean runStarted = pathIndex >= 0; // || true for debug
 					String curTime;
 					if (!runStarted) {
-						curTime = "Run not started";
+						curTime = "Run not begun";
 					} else {
 						if (!paused) {
 							timeElapsedSeconds++;
