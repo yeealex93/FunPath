@@ -29,6 +29,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 // display map of run & user position using a MapView
+// TODO show next checkpoint, only allow one direction?
 public class RunTrackerActivity extends Activity {
 	private static final float INITIAL_ZOOM = 20f;
 	private static final float DISTANCE_THRESHOLD_CHECKPOINT_REACHED = 20;
@@ -51,9 +52,9 @@ public class RunTrackerActivity extends Activity {
 	private FusedLocationService fusedLocationService; // gets location updates
 
 	private RunPath currentPath;
-	private int pathIndex;
-	private double distanceTravelled;
-	private long timeElapsedSeconds;
+	private int pathIndex; // last checkpoint reached, -1 = hasn't started
+	private double distanceTravelled; // in meters
+	private long timeElapsedSeconds; // only starts counting after reaching checkpoint
 	private boolean paused = false;
 
 	@Override
@@ -152,6 +153,9 @@ public class RunTrackerActivity extends Activity {
 	}
 
 	private void updateDistance(Location curLocation) {
+		if (paused) {
+			return; // don't update distance when paused
+		}
 		float totalDistance = currentPath.getPathDistanceInMeters();
 		float remainingDistance = getRemainingDistance(curLocation);
 		// update distance travelled
@@ -179,6 +183,9 @@ public class RunTrackerActivity extends Activity {
 	}
 
 	private boolean reachedPoint(LatLng pos1, LatLng pos2) {
+		if (paused) {
+			return false; // can't go to checkpoint while paused
+		}
 		double distanceDifference = RunPath.getDistanceBetweenCoords(pos1, pos2);
 		return distanceDifference <= DISTANCE_THRESHOLD_CHECKPOINT_REACHED;
 	}
