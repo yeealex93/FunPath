@@ -137,17 +137,6 @@
 	        android:text="@string/med_elevation_change" />
 
 	    <TextView
-	        android:id="@+id/elevation_changed_text"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentTop="true"
-	        android:layout_marginLeft="15dp"
-	        android:layout_marginTop="16dp"
-	        android:layout_toLeftOf="@+id/text_med"
-	        android:textColor="#ffffff"
-	        android:text="@string/elevation" />
-
-	    <TextView
 	        android:id="@+id/text_high"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -157,6 +146,16 @@
 	        android:textColor="#ffffff"
 	        android:layout_marginRight="14dp"
 	        android:text="@string/high_elevation_change" />
+
+	    <TextView
+	        android:id="@+id/elevation_changed_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/hillySeekBar"
+	        android:layout_alignParentTop="true"
+	        android:layout_marginTop="17dp"
+	        android:text="@string/elevation"
+	        android:textColor="#ffffff" />
         
     </RelativeLayout>
     
