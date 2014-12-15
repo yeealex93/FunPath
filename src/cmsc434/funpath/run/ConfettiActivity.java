@@ -29,8 +29,8 @@ public class ConfettiActivity extends Activity{
 //
 //	private static final String TAG = "Lab-Graphics";
 
-	private final int WIDTH = 1000;
-	private final int HEIGHT = 2000;
+	private final int WIDTH = 2000;
+	private final int HEIGHT = 5000;
 	
 	// The Main view
 	private RelativeLayout mFrame;
@@ -66,22 +66,26 @@ public class ConfettiActivity extends Activity{
 		new RunConfettiTask().execute();
 
 		Log.i("CONFETTI", "started bubbles");
+		
+		new EndConfettiTask().execute();
 	
-		new Runnable(){
-
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				exitRequested();
-				//ConfettiActivity.this.finish();
-			}
-			
-		}.run();
+		//no good, just blocks thread + animation
+//		new Runnable(){
+//
+//			@Override
+//			public void run() {
+//				try {
+//					Thread.sleep(10000);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				
+//				finish();
+//				//ConfettiActivity.this.finish();
+//			}
+//			
+//		}.run();
 		
 	}
 
@@ -101,6 +105,24 @@ public class ConfettiActivity extends Activity{
 			Log.i("CONFETTI", "height: " +mDisplayHeight);
 		}
 	}
+
+	
+	 private class EndConfettiTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			mFrame.removeAllViews();
+			finish();
+			return null;
+		}
+		 
+	 }
 
 
 	 private class RunConfettiTask extends AsyncTask<Void, Void, Void> {
