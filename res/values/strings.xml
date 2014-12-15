@@ -9,6 +9,7 @@
     
     <!-- Background colors -->
     <color name="cyan">#ccffff</color>
+    <color name="white">#ffffff</color>
 
     <!-- Actionbar Options -->
     <string name="options_logout">Logout</string>
@@ -65,7 +66,9 @@
     <!-- SavedRunsActivity Strings -->
     <string name="saved_distance">Distance:</string>
 	<string name="saved_time">Time:</string>
-    <string name="saved_elevation">Elevation:</string>   
+    <string name="saved_elevation">Elevation:</string>
+    <string name="rerun_saved">Re-Run</string>
+    <string name="undo">Undo</string>
     
     <!-- FinishRunActivity Strings -->
     <string name="review_distance">Distance:</string>

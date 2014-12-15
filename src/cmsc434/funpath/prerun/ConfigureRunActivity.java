@@ -50,7 +50,6 @@ public class ConfigureRunActivity extends Activity implements LocationListener {
 		
 		
 		final TextView distance = (TextView) findViewById(R.id.distanceField);
-		distance.setText("0.0");
 		
 		final Switch kmMiSwitch = (Switch) findViewById(R.id.kmMiSwitch);
 		final boolean inMetric = kmMiSwitch.isChecked(); //km = on, mi = off

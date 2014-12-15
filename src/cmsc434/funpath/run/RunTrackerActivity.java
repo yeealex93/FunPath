@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import cmsc434.funpath.R;
 import cmsc434.funpath.map.utils.MapTools;
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 // display map of run & user position using a MapView, only allows one direction of following path through checkpoints
+// TODO show progress bar
 public class RunTrackerActivity extends Activity {
 	public static final boolean DEBUG_TOOLS_ENABLED = true; // allows path adding and clearing, disable for released version
 
@@ -62,6 +64,7 @@ public class RunTrackerActivity extends Activity {
 	private boolean paused = false;
 
 	private Button pauseRunButton;
+	private ProgressBar progressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +134,8 @@ public class RunTrackerActivity extends Activity {
 			}
 		});
 
+		progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
 		// time update
 		new Thread(new UpdateTimeEverySecond()).start();   
 
@@ -157,6 +162,7 @@ public class RunTrackerActivity extends Activity {
 		}
 		if (nextPos != null && reachedPoint(nextPos, curPos)) {
 			pathIndex++;
+			MapTools.drawPath(map, currentPath, pathIndex);
 			updateNextCheckpoint();
 		}
 		// update distance
@@ -180,6 +186,7 @@ public class RunTrackerActivity extends Activity {
 		if (distanceTravelled < newDistanceTravelled) {
 			distanceTravelled = newDistanceTravelled;
 		}
+		progressBar.setProgress((int) (distanceTravelled * 100 / totalDistance));
 		distanceDisplay.setText(TextDisplayTools.getDistanceText(distanceTravelled, totalDistance));
 	}
 
@@ -214,10 +221,11 @@ public class RunTrackerActivity extends Activity {
 	}
 
 	public void setPath(RunPath run) {
-		MapTools.drawPath(map, run);
+		pathIndex = -1;
+		// draw path
+		MapTools.drawPath(map, run, pathIndex);
 		this.currentPath = run;
 		// show path distance
-		pathIndex = -1;
 		distanceTravelled = 0;
 		timeElapsedSeconds = 0;
 		updateNextCheckpoint();

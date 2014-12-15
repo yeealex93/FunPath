@@ -1,7 +1,10 @@
 package cmsc434.funpath.prerun;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +12,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,18 +30,27 @@ import cmsc434.funpath.login.LoginActivity;
 import cmsc434.funpath.login.RegisterActivity;
 import cmsc434.funpath.map.utils.MapTools;
 import cmsc434.funpath.map.utils.TextDisplayTools;
+import cmsc434.funpath.prerun.UndoBarController.UndoListener;
 import cmsc434.funpath.run.RunPath;
+import cmsc434.funpath.run.RunTrackerActivity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
-public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
+// TODO allow undo delete
+public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter implements UndoListener {
+	private Activity activity; // used to show ActivityToast for undo buttom message
 	private List<File> files = new ArrayList<File>();
 
-	public SavedRunsCollectionAdapter(FragmentManager fm) {
+	// for undo
+	private File lastDeletedFile;
+	private int lastDeletedFilePosition;
+
+	public SavedRunsCollectionAdapter(Activity activity, FragmentManager fm) {
 		super(fm);
+		this.activity = activity;
 		this.files = getAllFiles();
 	}
 
@@ -98,12 +112,37 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 		return this.files.size();
 	}
 
-	public void remove(File file) {
+	public void remove(File file, String wholeFileText) {
+//		UndoBarController mUndoBarController = new UndoBarController(activity.findViewById(R.id.undobar), SavedRunsCollectionAdapter.this);
+//		mUndoBarController.showUndoBar(true, "Deleted run.", wholeFileText);
+		lastDeletedFile = file;
+		lastDeletedFilePosition = files.indexOf(file);
+
 		files.remove(file);
 		file.delete();
 		this.notifyDataSetChanged();
 	}
+
+	@Override
+	public void onUndo(Serializable token) {
+		Log.i("Undo", "Undo file delete!");
+		try {
+			rewriteFile(lastDeletedFile, token.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		files.add(lastDeletedFilePosition, lastDeletedFile);
+		this.notifyDataSetChanged();
+		lastDeletedFilePosition = -1;
+		lastDeletedFile = null;
+	}
 	
+	private void rewriteFile(File file, String entireFileContents) throws IOException {
+		FileWriter writer = new FileWriter(file);
+		writer.append(entireFileContents);
+		writer.close();
+	}
+
 	@Override
 	public CharSequence getPageTitle(int position) {
 		return (position + 1) + "";
@@ -112,10 +151,13 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 	public class SavedRunFragment extends Fragment implements OnMapReadyCallback {
 		private SavedRunsCollectionAdapter adapter; // used to delete
 		private File file;
+		private String wholeFileText; // used to restore file on undo
 
 		private RunPath run;
 		private long timeElapsed;
+		private int hilliness;
 		private String elevationText;
+		private int ele;
 
 		public SavedRunFragment(SavedRunsCollectionAdapter adapter, File file) {
 			this.adapter = adapter;
@@ -128,19 +170,32 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_run, container, false);
+			final View rootView = inflater.inflate(R.layout.fragment_run, container, false);
 			
 			// load data
 			readData(file.getPath());
 			displayData(rootView);
 			displayRunMap(rootView);
 
-			// delete button
+			// buttons
+			Button rerunButton = (Button) rootView.findViewById(R.id.rerun_saved_button);
+			rerunButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent startIntent = new Intent(activity, RunTrackerActivity.class);
+					startIntent.putExtra(ConfigureRunActivity.HILLINESS, hilliness);
+					startIntent.putExtra(RunTrackerActivity.RUNPATH_ARRAY, run.getPath());
+					
+					startActivity(startIntent);
+				}
+			});
+
 			Button deleteButton = (Button) rootView.findViewById(R.id.saved_delete_button);
 			deleteButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					adapter.remove(file);
+					adapter.remove(file, wholeFileText);
+					// TODO show undo toast
 				}
 			});
 
@@ -157,17 +212,22 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 
 			    // load distance (discarded)
 				line = reader.nextLine();
+				wholeFileText += line + "\n";
 				Log.i("Reading run", line);
 
 				// load time
 			    line = reader.nextLine();
+				wholeFileText += line + "\n";
 				Log.i("Reading run", line);
 			    this.timeElapsed = Long.parseLong(line);
 
 			    // load elevation
 				line = reader.nextLine();
+				wholeFileText += line + "\n";
 				Log.i("Reading run", line);
-			    int ele = Integer.parseInt(line); //elevation
+			    ele = Integer.parseInt(line); //elevation
+
+			    hilliness = ele;
 			    if (ele == 0) {
 			    	this.elevationText = "LOW";
 			    } else if (ele == 1) {
@@ -192,6 +252,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			String line;
 			while (reader.hasNextLine()) {
 				line = reader.nextLine();
+				wholeFileText += line + "\n";
 				Log.i("Reading run", line);
 				String[] latlong = line.split("\t");
 			    rundata.add(new LatLng(Double.parseDouble(latlong[0]), Double.parseDouble(latlong[1])));
@@ -208,7 +269,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 			timeView.setText(TextDisplayTools.getTimeText(timeElapsed));
 
 			TextView elevationView = (TextView) rootView.findViewById(R.id.saved_elevation);
-			elevationView.setText(elevationText);
+			elevationView.setText(TextDisplayTools.getElevationTextShort(ele));
 		}
 
 		private void displayRunMap(View rootView) {
@@ -225,6 +286,7 @@ public class SavedRunsCollectionAdapter extends FragmentStatePagerAdapter{
 
 		@Override
 		public void onMapReady(GoogleMap map) {
+			map.getUiSettings().setScrollGesturesEnabled(false); // prevent map panning, users can still zoom
 			MapTools.drawPath(map, run);
 			MapTools.zoomToLocation(map, run);
 		}
