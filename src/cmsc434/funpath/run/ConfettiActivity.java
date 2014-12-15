@@ -31,8 +31,8 @@ public class ConfettiActivity extends Activity{
 //
 //	private static final String TAG = "Lab-Graphics";
 
-	private final int WIDTH = 2000;
-	private final int HEIGHT = 5000;
+	private final int WIDTH = 1000;
+	private final int HEIGHT = 4000;
 	
 	// The Main view
 	private RelativeLayout mFrame;
@@ -68,7 +68,7 @@ public class ConfettiActivity extends Activity{
 		RunConfettiTask animation = new RunConfettiTask();
 		animation.execute();
 		try {
-			animation.get(4000, TimeUnit.MILLISECONDS);
+			animation.get(8000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,8 +80,6 @@ public class ConfettiActivity extends Activity{
 			e.printStackTrace();
 		}
 		
-		Log.i("CONFETTI", "finishing!");
-		finish();
 		//Log.i("CONFETTI", "started bubbles");
 		
 		//new EndConfettiTask().execute();
@@ -266,9 +264,9 @@ public class ConfettiActivity extends Activity{
 					
 					if (moveWhileOnScreen()) {
 						ConfettiView.this.postInvalidate();
-						Log.i("ON SCREEN!", "on screen");
+						Log.i("ON SCREEN!", "on screen.   x: "+mXPos+", y: "+mYPos);
 					} else {
-						Log.i("CONFETTI", "not on screen =O");
+						Log.i("CONFETTI", "not on screen =O.    x: "+mXPos+", y: "+mYPos);
 						ConfettiView.this.stop(false); //TODO check if popped
 					}
 					
