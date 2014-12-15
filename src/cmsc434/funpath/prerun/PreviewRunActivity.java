@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import cmsc434.funpath.R;
+import cmsc434.funpath.map.utils.TextDisplayTools;
 import cmsc434.funpath.run.RunPath;
 import cmsc434.funpath.run.RunTrackerActivity;
 
@@ -40,6 +42,12 @@ public class PreviewRunActivity extends Activity {
 		for (RunPath path : paths) {
 			Log.i("Path", "Dist = " + path.getPathDistanceInMeters());
 		}
+		
+		TextView distanceView = (TextView) findViewById(R.id.preview_distance);
+		distanceView.setText(TextDisplayTools.getDistanceText(bestPath.getPathDistanceInMeters()));
+		
+		TextView hillyView = (TextView) findViewById(R.id.preview_elevation);
+		hillyView.setText(TextDisplayTools.getElevationText(hilliness));
 		
 		// Set up button listener
 		Button startRun = (Button) findViewById(R.id.preview_begin_run);
